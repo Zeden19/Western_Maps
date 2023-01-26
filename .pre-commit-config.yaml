@@ -1,0 +1,12 @@
+repos:
+  - repo: 'https://github.com/pre-commit/pre-commit-hooks'
+    rev: 'v4.4.0'
+    hooks:
+      - id: 'destroyed-symlinks'
+      - id: 'end-of-file-fixer'
+      - id: 'trailing-whitespace'
+  - repo: 'https://github.com/ejba/pre-commit-maven'
+    rev: 'v0.3.3'
+    hooks:
+      - id: 'maven-compile'
+      - id: 'maven-spotless-apply'

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example.idk</groupId>
+    <artifactId>project-scaffold</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <!-- Update this with the project's root Java package. This is used to
+             configure automated null checking later. -->
+        <project.package-name>cs2212.mapmaker</project.package-name>
+
+        <!-- Error Prone and NullAway: Used to find bugs and null-safety issues
+             during code compilation. -->
+        <error-prone.version>2.18.0</error-prone.version>
+        <nullaway.version>0.10.8</nullaway.version>
+        <!-- Maven Compiler Plugin: Used to set up Error Prone and NullAway. -->
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <!-- JSR305 annotations: Used for annotating things @Nullable. -->
+        <jsr305.version>3.0.2</jsr305.version>
+        <!-- Spotless and palantir-java-format: Used to automatically format
+             Java code, as well as this POM file. -->
+        <spotless.version>2.30.0</spotless.version>
+        <palantir-java-format.version>2.28.0</palantir-java-format.version>
+
+        <!-- Tell Maven to use Java 19 with UTF-8 encoding. -->
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>${jsr305.version}</version>
+        </dependency>
+    </dependencies>
+
+    <!-- Configuration for compile-time code linters and formatters. -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgs>
+                        <arg>-XDcompilePolicy=simple</arg>
+                        <!-- Enable strict null checking of first-party code.
+                             Null-safety violations will be treated as errors. -->
+                        <arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:AnnotatedPackages=${project.package-name}</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>${error-prone.version}</version>
+                        </path>
+                        <path>
+                            <groupId>com.uber.nullaway</groupId>
+                            <artifactId>nullaway</artifactId>
+                            <version>${nullaway.version}</version>
+                        </path>
+                        <!-- Other annotation processors go here. -->
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <java>
+                        <palantirJavaFormat>
+                            <version>${palantir-java-format.version}</version>
+                        </palantirJavaFormat>
+                        <formatAnnotations/>
+                    </java>
+                    <pom>
+                        <sortPom>
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                        </sortPom>
+                    </pom>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
