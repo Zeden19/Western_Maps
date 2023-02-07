@@ -23,6 +23,7 @@ public class MainWindow extends JFrame {
 
         var helpMenu = new JMenu("Help");
         helpMenu.setMnemonic(KeyEvent.VK_H);
+        helpMenu.add(new HelpWindow.ShowAction());
         helpMenu.add(new AboutAction());
 
         var menuBar = new JMenuBar();
