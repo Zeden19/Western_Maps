@@ -2,6 +2,8 @@ package cs2212.mapmaker;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.extras.FlatInspector;
+import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import javax.swing.SwingUtilities;
 
 public final class Main {
@@ -17,6 +19,13 @@ public final class Main {
         setPropertiesForMacOs(darkTheme);
         if (darkTheme) FlatDarkLaf.setup();
         else FlatLightLaf.setup();
+
+        // Enable the FlatLaf widget inspector if requested via a Java system
+        // property.
+        if (Boolean.getBoolean("cs2212.mapmaker.enableInspector")) {
+            FlatInspector.install("ctrl shift alt X");
+            FlatUIDefaultsInspector.install("ctrl shift alt Y");
+        }
 
         // Create and show the main window.
         SwingUtilities.invokeLater(() -> {

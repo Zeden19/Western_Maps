@@ -27,6 +27,7 @@
         <!-- FlatLaf: Custom theme for Java Swing, used to make the UI
              consistent across operating systems. -->
         <flatlaf.version>3.0</flatlaf.version>
+        <flatlaf-extras.version>1.1.4</flatlaf-extras.version>
 
         <!-- Tell Maven to use Java 19 with UTF-8 encoding. -->
         <maven.compiler.source>19</maven.compiler.source>
@@ -43,6 +44,11 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
+            <version>${flatlaf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-extras</artifactId>
             <version>${flatlaf.version}</version>
         </dependency>
     </dependencies>
