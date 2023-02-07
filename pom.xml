@@ -24,6 +24,10 @@
         <spotless.version>2.30.0</spotless.version>
         <palantir-java-format.version>2.28.0</palantir-java-format.version>
 
+        <!-- FlatLaf: Custom theme for Java Swing, used to make the UI
+             consistent across operating systems. -->
+        <flatlaf.version>3.0</flatlaf.version>
+
         <!-- Tell Maven to use Java 19 with UTF-8 encoding. -->
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
@@ -35,6 +39,11 @@
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>${jsr305.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>${flatlaf.version}</version>
         </dependency>
     </dependencies>
 
