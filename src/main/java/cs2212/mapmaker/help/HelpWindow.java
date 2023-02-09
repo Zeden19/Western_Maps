@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.*;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -19,8 +20,10 @@ public class HelpWindow extends JFrame {
     private final JTree tree;
     private final JEditorPane viewer;
 
-    public HelpWindow(HelpPage rootPage) {
+    public HelpWindow(HelpPageIndex index) {
         super(Main.APPLICATION_NAME + " Help");
+
+        var rootPage = index.getRootPage();
 
         var rootPageTitle = new JLabel(rootPage.getName());
         rootPageTitle.setBorder(BorderFactory.createEmptyBorder(15, 20, 5, 20));
@@ -43,6 +46,17 @@ public class HelpWindow extends JFrame {
                 page = rootPage;
             }
             showPage(page);
+        });
+        // When a link is clicked in the HTML viewer, follow it.
+        viewer.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                var url = e.getURL();
+                var page = index.getPageByContentURL(url);
+                if (page != null) {
+                    selectPageInTree(page);
+                    showPage(page);
+                }
+            }
         });
 
         // Fully expand the tree. This works because expanding a row adds
@@ -93,7 +107,7 @@ public class HelpWindow extends JFrame {
             nodes.addFirst(node);
             node = node.getParent();
         }
-        var path = new TreePath(nodes);
+        var path = new TreePath(nodes.toArray());
         // Then, select that path.
         tree.setSelectionPath(path);
     }
@@ -107,7 +121,7 @@ public class HelpWindow extends JFrame {
     }
 
     public static class ShowAction extends AbstractAction {
-        private static @Nullable HelpPage rootPage = null;
+        private static @Nullable HelpPageIndex index = null;
 
         public ShowAction() {
             super("Help");
@@ -118,14 +132,14 @@ public class HelpWindow extends JFrame {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             // Load the help index and cache the result.
-            if (rootPage == null) {
-                rootPage = HelpPage.loadPageIndex();
+            if (index == null) {
+                index = HelpPageIndex.loadFromResources();
             }
 
             if (openedWindow == null || !openedWindow.isVisible()) {
                 // The help window is not already open. A new window is always
                 // created here so that IntelliJ hot-reloading will take effect.
-                openedWindow = new HelpWindow(Objects.requireNonNull(rootPage));
+                openedWindow = new HelpWindow(Objects.requireNonNull(index));
                 openedWindow.setVisible(true);
             } else {
                 // The help window is already open.

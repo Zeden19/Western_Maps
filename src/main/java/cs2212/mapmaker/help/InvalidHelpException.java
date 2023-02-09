@@ -15,6 +15,10 @@ public final class InvalidHelpException extends RuntimeException {
      * @param inner The exception that caused the error.
      */
     public InvalidHelpException(Throwable inner) {
-        super("Help could not be loaded.", inner);
+        super("Help could not be loaded", inner);
+    }
+
+    public InvalidHelpException(String message) {
+        super(message);
     }
 }

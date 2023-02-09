@@ -2,8 +2,6 @@ package cs2212.mapmaker.help;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -12,8 +10,7 @@ import javax.annotation.Nullable;
 import javax.swing.tree.TreeNode;
 
 public class HelpPage implements TreeNode {
-    private static final String HELP_ROOT = "/cs2212/mapmaker/help";
-    private static final String PAGES_JSON_RESOURCE = HELP_ROOT + "/pages.json";
+    public static final String HELP_ROOT = "/cs2212/mapmaker/help";
 
     private final String name;
     private final List<HelpPage> subpages;
@@ -31,21 +28,6 @@ public class HelpPage implements TreeNode {
 
         for (var subpage : subpages) {
             subpage.parent = this;
-        }
-    }
-
-    /**
-     * Loads the page index from the {@code pages.json} resource.
-     *
-     * @return The root page of the page index.
-     * @throws InvalidHelpException If the page index could not be loaded.
-     */
-    public static HelpPage loadPageIndex() {
-        try {
-            var objectMapper = new ObjectMapper();
-            return objectMapper.readValue(HelpPage.class.getResourceAsStream(PAGES_JSON_RESOURCE), HelpPage.class);
-        } catch (IOException ex) {
-            throw new InvalidHelpException(ex);
         }
     }
 
@@ -68,13 +50,13 @@ public class HelpPage implements TreeNode {
         var directoryIndexURL = HelpPage.class.getResource(prefix + "/index.html");
 
         if (fileOnlyURL != null && directoryIndexURL != null) {
-            throw new RuntimeException("Page '" + getName() + "' exists as both a directory and a file");
+            throw new InvalidHelpException("Page '" + getName() + "' exists as both a directory and a file");
         } else if (fileOnlyURL != null) {
             return fileOnlyURL;
         } else if (directoryIndexURL != null) {
             return directoryIndexURL;
         } else {
-            throw new RuntimeException("Page '" + getName() + "' does not exist");
+            throw new InvalidHelpException("Page '" + getName() + "' does not exist");
         }
     }
 
