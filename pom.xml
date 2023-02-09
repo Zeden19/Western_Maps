@@ -28,6 +28,8 @@
              consistent across operating systems. -->
         <flatlaf.version>3.0</flatlaf.version>
         <flatlaf-extras.version>1.1.4</flatlaf-extras.version>
+        <!-- Jackson: Used to serialize and deserialize JSON data. -->
+        <jackson.version>2.14.2</jackson.version>
 
         <!-- Tell Maven to use Java 19 with UTF-8 encoding. -->
         <maven.compiler.source>19</maven.compiler.source>
@@ -50,6 +52,11 @@
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf-extras</artifactId>
             <version>${flatlaf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 

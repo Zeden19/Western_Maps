@@ -1,0 +1,16 @@
+{
+    "name": "Mapmaker Help",
+    "subpages": [
+        {
+            "name": "Example Page 1"
+        },
+        {
+            "name": "Example Page 2",
+            "subpages": [
+                {
+                    "name": "Example Subpage"
+                }
+            ]
+        }
+    ]
+}
