@@ -15,8 +15,6 @@ public class HelpPage implements TreeNode {
     private static final String HELP_ROOT = "/cs2212/mapmaker/help";
     private static final String PAGES_JSON_RESOURCE = HELP_ROOT + "/pages.json";
 
-    private static @Nullable HelpPage rootPage = null;
-
     private final String name;
     private final List<HelpPage> subpages;
 
@@ -36,12 +34,19 @@ public class HelpPage implements TreeNode {
         }
     }
 
-    public static HelpPage getRootPage() throws IOException {
-        if (rootPage == null) {
+    /**
+     * Loads the page index from the {@code pages.json} resource.
+     *
+     * @return The root page of the page index.
+     * @throws InvalidHelpException If the page index could not be loaded.
+     */
+    public static HelpPage loadPageIndex() {
+        try {
             var objectMapper = new ObjectMapper();
-            rootPage = objectMapper.readValue(HelpPage.class.getResourceAsStream(PAGES_JSON_RESOURCE), HelpPage.class);
+            return objectMapper.readValue(HelpPage.class.getResourceAsStream(PAGES_JSON_RESOURCE), HelpPage.class);
+        } catch (IOException ex) {
+            throw new InvalidHelpException(ex);
         }
-        return rootPage;
     }
 
     public String getName() {
