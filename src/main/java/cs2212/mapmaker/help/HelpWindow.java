@@ -2,9 +2,12 @@ package cs2212.mapmaker.help;
 
 import cs2212.mapmaker.Main;
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.*;
 import javax.annotation.Nullable;
@@ -28,11 +31,29 @@ public class HelpWindow extends JFrame {
         var rootPageTitle = new JLabel(rootPage.getName());
         rootPageTitle.setBorder(BorderFactory.createEmptyBorder(15, 20, 5, 20));
         rootPageTitle.putClientProperty("FlatLaf.styleClass", "h2");
+        rootPageTitle.setFocusable(true);
+        rootPageTitle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        rootPageTitle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                tree.clearSelection();
+                showPage(rootPage);
+            }
+        });
 
         tree = new JTree(rootPage);
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                // https://stackoverflow.com/a/23095104
+                var treePath = tree.getPathForLocation(e.getX(), e.getY());
+                var cursorType = treePath != null ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR;
+                tree.setCursor(Cursor.getPredefinedCursor(cursorType));
+            }
+        });
 
         viewer = new JEditorPane();
         viewer.setEditable(false);
