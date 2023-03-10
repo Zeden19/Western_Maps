@@ -1,4 +1,4 @@
-package cs2212.mapmaker.help;
+package cs2212.westernmaps.help;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

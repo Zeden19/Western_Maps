@@ -1,4 +1,4 @@
-package cs2212.mapmaker;
+package cs2212.westernmaps;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
@@ -9,7 +9,7 @@ import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import javax.swing.SwingUtilities;
 
 public final class Main {
-    public static final String APPLICATION_NAME = "Mapmaker";
+    public static final String APPLICATION_NAME = "Western Maps";
 
     private Main() {}
 
@@ -36,7 +36,7 @@ public final class Main {
 
             // Enable the FlatLaf widget inspector if requested via a Java system
             // property.
-            if (Boolean.getBoolean("cs2212.mapmaker.enableInspector")) {
+            if (Boolean.getBoolean("cs2212.westernmaps.enableInspector")) {
                 FlatInspector.install("ctrl shift alt X");
                 FlatUIDefaultsInspector.install("ctrl shift alt Y");
             }

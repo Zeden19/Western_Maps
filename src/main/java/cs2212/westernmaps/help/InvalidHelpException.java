@@ -1,4 +1,4 @@
-package cs2212.mapmaker.help;
+package cs2212.westernmaps.help;
 
 /**
  * Signals that an error occurred while loading help, usually because of

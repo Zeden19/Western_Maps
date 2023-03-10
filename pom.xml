@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cs2212.group44.mapmaker</groupId>
-    <artifactId>mapmaker</artifactId>
+    <groupId>cs2212.group44.westernmaps</groupId>
+    <artifactId>westernmaps</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <!-- Update this with the project's root Java package. This is used to
              configure automated null checking later. -->
-        <project.package-name>cs2212.mapmaker</project.package-name>
+        <project.package-name>cs2212.westernmaps</project.package-name>
 
         <!-- Error Prone and NullAway: Used to find bugs and null-safety issues
              during code compilation. -->

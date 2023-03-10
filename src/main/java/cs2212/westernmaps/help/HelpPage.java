@@ -1,4 +1,4 @@
-package cs2212.mapmaker.help;
+package cs2212.westernmaps.help;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import javax.swing.tree.TreeNode;
 
 public class HelpPage implements TreeNode {
-    public static final String HELP_ROOT = "/cs2212/mapmaker/help";
+    public static final String HELP_ROOT = "/cs2212/westernmaps/help";
 
     private final String name;
     private final List<HelpPage> subpages;

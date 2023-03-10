@@ -1,6 +1,6 @@
-package cs2212.mapmaker.help;
+package cs2212.westernmaps.help;
 
-import cs2212.mapmaker.Main;
+import cs2212.westernmaps.Main;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;

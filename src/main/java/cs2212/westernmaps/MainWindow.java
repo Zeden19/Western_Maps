@@ -1,6 +1,6 @@
-package cs2212.mapmaker;
+package cs2212.westernmaps;
 
-import cs2212.mapmaker.help.HelpWindow;
+import cs2212.westernmaps.help.HelpWindow;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
