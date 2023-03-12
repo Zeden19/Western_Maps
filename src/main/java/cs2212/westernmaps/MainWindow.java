@@ -18,6 +18,7 @@ public class MainWindow extends JFrame {
     }
 
     private JMenuBar createMenuBar() {
+        System.out.println("hi");
         var fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
         fileMenu.add(new QuitAction());
