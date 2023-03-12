@@ -5,6 +5,9 @@ repos:
       - id: 'destroyed-symlinks'
       - id: 'end-of-file-fixer'
       - id: 'trailing-whitespace'
+      - id: 'no-commit-to-branch'
+        name: "don't commit to master"
+        args: ['--branch', 'master']
   - repo: 'https://github.com/ejba/pre-commit-maven'
     rev: 'v0.3.3'
     hooks:
