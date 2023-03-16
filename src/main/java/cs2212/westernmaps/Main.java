@@ -48,7 +48,7 @@ public final class Main {
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
-            window.setVisible(true);
+            window.frame.setVisible(true);
         });
     }
 
