@@ -1,5 +1,9 @@
 package cs2212.westernmaps.core;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -21,23 +25,48 @@ public record Database(List<Account> accounts, List<Building> buildings, List<PO
     }
 
     /**
-     * Loads a database from a directory in the filesystem.
+     * Loads a database from an input stream containing JSON data.
      *
-     * @param path The path to the directory containing the data to load.
-     * @return     A new database containing the loaded data.
-     * @see #saveToDirectory
+     * @param stream       The input stream to load data from.
+     * @return             A new database containing the loaded data.
+     * @throws IOException If an IO error occurred while reading the data, or
+     *                     the JSON data was invalid.
      */
-    public static Database loadFromDirectory(Path path) {
+    public static Database loadFromStream(InputStream stream) throws IOException {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /**
-     * Saves this database to a directory in the filesystem.
+     * Loads a database from a file containing JSON data.
      *
-     * @param path The path to the directory where the data will be saved.
-     * @see #loadFromDirectory
+     * @param filePath     A path to the file to load data from.
+     * @return             A new database containing the loaded data.
+     * @throws IOException If an IO error occurred while reading the data, or
+     *                     the JSON data was invalid.
      */
-    public void saveToDirectory(Path path) {
+    public static Database loadFromFile(Path filePath) throws IOException {
+        return loadFromStream(Files.newInputStream(filePath));
+    }
+
+    /**
+     * Saves this database as JSON data to an output stream.
+     *
+     * @param stream       The output stream to save data to.
+     * @throws IOException If an IO error occurred while writing the data, or
+     *                     the database could not be serialized as JSON.
+     */
+    public void saveToStream(OutputStream stream) throws IOException {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
+     * Saves this database as JSON data to a file.
+     *
+     * @param filePath     A path to the file to save data to.
+     * @throws IOException If an IO error occurred while writing the data, or
+     *                     the database could not be serialized as JSON.
+     */
+    public void saveToFile(Path filePath) throws IOException {
+        saveToStream(Files.newOutputStream(filePath));
     }
 }
