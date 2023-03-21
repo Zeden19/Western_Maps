@@ -1,4 +1,4 @@
-package cs2212.westernmaps;
+package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Component;

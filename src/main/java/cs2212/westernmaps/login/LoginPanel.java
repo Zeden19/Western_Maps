@@ -1,6 +1,7 @@
-package cs2212.westernmaps;
+package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import cs2212.westernmaps.LinkButton;
 import java.awt.Component;
 import java.awt.GridBagLayout;
 import javax.swing.*;
