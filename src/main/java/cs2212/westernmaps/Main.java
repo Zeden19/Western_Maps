@@ -42,6 +42,7 @@ public final class Main {
             }
 
             var window = new MainWindow();
+            // var window = new LoginWindow();
             window.setVisible(true);
         });
     }

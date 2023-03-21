@@ -9,6 +9,7 @@ public final class LoginWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         add(new LoginPanel());
+        // add(new CreateAccountPanel());
 
         setPreferredSize(new Dimension(640, 480));
         pack();
