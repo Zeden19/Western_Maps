@@ -1,5 +1,6 @@
 package cs2212.westernmaps.core;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -68,5 +69,18 @@ public record Database(List<Account> accounts, List<Building> buildings, List<PO
      */
     public void saveToFile(Path filePath) throws IOException {
         saveToStream(Files.newOutputStream(filePath));
+    }
+
+    /**
+     * Creates a Jackson {@link ObjectMapper} and configures it for serializing
+     * and deserializing a database to JSON.
+     *
+     * <p>This method is package-private (instead of private) so it is visible
+     * to unit tests.</p>
+     *
+     * @return A new properly-configured {@code ObjectMapper}.
+     */
+    static ObjectMapper createObjectMapper() {
+        return new ObjectMapper();
     }
 }
