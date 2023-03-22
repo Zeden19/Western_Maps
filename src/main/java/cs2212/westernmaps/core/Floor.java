@@ -1,6 +1,13 @@
 package cs2212.westernmaps.core;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.IntSequenceGenerator;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kitfox.svg.SVGDiagram;
+import java.io.IOException;
 import java.nio.file.Path;
 
 /**
@@ -12,7 +19,9 @@ import java.nio.file.Path;
  *                  {@code "First Floor"} or {@code "Ground Floor"}).
  * @param mapPath   The path to the SVG map data for this floor.
  */
-public record Floor(String shortName, String longName, Path mapPath) {
+@JsonIdentityInfo(generator = IntSequenceGenerator.class)
+public record Floor(
+        String shortName, String longName, @JsonSerialize(using = RelativePathSerializer.class) Path mapPath) {
     /**
      * Loads the map of this floor as an {@link SVGDiagram}.
      *
@@ -20,5 +29,12 @@ public record Floor(String shortName, String longName, Path mapPath) {
      */
     public SVGDiagram loadMap() {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private static class RelativePathSerializer extends JsonSerializer<Path> {
+        @Override
+        public void serialize(Path path, JsonGenerator generator, SerializerProvider provider) throws IOException {
+            generator.writeString(path.toString());
+        }
     }
 }

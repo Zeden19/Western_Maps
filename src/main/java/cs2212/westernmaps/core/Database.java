@@ -34,7 +34,7 @@ public record Database(List<Account> accounts, List<Building> buildings, List<PO
      *                     the JSON data was invalid.
      */
     public static Database loadFromStream(InputStream stream) throws IOException {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return createObjectMapper().readValue(stream, Database.class);
     }
 
     /**
@@ -57,7 +57,7 @@ public record Database(List<Account> accounts, List<Building> buildings, List<PO
      *                     the database could not be serialized as JSON.
      */
     public void saveToStream(OutputStream stream) throws IOException {
-        throw new UnsupportedOperationException("Not yet implemented");
+        createObjectMapper().writeValue(stream, this);
     }
 
     /**
@@ -75,12 +75,9 @@ public record Database(List<Account> accounts, List<Building> buildings, List<PO
      * Creates a Jackson {@link ObjectMapper} and configures it for serializing
      * and deserializing a database to JSON.
      *
-     * <p>This method is package-private (instead of private) so it is visible
-     * to unit tests.</p>
-     *
      * @return A new properly-configured {@code ObjectMapper}.
      */
-    static ObjectMapper createObjectMapper() {
+    private static ObjectMapper createObjectMapper() {
         return new ObjectMapper();
     }
 }
