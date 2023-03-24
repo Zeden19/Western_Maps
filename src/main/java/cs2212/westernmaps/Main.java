@@ -41,7 +41,7 @@ public final class Main {
                 FlatUIDefaultsInspector.install("ctrl shift alt Y");
             }
 
-            var window = new MainWindow();
+            var window = new LoginWindow();
             window.setVisible(true);
         });
     }
