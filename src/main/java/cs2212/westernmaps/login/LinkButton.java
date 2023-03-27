@@ -1,4 +1,4 @@
-package cs2212.westernmaps;
+package cs2212.westernmaps.login;
 
 import java.awt.Color;
 import java.awt.Cursor;

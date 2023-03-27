@@ -6,6 +6,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
+import cs2212.westernmaps.login.LoginWindow;
 import javax.swing.SwingUtilities;
 
 public final class Main {
