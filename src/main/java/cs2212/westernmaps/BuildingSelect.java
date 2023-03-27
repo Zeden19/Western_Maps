@@ -6,6 +6,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /*
@@ -15,7 +20,7 @@ import javax.swing.*;
 
 public class BuildingSelect extends JFrame implements ActionListener {
     final String[] BUILDING_LIST = {"Middlesex College", "Talbot College", "Recreation Centre"};
-    final String PATH_TO_IMAGE = "mc.png";
+    final String PATH_TO_IMAGE = "/cs2212.westernmaps.building-select/mc.png";
 
     JList<String> list;
 
@@ -84,12 +89,17 @@ public class BuildingSelect extends JFrame implements ActionListener {
         contentPane.add(selectPane, BorderLayout.CENTER);
 
         // Add image to final content pane
-        ImageIcon imageIcon =
-                new ImageIcon(new ImageIcon(PATH_TO_IMAGE).getImage().getScaledInstance(540, 720, Image.SCALE_DEFAULT));
-        JLabel image = new JLabel(imageIcon);
-        image.setBounds(640, 0, 640, 720);
-        contentPane.add(image, BorderLayout.LINE_END);
-
+        try {
+            @Nullable InputStream imageFile = BuildingSelect.class.getResourceAsStream(PATH_TO_IMAGE);
+            BufferedImage imageBuffer = ImageIO.read(imageFile);
+            ImageIcon imageIcon = new ImageIcon(
+                    new ImageIcon(imageBuffer).getImage().getScaledInstance(540, 720, Image.SCALE_DEFAULT));
+            JLabel image = new JLabel(imageIcon);
+            image.setBounds(640, 0, 640, 720);
+            contentPane.add(image, BorderLayout.LINE_END);
+        } catch (IOException e) {
+            System.out.println("Error opening file: " + PATH_TO_IMAGE);
+        }
         setContentPane(contentPane);
         setPreferredSize(new Dimension(1280, 720));
         pack();
