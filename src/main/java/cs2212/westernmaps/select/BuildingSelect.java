@@ -1,6 +1,7 @@
-package cs2212.westernmaps;
+package cs2212.westernmaps.select;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import cs2212.westernmaps.Main;
 import cs2212.westernmaps.help.HelpWindow;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +21,7 @@ import javax.swing.*;
 
 public class BuildingSelect extends JFrame implements ActionListener {
     final String[] BUILDING_LIST = {"Middlesex College", "Talbot College", "Recreation Centre"};
-    final String PATH_TO_IMAGE = "/cs2212.westernmaps.building-select/mc.png";
+    final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
 
     JList<String> list;
 
