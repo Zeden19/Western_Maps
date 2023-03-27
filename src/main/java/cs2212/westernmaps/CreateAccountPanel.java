@@ -2,8 +2,6 @@ package cs2212.westernmaps;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.swing.*;
@@ -82,25 +80,21 @@ public final class CreateAccountPanel extends JPanel {
 
         add(panel);
 
-        back.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent me) {
-                remove(panel);
-                add(new LoginPanel());
-                revalidate();
-                repaint();
-            }
+        back.addActionListener(e -> {
+            remove(panel);
+            add(new LoginPanel());
+            revalidate();
+            repaint();
         });
 
-        createAccountButton.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent me) {
-                passwordMatchError.setVisible(false);
-                passwordUnviableError.setVisible(false);
-                if (!Arrays.toString(passwordField.getPassword())
-                        .equals(Arrays.toString(confirmPassword.getPassword())))
-                    passwordMatchError.setVisible(true); // passwords not matching
-                else if (!isPasswordViable(passwordField.getPassword())) // password not viable
-                passwordUnviableError.setVisible(true);
-            }
+        createAccountButton.addActionListener(e -> {
+            passwordMatchError.setVisible(false);
+            passwordUnviableError.setVisible(false);
+
+            if (!Arrays.toString(passwordField.getPassword()).equals(Arrays.toString(confirmPassword.getPassword())))
+                passwordMatchError.setVisible(true); // passwords not matching
+            else if (!isPasswordViable(passwordField.getPassword())) // password not viable
+            passwordUnviableError.setVisible(true);
         });
     }
 

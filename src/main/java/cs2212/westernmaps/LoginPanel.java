@@ -3,8 +3,7 @@ package cs2212.westernmaps;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Component;
 import java.awt.GridBagLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
@@ -49,8 +48,8 @@ public final class LoginPanel extends JPanel {
 
         add(panel);
 
-        createAccountLink.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent me) {
+        createAccountLink.addActionListener(e -> {
+            {
                 remove(panel);
                 add(new CreateAccountPanel());
                 revalidate();
@@ -58,4 +57,6 @@ public final class LoginPanel extends JPanel {
             }
         });
     }
+
+    public void addCreateAccountLinkActionListener(ActionListener listener) {}
 }
