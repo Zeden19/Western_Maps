@@ -9,11 +9,11 @@ import javax.swing.*;
 public final class CreateAccountPanel extends JPanel {
     public CreateAccountPanel() {
         // When a GridBagLayout has one child, it will center it.
-        setLayout(new GridBagLayout());
+        setLayout(new OverlayLayout(this));
 
         var back = new JButton("Back");
-        back.setHorizontalAlignment(SwingConstants.LEFT);
-        back.setVerticalAlignment(SwingConstants.TOP);
+        back.setAlignmentX(Component.LEFT_ALIGNMENT);
+        back.setAlignmentY(Component.TOP_ALIGNMENT);
 
         var title = new JLabel("Create Account");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -52,11 +52,11 @@ public final class CreateAccountPanel extends JPanel {
         passwordUnviableError.setVisible(false);
         passwordUnviableError.setForeground(Color.RED);
 
+        var mainPanel = new JPanel();
+        mainPanel.setLayout(new GridBagLayout());
+
         var panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-
-        panel.add(back);
-        panel.add(Box.createVerticalStrut(10));
 
         panel.add(title);
         panel.add(Box.createVerticalStrut(24));
@@ -78,10 +78,13 @@ public final class CreateAccountPanel extends JPanel {
 
         panel.add(createAccountButton);
 
-        add(panel);
+        mainPanel.add(panel);
+
+        add(back);
+        add(mainPanel);
 
         back.addActionListener(e -> {
-            remove(panel);
+            remove(mainPanel);
             add(new LoginPanel());
             revalidate();
             repaint();
