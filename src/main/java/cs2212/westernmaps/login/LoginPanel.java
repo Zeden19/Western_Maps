@@ -1,9 +1,9 @@
-package cs2212.westernmaps.login;
+package cs2212.westernmaps;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import cs2212.westernmaps.LinkButton;
 import java.awt.Component;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
@@ -47,5 +47,16 @@ public final class LoginPanel extends JPanel {
         panel.add(createAccountLink);
 
         add(panel);
+
+        createAccountLink.addActionListener(e -> {
+            {
+                remove(panel);
+                add(new CreateAccountPanel());
+                revalidate();
+                repaint();
+            }
+        });
     }
+
+    public void addCreateAccountLinkActionListener(ActionListener listener) {}
 }
