@@ -43,6 +43,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         selectButton.addActionListener(this);
 
         JPanel weather = new JPanel();
+        // Temporary
         weather.add(new JLabel("weather"));
 
         // Create informative buttons
@@ -54,22 +55,33 @@ public class BuildingSelect extends JFrame implements ActionListener {
 
         JPanel helpBox = new JPanel();
         helpBox.setLayout(new BoxLayout(helpBox, BoxLayout.PAGE_AXIS));
+        helpBox.add(Box.createRigidArea(new Dimension(0, 10)));
         helpBox.add(helpButton);
         helpBox.add(Box.createRigidArea(new Dimension(0, 5)));
         helpBox.add(aboutButton);
 
+        // Create back button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new BackAction());
+
         // Stack and center components in a grid bag layout
         JPanel selectPane = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 1;
+        // Add main components
+        c.gridx = 0;
         c.gridy = 0;
+        c.insets = new Insets(5, 5, 0, 0);
+        selectPane.add(backButton, c);
+
         c.insets = new Insets(10, 0, 0, 0);
+        c.gridx = 1;
         selectPane.add(heading, c);
 
         c.gridy = 2;
         c.insets = new Insets(20, 0, 20, 0);
         selectPane.add(selectButton, c);
 
+        // Add right-most components
         c.gridx = 2;
         c.insets = new Insets(0, 0, 0, 10);
         selectPane.add(weather, c);
@@ -77,6 +89,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         c.gridy = 0;
         selectPane.add(helpBox, c);
 
+        // Add building list
         c.gridx = 1;
         c.gridy = 1;
         c.fill = GridBagConstraints.BOTH;
@@ -118,6 +131,13 @@ public class BuildingSelect extends JFrame implements ActionListener {
             case 2 ->
             // Go to Recreation Centre
             System.out.println("Recreation Centre selected.");
+        }
+    }
+
+    private class BackAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            // Go back to log-in screen
         }
     }
 
