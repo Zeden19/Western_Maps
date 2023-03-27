@@ -29,10 +29,12 @@ public final class LoginWindow extends JFrame {
     }
 
     public void changeToCreateAccount() {
+        setTitle("Create Account");
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "create");
     }
 
     public void changeToLogin() {
+        setTitle("Sign in");
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
     }
 }

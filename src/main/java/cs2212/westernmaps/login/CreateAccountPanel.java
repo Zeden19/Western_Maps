@@ -66,12 +66,15 @@ public final class CreateAccountPanel extends JPanel {
 
         // The main panel, a gridbagLayout, containing an inner boxLayout and the back button
         var mainPanel = new JPanel();
+        mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mainPanel.setAlignmentY(Component.TOP_ALIGNMENT);
         mainPanel.setLayout(new GridBagLayout());
 
         // An inner panel, a box layout, containing all the components
         var panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
+        // adding all the main components to the boxLayout
         panel.add(title);
         panel.add(Box.createVerticalStrut(24));
 
@@ -93,8 +96,6 @@ public final class CreateAccountPanel extends JPanel {
         panel.add(createAccountButton);
 
         mainPanel.add(panel);
-        mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         add(back);
         add(mainPanel);
