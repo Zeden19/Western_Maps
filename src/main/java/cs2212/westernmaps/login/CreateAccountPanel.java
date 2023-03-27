@@ -7,12 +7,15 @@ import java.util.regex.Pattern;
 import javax.swing.*;
 
 public final class CreateAccountPanel extends JPanel {
+
+    JButton back;
+
     public CreateAccountPanel() {
         // Setting layout for the whole panel
         setLayout(new OverlayLayout(this));
 
         // back button
-        var back = new JButton("Back");
+        back = new JButton("Back");
         back.setAlignmentX(Component.LEFT_ALIGNMENT);
         back.setAlignmentY(Component.TOP_ALIGNMENT);
 
@@ -95,14 +98,6 @@ public final class CreateAccountPanel extends JPanel {
 
         add(back);
         add(mainPanel);
-
-        // going back to the login panel
-        back.addActionListener(e -> {
-            remove(mainPanel);
-            add(new LoginPanel());
-            revalidate();
-            repaint();
-        });
 
         // checking if password is valid
         createAccountButton.addActionListener(e -> {

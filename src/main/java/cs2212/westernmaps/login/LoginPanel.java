@@ -1,13 +1,15 @@
 package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import java.awt.Component;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
+    public LinkButton createAccountLink;
+
     public LoginPanel() {
+
         // When a GridBagLayout has one child, it will center it.
         setLayout(new GridBagLayout());
 
@@ -31,7 +33,7 @@ public final class LoginPanel extends JPanel {
         var signInButton = new JButton("Sign In");
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        var createAccountLink = new LinkButton("Create an Account");
+        createAccountLink = new LinkButton("Create an Account");
         createAccountLink.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         var panel = new JPanel();
@@ -47,15 +49,6 @@ public final class LoginPanel extends JPanel {
         panel.add(createAccountLink);
 
         add(panel);
-
-        createAccountLink.addActionListener(e -> {
-            {
-                remove(panel);
-                add(new CreateAccountPanel());
-                revalidate();
-                repaint();
-            }
-        });
     }
 
     public void addCreateAccountLinkActionListener(ActionListener listener) {}
