@@ -6,10 +6,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /*
@@ -21,20 +17,20 @@ public class BuildingSelect extends JFrame implements ActionListener {
     final String[] BUILDING_LIST = {"Middlesex College", "Talbot College", "Recreation Centre"};
     final String PATH_TO_IMAGE = "mc.png";
 
-    JList list;
+    JList<String> list;
 
     public BuildingSelect() {
-        super(Main.APPLICATION_NAME + ": Building Selection");
+        super(Main.APPLICATION_NAME + ": Select a building");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Create selection pane components
         JLabel heading = new JLabel("Select a building:");
         heading.putClientProperty(FlatClientProperties.STYLE_CLASS, "h0");
 
-        list = new JList(BUILDING_LIST);
+        list = new JList<>(BUILDING_LIST);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
-        list.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        list.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
 
         JButton selectButton = new JButton("Select Building");
         selectButton.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
@@ -43,11 +39,25 @@ public class BuildingSelect extends JFrame implements ActionListener {
         JPanel weather = new JPanel();
         weather.add(new JLabel("weather"));
 
+        // Create informative buttons
+        JButton helpButton = new JButton("Help");
+        helpButton.addActionListener(new HelpWindow.ShowAction());
+
+        JButton aboutButton = new JButton("About");
+        aboutButton.addActionListener(new AboutAction());
+
+        JPanel helpBox = new JPanel();
+        helpBox.setLayout(new BoxLayout(helpBox, BoxLayout.PAGE_AXIS));
+        helpBox.add(helpButton);
+        helpBox.add(Box.createRigidArea(new Dimension(0, 5)));
+        helpBox.add(aboutButton);
+
         // Stack and center components in a grid bag layout
         JPanel selectPane = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 0;
+        c.insets = new Insets(10, 0, 0, 0);
         selectPane.add(heading, c);
 
         c.gridy = 2;
@@ -55,7 +65,11 @@ public class BuildingSelect extends JFrame implements ActionListener {
         selectPane.add(selectButton, c);
 
         c.gridx = 2;
+        c.insets = new Insets(0, 0, 0, 10);
         selectPane.add(weather, c);
+
+        c.gridy = 0;
+        selectPane.add(helpBox, c);
 
         c.gridx = 1;
         c.gridy = 1;
@@ -70,21 +84,13 @@ public class BuildingSelect extends JFrame implements ActionListener {
         contentPane.add(selectPane, BorderLayout.CENTER);
 
         // Add image to final content pane
-        try {
-            BufferedImage imageFile = ImageIO.read(new File(PATH_TO_IMAGE));
-            ImageIcon imageIcon =
-                    new ImageIcon(new ImageIcon(imageFile).getImage().getScaledInstance(540, 720, Image.SCALE_DEFAULT));
-
-            JLabel image = new JLabel(imageIcon);
-            image.setBounds(640, 0, 640, 720);
-            contentPane.add(image, BorderLayout.LINE_END);
-        } catch (IOException e) {
-            System.out.println("Error: Couldn't open image: " + PATH_TO_IMAGE);
-            System.out.println("Current working directory: " + System.getProperty("user.dir"));
-        }
+        ImageIcon imageIcon =
+                new ImageIcon(new ImageIcon(PATH_TO_IMAGE).getImage().getScaledInstance(540, 720, Image.SCALE_DEFAULT));
+        JLabel image = new JLabel(imageIcon);
+        image.setBounds(640, 0, 640, 720);
+        contentPane.add(image, BorderLayout.LINE_END);
 
         setContentPane(contentPane);
-        setJMenuBar(createMenuBar());
         setPreferredSize(new Dimension(1280, 720));
         pack();
     }
@@ -92,36 +98,16 @@ public class BuildingSelect extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (list.getSelectedIndex()) {
-            case 0:
-                // Go to Middlesex College
-                System.out.println("Middlesex College selected.");
-                break;
-            case 1:
-                // Go to Talbot College
-                System.out.println("Talbot College selected.");
-                break;
-            case 2:
-                // Go to Recreation Centre
-                System.out.println("Recreation Centre selected.");
-                break;
+            case 0 ->
+            // Go to Middlesex College
+            System.out.println("Middlesex College selected.");
+            case 1 ->
+            // Go to Talbot College
+            System.out.println("Talbot College selected.");
+            case 2 ->
+            // Go to Recreation Centre
+            System.out.println("Recreation Centre selected.");
         }
-    }
-
-    private JMenuBar createMenuBar() {
-        var fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
-        fileMenu.add(new BuildingSelect.QuitAction());
-
-        var helpMenu = new JMenu("Help");
-        helpMenu.setMnemonic(KeyEvent.VK_H);
-        helpMenu.add(new HelpWindow.ShowAction());
-        helpMenu.add(new BuildingSelect.AboutAction());
-
-        var menuBar = new JMenuBar();
-        menuBar.add(fileMenu);
-        menuBar.add(helpMenu);
-
-        return menuBar;
     }
 
     private class AboutAction extends AbstractAction {
@@ -137,19 +123,6 @@ public class BuildingSelect extends JFrame implements ActionListener {
                     "Information about the application should go here.",
                     getName(),
                     JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private class QuitAction extends AbstractAction {
-        public QuitAction() {
-            super("Quit");
-            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Q);
-            putValue(Action.SHORT_DESCRIPTION, "Quit the application.");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            BuildingSelect.this.dispose();
         }
     }
 }
