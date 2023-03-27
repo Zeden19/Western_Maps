@@ -105,6 +105,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         // Add image to final content pane
         try {
             @Nullable InputStream imageFile = BuildingSelect.class.getResourceAsStream(PATH_TO_IMAGE);
+            if (imageFile == null) throw new IOException();
             BufferedImage imageBuffer = ImageIO.read(imageFile);
             ImageIcon imageIcon = new ImageIcon(
                     new ImageIcon(imageBuffer).getImage().getScaledInstance(540, 720, Image.SCALE_DEFAULT));
