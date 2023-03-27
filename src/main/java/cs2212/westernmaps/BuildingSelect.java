@@ -1,9 +1,11 @@
 package cs2212.westernmaps;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import cs2212.westernmaps.help.HelpWindow;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +84,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         }
 
         setContentPane(contentPane);
-
+        setJMenuBar(createMenuBar());
         setPreferredSize(new Dimension(1280, 720));
         pack();
     }
@@ -102,6 +104,52 @@ public class BuildingSelect extends JFrame implements ActionListener {
                 // Go to Recreation Centre
                 System.out.println("Recreation Centre selected.");
                 break;
+        }
+    }
+
+    private JMenuBar createMenuBar() {
+        var fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        fileMenu.add(new BuildingSelect.QuitAction());
+
+        var helpMenu = new JMenu("Help");
+        helpMenu.setMnemonic(KeyEvent.VK_H);
+        helpMenu.add(new HelpWindow.ShowAction());
+        helpMenu.add(new BuildingSelect.AboutAction());
+
+        var menuBar = new JMenuBar();
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
+
+        return menuBar;
+    }
+
+    private class AboutAction extends AbstractAction {
+        public AboutAction() {
+            super("About " + Main.APPLICATION_NAME);
+            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            JOptionPane.showMessageDialog(
+                    BuildingSelect.this,
+                    "Information about the application should go here.",
+                    getName(),
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private class QuitAction extends AbstractAction {
+        public QuitAction() {
+            super("Quit");
+            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Q);
+            putValue(Action.SHORT_DESCRIPTION, "Quit the application.");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            BuildingSelect.this.dispose();
         }
     }
 }
