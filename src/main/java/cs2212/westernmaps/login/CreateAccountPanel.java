@@ -5,14 +5,16 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public final class CreateAccountPanel extends JPanel {
 
-    JButton back;
+    private JButton back;
 
     public CreateAccountPanel() {
         // Setting layout for the whole panel
         setLayout(new OverlayLayout(this));
+        setBorder(new EmptyBorder(10, 10, 10, 10));
 
         // back button
         back = new JButton("Back");
@@ -56,13 +58,13 @@ public final class CreateAccountPanel extends JPanel {
         var passwordMatchError = new JLabel("Passwords do not match");
         passwordMatchError.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordMatchError.setVisible(false);
-        passwordMatchError.setForeground(Color.RED);
+        passwordMatchError.setForeground(UIManager.getColor("Actions.Red"));
 
         // error if password is invalid
-        var passwordInvalidError = new JLabel("Password not strong enough.");
+        var passwordInvalidError = new JLabel("Password not strong enough");
         passwordInvalidError.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordInvalidError.setVisible(false);
-        passwordInvalidError.setForeground(Color.RED);
+        passwordInvalidError.setForeground(UIManager.getColor("Actions.Red"));
 
         // The main panel, a gridbagLayout, containing an inner boxLayout and the back button
         var mainPanel = new JPanel();
@@ -90,13 +92,18 @@ public final class CreateAccountPanel extends JPanel {
         panel.add(confirmPassword);
         panel.add(Box.createVerticalStrut(16));
 
+        panel.add(Box.createVerticalStrut(8));
         panel.add(passwordMatchError);
+
         panel.add(passwordInvalidError);
+        panel.add(Box.createVerticalStrut(8));
 
         panel.add(createAccountButton);
 
+        // adding boxlayout into the gridbag layout
         mainPanel.add(panel);
 
+        // adding back button and gridbag layout into the overlay layout
         add(back);
         add(mainPanel);
 
@@ -105,15 +112,15 @@ public final class CreateAccountPanel extends JPanel {
             passwordMatchError.setVisible(false);
             passwordInvalidError.setVisible(false);
 
-            if (!Arrays.toString(passwordField.getPassword()).equals(Arrays.toString(confirmPassword.getPassword())))
+            if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword()))
                 passwordMatchError.setVisible(true); // passwords not matching
-            else if (!isPasswordViable(passwordField.getPassword())) // password not valid
+            else if (!isPasswordValid(passwordField.getPassword())) // password not valid
             passwordInvalidError.setVisible(true);
         });
     }
 
     // checking if password is valid, checking length, symbols, number and character
-    private boolean isPasswordViable(char[] password) {
+    private boolean isPasswordValid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
         Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
@@ -130,5 +137,9 @@ public final class CreateAccountPanel extends JPanel {
                 digit.matcher(stringPassword).find()
                 && // checking for numbers
                 special.matcher(stringPassword).find()); // checking for special characters
+    }
+
+    public JButton getBackButton() {
+        return back;
     }
 }

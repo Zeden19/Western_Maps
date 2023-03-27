@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
-    public LinkButton createAccountLink;
+    private LinkButton createAccountLink;
 
     public LoginPanel() {
 
@@ -48,5 +48,9 @@ public final class LoginPanel extends JPanel {
         panel.add(createAccountLink);
 
         add(panel);
+    }
+
+    public LinkButton getCreateAccountLink() {
+        return createAccountLink;
     }
 }

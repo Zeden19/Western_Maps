@@ -19,8 +19,8 @@ public final class LoginWindow extends JFrame {
         cardPanel.add(loginPanel, "login");
         cardPanel.add(createAccountPanel, "create");
 
-        loginPanel.createAccountLink.addActionListener(e -> changeToCreateAccount());
-        createAccountPanel.back.addActionListener(e -> changeToLogin());
+        loginPanel.getCreateAccountLink().addActionListener(e -> changeToCreateAccount());
+        createAccountPanel.getBackButton().addActionListener(e -> changeToLogin());
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         add(cardPanel);
