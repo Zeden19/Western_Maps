@@ -96,7 +96,6 @@ public final class MapWindow extends JFrame {
 
         var sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.PAGE_AXIS));
-        sidebar.setBorder(BorderFactory.createEmptyBorder(0, 8, 3, 4));
 
         sidebar.add(Box.createVerticalStrut(40)); // The height of the toolbar.
         sidebar.add(poiListHeader);

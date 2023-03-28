@@ -1,5 +1,6 @@
 package cs2212.westernmaps.maps;
 
+import com.formdev.flatlaf.ui.FlatBorder;
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGException;
 import com.kitfox.svg.SVGUniverse;
@@ -7,6 +8,8 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -37,6 +40,7 @@ public final class MapViewerPanel extends JPanel {
                     dragging = true;
                     setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                 }
+                requestFocusInWindow();
             }
 
             @Override
@@ -61,6 +65,20 @@ public final class MapViewerPanel extends JPanel {
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
         addMouseWheelListener(mouseAdapter);
+
+        setBorder(new FlatBorder());
+        setFocusable(true);
+        addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                repaint();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                repaint();
+            }
+        });
     }
 
     public URI getCurrentMapUri() {
@@ -73,6 +91,8 @@ public final class MapViewerPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         var gfx = (Graphics2D) g.create();
         gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         gfx.transform(transform);
