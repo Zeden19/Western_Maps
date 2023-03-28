@@ -6,6 +6,7 @@ import cs2212.westernmaps.Main;
 import cs2212.westernmaps.core.POI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.nio.file.Path;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,9 +25,15 @@ public final class MapWindow extends JFrame {
 
         var toolbar = createToolbar();
 
+        // Temporary code; remove before merging.
+        var uri = Path.of("MiddleSex-2.svg").toUri();
+
+        var mapViewer = new MapViewerPanel(uri);
+
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
         leftPanel.add(toolbar, BorderLayout.PAGE_START);
+        leftPanel.add(mapViewer, BorderLayout.CENTER);
 
         var rightPanel = createSidebar();
 
