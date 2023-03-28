@@ -3,9 +3,12 @@ package cs2212.westernmaps.maps;
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGException;
 import com.kitfox.svg.SVGUniverse;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
 import javax.swing.JPanel;
@@ -18,6 +21,46 @@ public final class MapViewerPanel extends JPanel {
 
     public MapViewerPanel(URI initialMapUri) {
         currentMapUri = initialMapUri;
+
+        var mouseAdapter = new MouseAdapter() {
+            private int lastMouseX;
+            private int lastMouseY;
+            private boolean dragging = false;
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Only pan the map with left click (button 1) or middle click
+                // (button 2).
+                if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON2) {
+                    lastMouseX = e.getX();
+                    lastMouseY = e.getY();
+                    dragging = true;
+                    setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                dragging = false;
+                setCursor(null);
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (dragging) {
+                    int deltaX = e.getX() - lastMouseX;
+                    lastMouseX = e.getX();
+                    int deltaY = e.getY() - lastMouseY;
+                    lastMouseY = e.getY();
+
+                    transform.translate(deltaX, deltaY);
+                    repaint();
+                }
+            }
+        };
+        addMouseListener(mouseAdapter);
+        addMouseMotionListener(mouseAdapter);
+        addMouseWheelListener(mouseAdapter);
     }
 
     public URI getCurrentMapUri() {
