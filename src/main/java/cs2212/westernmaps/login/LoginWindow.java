@@ -43,7 +43,7 @@ public final class LoginWindow extends JFrame {
         // setting up the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         add(cardPanel);
-        setPreferredSize(new Dimension(1280, 720));
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         pack();
     }
 

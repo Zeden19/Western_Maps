@@ -23,6 +23,8 @@ public final class MapWindow extends JPanel {
 
     public MapWindow() {
 
+        setLayout(new BorderLayout());
+
         var toolbar = createToolbar();
 
         // Temporary code; remove before merging.

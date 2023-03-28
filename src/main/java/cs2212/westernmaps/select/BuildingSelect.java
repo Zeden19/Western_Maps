@@ -31,6 +31,8 @@ public class BuildingSelect extends JPanel implements ActionListener {
 
     public BuildingSelect() {
 
+        setLayout(new BorderLayout());
+
         // Create selection pane components
         JLabel heading = new JLabel("Select a building:");
         heading.putClientProperty(FlatClientProperties.STYLE_CLASS, "h0");
@@ -117,7 +119,7 @@ public class BuildingSelect extends JPanel implements ActionListener {
             System.out.println("Error opening file: " + PATH_TO_IMAGE);
         }
 
-        add(contentPane, BorderLayout.CENTER);
+        add(contentPane);
     }
 
     public JButton getBackButton() {
