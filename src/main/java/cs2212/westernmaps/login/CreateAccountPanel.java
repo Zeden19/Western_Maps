@@ -2,7 +2,6 @@ package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +9,11 @@ import javax.swing.border.EmptyBorder;
 public final class CreateAccountPanel extends JPanel {
 
     private JButton back;
+    private JButton createAccountButton;
+    private JPasswordField passwordField;
+    private JPasswordField confirmPassword;
+    private JLabel passwordMatchError;
+    private JLabel passwordInvalidError;
 
     public CreateAccountPanel() {
         // Setting layout for the whole panel
@@ -39,29 +43,29 @@ public final class CreateAccountPanel extends JPanel {
         passwordSpecifiers.setFont(new Font("Arial", Font.ITALIC, 10));
 
         // The password field
-        var passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setColumns(20);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
 
         // Confirm password field, where user would retype password
-        var confirmPassword = new JPasswordField();
+        confirmPassword = new JPasswordField();
         confirmPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
         confirmPassword.setColumns(20);
         confirmPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Confirm Password");
 
         // Create account Button
-        var createAccountButton = new JButton("Create Account");
+        createAccountButton = new JButton("Create Account");
         createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // error if password doesn't match
-        var passwordMatchError = new JLabel("Passwords do not match");
+        passwordMatchError = new JLabel("Passwords do not match");
         passwordMatchError.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordMatchError.setVisible(false);
         passwordMatchError.setForeground(UIManager.getColor("Actions.Red"));
 
         // error if password is invalid
-        var passwordInvalidError = new JLabel("Password not strong enough");
+        passwordInvalidError = new JLabel("Password not strong enough");
         passwordInvalidError.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordInvalidError.setVisible(false);
         passwordInvalidError.setForeground(UIManager.getColor("Actions.Red"));
@@ -106,21 +110,10 @@ public final class CreateAccountPanel extends JPanel {
         // adding back button and gridbag layout into the overlay layout
         add(back);
         add(mainPanel);
-
-        // checking if password is valid
-        createAccountButton.addActionListener(e -> {
-            passwordMatchError.setVisible(false);
-            passwordInvalidError.setVisible(false);
-
-            if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword()))
-                passwordMatchError.setVisible(true); // passwords not matching
-            else if (!isPasswordValid(passwordField.getPassword())) // password not valid
-            passwordInvalidError.setVisible(true);
-        });
     }
 
     // checking if password is valid, checking length, symbols, number and character
-    private boolean isPasswordValid(char[] password) {
+    boolean isPasswordValid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
         Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
@@ -141,5 +134,25 @@ public final class CreateAccountPanel extends JPanel {
 
     public JButton getBackButton() {
         return back;
+    }
+
+    public JButton getCreateAccountButton() {
+        return createAccountButton;
+    }
+
+    public JPasswordField getPassword() {
+        return passwordField;
+    }
+
+    public JPasswordField getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public JLabel getPasswordMatchError() {
+        return passwordMatchError;
+    }
+
+    public JLabel getPasswordInvalidError() {
+        return passwordInvalidError;
     }
 }

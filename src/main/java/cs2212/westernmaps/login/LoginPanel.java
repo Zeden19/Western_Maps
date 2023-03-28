@@ -6,6 +6,7 @@ import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
     private LinkButton createAccountLink;
+    private JButton signInButton;
 
     public LoginPanel() {
 
@@ -14,27 +15,33 @@ public final class LoginPanel extends JPanel {
 
         // TODO: Put account icon here as in the wireframe.
 
+        // Title
         var title = new JLabel("Sign In");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.putClientProperty(FlatClientProperties.STYLE_CLASS, "h1");
 
+        // Username field
         var usernameField = new JTextField();
         usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
         usernameField.setColumns(20);
         usernameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Username");
 
+        // Password field
         var passwordField = new JPasswordField();
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setColumns(20);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
 
-        var signInButton = new JButton("Sign In");
+        // Sign in button
+        signInButton = new JButton("Sign In");
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Create account link
         createAccountLink = new LinkButton("Create an Account");
         createAccountLink.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Panel to hold all the components
         var panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         panel.add(title);
@@ -47,10 +54,15 @@ public final class LoginPanel extends JPanel {
         panel.add(Box.createVerticalStrut(8));
         panel.add(createAccountLink);
 
+        // Add the panel to the layout
         add(panel);
     }
 
     public LinkButton getCreateAccountLink() {
         return createAccountLink;
+    }
+
+    public JButton getSignInButton() {
+        return signInButton;
     }
 }

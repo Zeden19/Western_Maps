@@ -19,15 +19,17 @@ import javax.swing.*;
  *       - Add Javadoc comments.
  */
 
-public class BuildingSelect extends JFrame implements ActionListener {
+public class BuildingSelect extends JPanel implements ActionListener {
     final String[] BUILDING_LIST = {"Middlesex College", "Talbot College", "Recreation Centre"};
     final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
 
-    JList<String> list;
+    private JList<String> list;
+
+    private JButton backButton;
+
+    private JButton selectButton;
 
     public BuildingSelect() {
-        super(Main.APPLICATION_NAME + ": Select a building");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Create selection pane components
         JLabel heading = new JLabel("Select a building:");
@@ -38,7 +40,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         list.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         list.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
 
-        JButton selectButton = new JButton("Select Building");
+        selectButton = new JButton("Select Building");
         selectButton.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         selectButton.addActionListener(this);
 
@@ -61,8 +63,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         helpBox.add(aboutButton);
 
         // Create back button
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new BackAction());
+        backButton = new JButton("Back");
 
         // Stack and center components in a grid bag layout
         JPanel selectPane = new JPanel(new GridBagLayout());
@@ -115,32 +116,24 @@ public class BuildingSelect extends JFrame implements ActionListener {
         } catch (IOException e) {
             System.out.println("Error opening file: " + PATH_TO_IMAGE);
         }
-        setContentPane(contentPane);
-        setPreferredSize(new Dimension(1280, 720));
-        pack();
+
+        add(contentPane, BorderLayout.CENTER);
+    }
+
+    public JButton getBackButton() {
+        return backButton;
+    }
+
+    public JButton getSelectButton() {
+        return selectButton;
+    }
+
+    public JList<String> getList() {
+        return list;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (list.getSelectedIndex()) {
-            case 0 ->
-            // Go to Middlesex College
-            System.out.println("Middlesex College selected.");
-            case 1 ->
-            // Go to Talbot College
-            System.out.println("Talbot College selected.");
-            case 2 ->
-            // Go to Recreation Centre
-            System.out.println("Recreation Centre selected.");
-        }
-    }
-
-    private class BackAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            // Go back to log-in screen
-        }
-    }
+    public void actionPerformed(ActionEvent e) {}
 
     private class AboutAction extends AbstractAction {
         public AboutAction() {
