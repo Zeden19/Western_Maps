@@ -6,7 +6,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
-import cs2212.westernmaps.maps.MapWindow;
 import javax.swing.SwingUtilities;
 
 public final class Main {
@@ -42,7 +41,7 @@ public final class Main {
                 FlatUIDefaultsInspector.install("ctrl shift alt Y");
             }
 
-            var window = new MapWindow();
+            var window = new MainWindow();
             window.setVisible(true);
         });
     }
