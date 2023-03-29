@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Function;
 
@@ -66,10 +64,10 @@ public record DatabaseState(List<Account> accounts, List<Building> buildings, Li
     }
 
     /**
-     * Loads a database from an input stream containing JSON data.
+     * Loads a database state from an input stream containing JSON data.
      *
      * @param stream       The input stream to load data from.
-     * @return             A new database containing the loaded data.
+     * @return             A new database state containing the loaded data.
      * @throws IOException If an IO error occurred while reading the data, or
      *                     the JSON data was invalid.
      */
@@ -78,19 +76,7 @@ public record DatabaseState(List<Account> accounts, List<Building> buildings, Li
     }
 
     /**
-     * Loads a database from a file containing JSON data.
-     *
-     * @param filePath     A path to the file to load data from.
-     * @return             A new database containing the loaded data.
-     * @throws IOException If an IO error occurred while reading the data, or
-     *                     the JSON data was invalid.
-     */
-    public static DatabaseState loadFromFile(Path filePath) throws IOException {
-        return loadFromStream(Files.newInputStream(filePath));
-    }
-
-    /**
-     * Saves this database as JSON data to an output stream.
+     * Saves this database state as JSON data to an output stream.
      *
      * @param stream       The output stream to save data to.
      * @throws IOException If an IO error occurred while writing the data, or
@@ -98,17 +84,6 @@ public record DatabaseState(List<Account> accounts, List<Building> buildings, Li
      */
     public void saveToStream(OutputStream stream) throws IOException {
         createObjectMapper().writeValue(stream, this);
-    }
-
-    /**
-     * Saves this database as JSON data to a file.
-     *
-     * @param filePath     A path to the file to save data to.
-     * @throws IOException If an IO error occurred while writing the data, or
-     *                     the database could not be serialized as JSON.
-     */
-    public void saveToFile(Path filePath) throws IOException {
-        saveToStream(Files.newOutputStream(filePath));
     }
 
     /**
