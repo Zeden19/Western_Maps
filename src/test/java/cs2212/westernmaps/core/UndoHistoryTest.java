@@ -121,7 +121,7 @@ public final class UndoHistoryTest {
     }
 
     @Test
-    public void testClear() {
+    public void testReplaceHistoryWithState() {
         var state0 = DatabaseState.empty();
         var history = new UndoHistory(state0);
         Assertions.assertEquals(state0, history.getCurrentState());
@@ -138,11 +138,14 @@ public final class UndoHistoryTest {
         Assertions.assertEquals(state2, history.getCurrentState());
 
         // Clear the history and make sure the current state is the same.
-        history.clear();
+        history.replaceHistoryWithState(state2);
         Assertions.assertEquals(state2, history.getCurrentState());
 
-        // Now, we shouldn't be able to undo since the history has been cleared.
+        // Now, we shouldn't be able to undo or redo since the history has been
+        // cleared.
         Assertions.assertFalse(history.undo());
+        Assertions.assertEquals(state2, history.getCurrentState());
+        Assertions.assertFalse(history.redo());
         Assertions.assertEquals(state2, history.getCurrentState());
     }
 }

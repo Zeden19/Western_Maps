@@ -44,15 +44,14 @@ public final class UndoHistory {
     }
 
     /**
-     * Clears this undo history.
+     * Replaces this entire undo history with the provided state.
      *
      * <p>After this function is called, undo and redo will not be possible. The
      * current state is left intact.</p>
      */
-    public void clear() {
-        var currentState = getCurrentState();
+    public void replaceHistoryWithState(DatabaseState state) {
         history.clear();
-        history.add(currentState);
+        history.add(state);
         currentStateIndex = 0;
     }
 
