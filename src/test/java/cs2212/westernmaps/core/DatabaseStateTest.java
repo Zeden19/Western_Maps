@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
-public final class DatabaseTest {
+public final class DatabaseStateTest {
     @Test
     public void testEmptyDatabase() throws IOException, JSONException {
-        var database = new Database(List.of(), List.of(), List.of());
+        var database = new DatabaseState(List.of(), List.of(), List.of());
         var databaseJson =
                 """
                 {
@@ -26,7 +26,7 @@ public final class DatabaseTest {
                 """;
 
         var inputStream = new ByteArrayInputStream(databaseJson.getBytes(StandardCharsets.UTF_8));
-        var deserialized = Database.loadFromStream(inputStream);
+        var deserialized = DatabaseState.loadFromStream(inputStream);
 
         var outputStream = new ByteArrayOutputStream();
         database.saveToStream(outputStream);
@@ -38,7 +38,7 @@ public final class DatabaseTest {
 
     @Test
     public void testSampleDatabaseAccounts() throws IOException, JSONException {
-        var database = new Database(
+        var database = new DatabaseState(
                 List.of(
                         new Account("user", new byte[] {0x11, 0x22, 0x33, 0x44}, false),
                         new Account("developer", new byte[] {0x55, 0x66, 0x77, (byte) 0x88}, true)),
@@ -65,7 +65,7 @@ public final class DatabaseTest {
                 """;
 
         var inputStream = new ByteArrayInputStream(databaseJson.getBytes(StandardCharsets.UTF_8));
-        var deserialized = Database.loadFromStream(inputStream);
+        var deserialized = DatabaseState.loadFromStream(inputStream);
 
         var outputStream = new ByteArrayOutputStream();
         database.saveToStream(outputStream);
@@ -79,7 +79,7 @@ public final class DatabaseTest {
     public void testSampleDatabaseFull() throws IOException, JSONException {
         var floor = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
 
-        var database = new Database(
+        var database = new DatabaseState(
                 List.of(
                         new Account("user", new byte[] {0x11, 0x22, 0x33, 0x44}, false),
                         new Account("developer", new byte[] {0x55, 0x66, 0x77, (byte) 0x88}, true)),
@@ -135,7 +135,7 @@ public final class DatabaseTest {
                 """;
 
         var inputStream = new ByteArrayInputStream(databaseJson.getBytes(StandardCharsets.UTF_8));
-        var deserialized = Database.loadFromStream(inputStream);
+        var deserialized = DatabaseState.loadFromStream(inputStream);
 
         var outputStream = new ByteArrayOutputStream();
         database.saveToStream(outputStream);

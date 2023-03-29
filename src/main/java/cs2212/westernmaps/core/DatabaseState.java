@@ -9,17 +9,17 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * A top-level container for most of the application's data.
+ * A snapshot of all the application's data at a given point in time.
  *
- * <p>Although this class is called {@code Database}, it does not represent an
- * actual database system or a connection to one; it simply holds data.</p>
+ * <p>All fields in a {@code DatabaseState} object are immutable. Whenever the
+ * data is changed, a new state is created.</p>
  *
  * @param accounts  The accounts contained in this database.
  * @param buildings The buildings contained in this database.
  * @param pois      The points of interest (POIs) contained in this database.
  */
-public record Database(List<Account> accounts, List<Building> buildings, List<POI> pois) {
-    public Database {
+public record DatabaseState(List<Account> accounts, List<Building> buildings, List<POI> pois) {
+    public DatabaseState {
         accounts = List.copyOf(accounts);
         buildings = List.copyOf(buildings);
         pois = List.copyOf(pois);
@@ -33,8 +33,8 @@ public record Database(List<Account> accounts, List<Building> buildings, List<PO
      * @throws IOException If an IO error occurred while reading the data, or
      *                     the JSON data was invalid.
      */
-    public static Database loadFromStream(InputStream stream) throws IOException {
-        return createObjectMapper().readValue(stream, Database.class);
+    public static DatabaseState loadFromStream(InputStream stream) throws IOException {
+        return createObjectMapper().readValue(stream, DatabaseState.class);
     }
 
     /**
@@ -45,7 +45,7 @@ public record Database(List<Account> accounts, List<Building> buildings, List<PO
      * @throws IOException If an IO error occurred while reading the data, or
      *                     the JSON data was invalid.
      */
-    public static Database loadFromFile(Path filePath) throws IOException {
+    public static DatabaseState loadFromFile(Path filePath) throws IOException {
         return loadFromStream(Files.newInputStream(filePath));
     }
 
