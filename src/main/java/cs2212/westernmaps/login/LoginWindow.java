@@ -1,8 +1,12 @@
 package cs2212.westernmaps.login;
 
+import cs2212.westernmaps.core.Building;
+import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.maps.MapWindow;
 import cs2212.westernmaps.select.BuildingSelect;
 import java.awt.*;
+import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.*;
 
@@ -11,24 +15,29 @@ public final class LoginWindow extends JFrame {
     private LoginPanel loginPanel; // the log in panel, the starting location of app
     private CreateAccountPanel createAccountPanel; // the create account panel
     private BuildingSelect buildingSelect; // the building select panel
-    private MapWindow mapViewerPanel; // the map viewer panel
+    private MapWindow mapPanel; // the map viewer panel
     private JPanel cardPanel; // the panel that holds all the above panels
 
     public LoginWindow() {
         super("Sign in");
+
+        // delete this once database is implemented
+        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
+        ArrayList<Floor> floors = new ArrayList<>();
+        floors.add(floor1);
 
         // creating all the panels
         loginPanel = new LoginPanel();
         createAccountPanel = new CreateAccountPanel();
         buildingSelect = new BuildingSelect();
         cardPanel = new JPanel(new CardLayout());
-        mapViewerPanel = new MapWindow();
+        mapPanel = new MapWindow(new Building("TEST", floors));
 
         // adding all panels to the card panel
         cardPanel.add(loginPanel, "login");
         cardPanel.add(createAccountPanel, "create");
         cardPanel.add(buildingSelect, "building");
-        cardPanel.add(mapViewerPanel, "map");
+        cardPanel.add(mapPanel, "map");
 
         // navigation between panels
         loginPanel.getCreateAccountLink().addActionListener(e -> changeToCreateAccount());
@@ -38,7 +47,7 @@ public final class LoginWindow extends JFrame {
         createAccountPanel.getBackButton().addActionListener(e -> changeToLogin());
         buildingSelect.getBackButton().addActionListener(e -> changeToLogin());
         buildingSelect.getSelectButton().addActionListener(e -> changeToMap());
-        mapViewerPanel.getBackButton().addActionListener(e -> changeToBuildingSelect());
+        mapPanel.getBackButton().addActionListener(e -> changeToBuildingSelect());
 
         // setting up the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -65,16 +74,20 @@ public final class LoginWindow extends JFrame {
     public void changeToMap() {
 
         // getting the building
+        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
+        ArrayList<Floor> floors = new ArrayList<>();
+        floors.add(floor1);
+
         switch (buildingSelect.getList().getSelectedIndex()) {
             case 0 ->
             // Go to Middlesex College
-            System.out.println("Middlesex College selected.");
+            mapPanel = new MapWindow(new Building("Middlesex College", floors));
             case 1 ->
             // Go to Talbot College
-            System.out.println("Talbot College selected.");
+            mapPanel = new MapWindow(new Building("Talbot College", floors));
             case 2 ->
             // Go to Recreation Centre
-            System.out.println("Recreation Centre selected.");
+            mapPanel = new MapWindow(new Building("Rec centre", floors));
         }
 
         setTitle("Map");

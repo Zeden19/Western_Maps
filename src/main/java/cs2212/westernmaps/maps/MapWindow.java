@@ -2,6 +2,7 @@ package cs2212.westernmaps.maps;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
+import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.core.POI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,9 +20,15 @@ import javax.swing.JTextField;
 
 public final class MapWindow extends JPanel {
 
+    private Building selectedBuilding;
     private JButton back = new JButton("Back");
 
-    public MapWindow() {
+    public MapWindow(Building building) {
+        selectedBuilding = building;
+
+        // temporary code, just printing out name of selected building
+        if (selectedBuilding == null) System.out.println("Error!");
+        else System.out.println(selectedBuilding.name());
 
         setLayout(new BorderLayout());
 
@@ -107,5 +114,9 @@ public final class MapWindow extends JPanel {
 
     public JButton getBackButton() {
         return back;
+    }
+
+    public void setSelectedBuilding(Building building) {
+        selectedBuilding = building;
     }
 }
