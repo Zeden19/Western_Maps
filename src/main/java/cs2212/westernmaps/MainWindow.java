@@ -1,5 +1,6 @@
 package cs2212.westernmaps;
 
+import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.login.CreateAccountPanel;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainWindow extends JFrame {
@@ -19,9 +21,14 @@ public final class MainWindow extends JFrame {
     private BuildingSelect buildingSelect; // the building select panel
     private MapWindow mapPanel; // the map viewer panel
     private JPanel cardPanel; // the panel that holds all the above panels
+    boolean developerMode = false;
 
     public MainWindow() {
         super("Sign in");
+
+        // temporary accounts until database gets implemented
+        Account testUser = new Account("regular User", new byte[3], false);
+        Account testDeveloper = new Account("developer", new byte[3], true);
 
         // delete this once database is implemented
         Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
@@ -60,7 +67,6 @@ public final class MainWindow extends JFrame {
 
     public void changeToCreateAccount() {
         // creating a new panel to clear text fields
-        createAccountPanel = new CreateAccountPanel();
         setTitle("Create Account");
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "create");
     }
@@ -70,8 +76,48 @@ public final class MainWindow extends JFrame {
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
     }
 
+    public void changeToLoginFromCreate() {
+        createAccountPanel.getPasswordMatchError().setVisible(false);
+        createAccountPanel.getPasswordInvalidError().setVisible(false);
+
+        // checking if the password was valid, if not displaying error
+        if (!Arrays.equals(
+                createAccountPanel.getPassword().getPassword(),
+                createAccountPanel.getConfirmPassword().getPassword()))
+            createAccountPanel.getPasswordMatchError().setVisible(true); // passwords not matching
+        else if (!createAccountPanel.isPasswordValid(
+                createAccountPanel.getPassword().getPassword())) // password not valid
+        createAccountPanel.getPasswordInvalidError().setVisible(true);
+
+        // todo add more checks
+
+        // if all checks passed, change to login
+        else {
+            setTitle("Sign in");
+            ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
+        }
+    }
+
     public void changeToBuildingSelect() {
-        setTitle("Select Building");
+        loginPanel.getInvalidUserError().setVisible(false);
+        if (!Objects.equals(loginPanel.getUsernameField().getText(), "regular user")
+                && !Objects.equals(loginPanel.getUsernameField().getText(), "developer")) {
+            loginPanel.getInvalidUserError().setVisible(true);
+            return;
+        }
+
+        if (Objects.equals(loginPanel.getUsernameField().getText(), "regular user")) {
+            developerMode = false;
+        }
+        if (Objects.equals(loginPanel.getUsernameField().getText(), "developer")) {
+            developerMode = true;
+        }
+
+        if (developerMode) {
+            setTitle("Developer Mode: Select Building");
+        } else {
+            setTitle("Select Building");
+        }
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "building");
     }
 
@@ -101,30 +147,13 @@ public final class MainWindow extends JFrame {
             mapPanel = new MapWindow(new Building("Rec centre", floors));
         }
 
-        buildingSelect.getList().clearSelection();
-        setTitle("Map");
-        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "map");
-    }
-
-    public void changeToLoginFromCreate() {
-        createAccountPanel.getPasswordMatchError().setVisible(false);
-        createAccountPanel.getPasswordInvalidError().setVisible(false);
-
-        // checking if the password was valid, if not displaying error
-        if (!Arrays.equals(
-                createAccountPanel.getPassword().getPassword(),
-                createAccountPanel.getConfirmPassword().getPassword()))
-            createAccountPanel.getPasswordMatchError().setVisible(true); // passwords not matching
-        else if (!createAccountPanel.isPasswordValid(
-                createAccountPanel.getPassword().getPassword())) // password not valid
-        createAccountPanel.getPasswordInvalidError().setVisible(true);
-
-        // todo add more checks
-
-        // if all checks passed, change to login
-        else {
-            setTitle("Sign in");
-            ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
+        if (developerMode) {
+            setTitle("Developer Mode: Map");
+        } else {
+            setTitle("Map");
         }
+
+        buildingSelect.getList().clearSelection();
+        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "map");
     }
 }

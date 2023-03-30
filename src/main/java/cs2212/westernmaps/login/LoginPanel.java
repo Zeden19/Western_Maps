@@ -7,6 +7,9 @@ import javax.swing.*;
 public final class LoginPanel extends JPanel {
     private LinkButton createAccountLink;
     private JButton signInButton;
+    private JPasswordField passwordField;
+    private JTextField usernameField;
+    private JLabel invalidUserError;
 
     public LoginPanel() {
 
@@ -22,13 +25,13 @@ public final class LoginPanel extends JPanel {
         title.putClientProperty(FlatClientProperties.STYLE_CLASS, "h1");
 
         // Username field
-        var usernameField = new JTextField();
+        usernameField = new JTextField();
         usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
         usernameField.setColumns(20);
         usernameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Username");
 
         // Password field
-        var passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setColumns(20);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
@@ -41,6 +44,12 @@ public final class LoginPanel extends JPanel {
         createAccountLink = new LinkButton("Create an Account");
         createAccountLink.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Error message for invalid user
+        invalidUserError = new JLabel("Username not found");
+        invalidUserError.setAlignmentX(Component.CENTER_ALIGNMENT);
+        invalidUserError.setForeground(UIManager.getColor("Actions.Red"));
+        invalidUserError.setVisible(false);
+
         // Panel to hold all the components
         var panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -51,6 +60,8 @@ public final class LoginPanel extends JPanel {
         panel.add(passwordField);
         panel.add(Box.createVerticalStrut(16));
         panel.add(signInButton);
+        panel.add(Box.createVerticalStrut(8));
+        panel.add(invalidUserError);
         panel.add(Box.createVerticalStrut(8));
         panel.add(createAccountLink);
 
@@ -64,5 +75,17 @@ public final class LoginPanel extends JPanel {
 
     public JButton getSignInButton() {
         return signInButton;
+    }
+
+    public JPasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public JTextField getUsernameField() {
+        return usernameField;
+    }
+
+    public JLabel getInvalidUserError() {
+        return invalidUserError;
     }
 }
