@@ -49,24 +49,11 @@ public final class Main {
             // Load the database.
             Database database;
             try {
-                //noinspection resource
                 database = Database.openDirectory(getDataDirectory());
             } catch (IOException ex) {
                 // TODO: Show an error dialog.
                 throw new RuntimeException(ex);
             }
-
-            // A Java shutdown hook is used to close the database when the
-            // application closes (for now).
-            // TODO: Move this to a window close hook or somewhere else cleaner.
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                try {
-                    database.close();
-                } catch (IOException ex) {
-                    // Ignored. The operating system should close open files
-                    // when the process exits anyway.
-                }
-            }));
 
             // var window = new MainWindow();
             var window = new LoginWindow();
