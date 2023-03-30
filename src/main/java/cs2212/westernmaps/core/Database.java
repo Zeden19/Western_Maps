@@ -1,83 +1,52 @@
 package cs2212.westernmaps.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
-/**
- * A top-level container for most of the application's data.
- *
- * <p>Although this class is called {@code Database}, it does not represent an
- * actual database system or a connection to one; it simply holds data.</p>
- *
- * @param accounts  The accounts contained in this database.
- * @param buildings The buildings contained in this database.
- * @param pois      The points of interest (POIs) contained in this database.
- */
-public record Database(List<Account> accounts, List<Building> buildings, List<POI> pois) {
-    public Database {
-        accounts = List.copyOf(accounts);
-        buildings = List.copyOf(buildings);
-        pois = List.copyOf(pois);
+// TODO: Add Javadoc.
+
+public final class Database {
+    private final Path directory;
+    private final Path jsonFile;
+    private final UndoHistory history;
+
+    private Database(Path directory, Path jsonFile, UndoHistory history) {
+        this.directory = directory;
+        this.jsonFile = jsonFile;
+        this.history = history;
     }
 
-    /**
-     * Loads a database from an input stream containing JSON data.
-     *
-     * @param stream       The input stream to load data from.
-     * @return             A new database containing the loaded data.
-     * @throws IOException If an IO error occurred while reading the data, or
-     *                     the JSON data was invalid.
-     */
-    public static Database loadFromStream(InputStream stream) throws IOException {
-        return createObjectMapper().readValue(stream, Database.class);
+    public static Database openDirectory(Path directory) throws IOException {
+        var jsonFile = directory.resolve("database.json");
+
+        UndoHistory history;
+        try (var stream = Files.newInputStream(jsonFile)) {
+            var state = DatabaseState.loadFromStream(stream);
+            history = new UndoHistory(state);
+        }
+
+        return new Database(directory, jsonFile, history);
     }
 
-    /**
-     * Loads a database from a file containing JSON data.
-     *
-     * @param filePath     A path to the file to load data from.
-     * @return             A new database containing the loaded data.
-     * @throws IOException If an IO error occurred while reading the data, or
-     *                     the JSON data was invalid.
-     */
-    public static Database loadFromFile(Path filePath) throws IOException {
-        return loadFromStream(Files.newInputStream(filePath));
+    public UndoHistory getHistory() {
+        return history;
     }
 
-    /**
-     * Saves this database as JSON data to an output stream.
-     *
-     * @param stream       The output stream to save data to.
-     * @throws IOException If an IO error occurred while writing the data, or
-     *                     the database could not be serialized as JSON.
-     */
-    public void saveToStream(OutputStream stream) throws IOException {
-        createObjectMapper().writeValue(stream, this);
+    public DatabaseState getCurrentState() {
+        return getHistory().getCurrentState();
     }
 
-    /**
-     * Saves this database as JSON data to a file.
-     *
-     * @param filePath     A path to the file to save data to.
-     * @throws IOException If an IO error occurred while writing the data, or
-     *                     the database could not be serialized as JSON.
-     */
-    public void saveToFile(Path filePath) throws IOException {
-        saveToStream(Files.newOutputStream(filePath));
+    public void reload() throws IOException {
+        try (var stream = Files.newInputStream(jsonFile)) {
+            var state = DatabaseState.loadFromStream(stream);
+            getHistory().replaceHistoryWithState(state);
+        }
     }
 
-    /**
-     * Creates a Jackson {@link ObjectMapper} and configures it for serializing
-     * and deserializing a database to JSON.
-     *
-     * @return A new properly-configured {@code ObjectMapper}.
-     */
-    private static ObjectMapper createObjectMapper() {
-        return new ObjectMapper();
+    public void save() throws IOException {
+        try (var stream = Files.newOutputStream(jsonFile)) {
+            getCurrentState().saveToStream(stream);
+        }
     }
 }
