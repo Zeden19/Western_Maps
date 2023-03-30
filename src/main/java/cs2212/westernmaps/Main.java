@@ -6,7 +6,11 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
+import cs2212.westernmaps.core.Database;
 import cs2212.westernmaps.login.LoginWindow;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
 import javax.swing.SwingUtilities;
 
 public final class Main {
@@ -42,10 +46,53 @@ public final class Main {
                 FlatUIDefaultsInspector.install("ctrl shift alt Y");
             }
 
+            // Load the database.
+            Database database;
+            try {
+                //noinspection resource
+                database = Database.openDirectory(getDataDirectory());
+            } catch (IOException ex) {
+                // TODO: Show an error dialog.
+                throw new RuntimeException(ex);
+            }
+
+            // A Java shutdown hook is used to close the database when the
+            // application closes (for now).
+            // TODO: Move this to a window close hook or somewhere else cleaner.
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    database.close();
+                } catch (IOException ex) {
+                    // Ignored. The operating system should close open files
+                    // when the process exits anyway.
+                }
+            }));
+
             // var window = new MainWindow();
             var window = new LoginWindow();
             window.setVisible(true);
         });
+    }
+
+    /**
+     * Gets the directory that will be used to store user-writable data.
+     *
+     * <p>The first available path from the following choices will be used:</p>
+     *
+     * <ol>
+     *     <li>If the {@code cs2212.westernmaps.dataDirectory} system property
+     *     is set, the value will be used as the data directory.</li>
+     *     <li>Otherwise, the {@code data} subdirectory in the program's current
+     *     working directory will be used.</li>
+     * </ol>
+     *
+     * @return The path to the data directory.
+     */
+    public static Path getDataDirectory() {
+        // TODO: Use the directory containing the JAR file instead of the
+        //       current working directory.
+        var directoryProperty = System.getProperty("cs2212.westernmaps.dataDirectory");
+        return Path.of(Objects.requireNonNullElse(directoryProperty, "./data"));
     }
 
     /**
