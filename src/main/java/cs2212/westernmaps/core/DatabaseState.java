@@ -1,5 +1,7 @@
 package cs2212.westernmaps.core;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,6 +95,8 @@ public record DatabaseState(List<Account> accounts, List<Building> buildings, Li
      * @return A new properly-configured {@code ObjectMapper}.
      */
     private static ObjectMapper createObjectMapper() {
-        return new ObjectMapper();
+        return new ObjectMapper()
+                .configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false)
+                .configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
     }
 }
