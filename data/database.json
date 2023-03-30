@@ -10,35 +10,35 @@
           "@id": 104,
           "shortName": "MC GF",
           "longName": "Middlesex College Ground Floor",
-          "mapPath": "__insert maps path for MC GF__"
+          "mapPath": "maps/Middlesex College/MC GF.svg"
         },
 
         {
           "@id": 114,
           "shortName": "MC 1F",
           "longName": "Middlesex College First Floor",
-          "mapPath": "__insert maps path for MC 1F__"
+          "mapPath": "maps/Middlesex College/MC 1F.svg"
         },
 
         {
           "@id": 124,
           "shortName": "MC 2F",
           "longName": "Middlesex College Second Floor",
-          "mapPath": "__insert maps path for MC 2F__"
+          "mapPath": "maps/Middlesex College/MC 2F.svg"
         },
 
         {
           "@id": 134,
           "shortName": "MC 3F",
           "longName": "Middlesex College Third Floor",
-          "mapPath": "__insert maps path for MC 3F__"
+          "mapPath": "maps/Middlesex College/MC 3F.svg"
         },
 
         {
           "@id": 144,
           "shortName": "MC 4F",
           "longName": "Middlesex College Fourth Floor",
-          "mapPath": "__insert maps path for MC 4F__"
+          "mapPath": "maps/Middlesex College/MC 4F.svg"
         }
 
       ]
@@ -52,28 +52,28 @@
           "@id": 214,
           "shortName": "TC 1F",
           "longName": "Talbot College First Floor",
-          "mapPath": "__insert maps path for TC 1F__"
+          "mapPath": "maps/Talbot College/TC 1F.svg"
         },
 
         {
           "@id": 224,
           "shortName": "TC 2F",
           "longName": "Talbot College Second Floor",
-          "mapPath": "__insert maps path for TC 2F__"
+          "mapPath": "maps/Talbot College/TC 2F.svg"
         },
 
         {
           "@id": 234,
           "shortName": "TC 3F",
           "longName": "Talbot College Third Floor",
-          "mapPath": "__insert maps path for TC 3F__"
+          "mapPath": "maps/Talbot College/TC 3F.svg"
         },
 
         {
           "@id": 244,
           "shortName": "TC 4F",
           "longName": "Talbot College Fourth Floor",
-          "mapPath": "__insert maps path for TC 4F__"
+          "mapPath": "maps/Talbot College/TC 4F.svg"
         }
       ]
 
@@ -88,28 +88,276 @@
           "@id": 340,
           "shortName": "WSRC BSMT",
           "longName": "Western Student Recreation Center Basement",
-          "mapPath": "__insert maps path for WSRC BSMT__"
+          "mapPath": "maps/Western Student Recreation Center/WSRC BSMT.svg"
         },
 
         {
           "@id": 304,
           "shortName": "WSRC GF",
           "longName": "Western Student Recreation Center Ground Floor",
-          "mapPath": "__insert maps path for WSRC GF__"
+          "mapPath": "maps/Western Student Recreation Center/WSRC GF.svg"
         },
 
         {
           "@id": 314,
           "shortName": "WSRC 1F",
           "longName": "Western Student Recreation Center First Floor",
-          "mapPath": "__insert maps path for WSRC 1F__"
+          "mapPath": "maps/Western Student Recreation Center/WSRC 1F.svg"
         },
 
         {
           "@id": 324,
           "shortName": "WSRC 2F",
           "longName": "Western Student Recreation Center Second Floor",
-          "mapPath": "__insert maps path for WSRC 2F__"
+          "mapPath": "maps/Western Student Recreation Center/WSRC 2f.svg"
+        }
+
+      ]
+    },
+
+    {
+      "pois":
+      [
+        {
+          "name": "MC Elevator A",
+          "description": "Elevator that can take you up to the Third Floor",
+          "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "MC Elevator C",
+          "description": "Elevator that can take you up to the Fourth Floor",
+          "x": 0,
+          "y": 0,
+          "floor": "104",
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Electrical Room",
+          "description": "Room that houses electrical equipment for power distribution.",
+          "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Grad Club",
+          "description": "Graduate student pub and eatery.",
+          "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "EATERY"
+        },
+
+        {
+          "name": "Grad Club Patio",
+          "description": "Patio for the graduate student pub and eatery.",
+          "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "EATERY"
+        },
+
+        {
+          "name": "Servery",
+          "description": "A service hatch for the food.",
+          "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "EATERY"
+        },
+
+        {
+          "name": "Kitchen",
+          "description": "A room where food is being prepped.",
+          "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "EATERY"
+        },
+
+        {
+          "name": "Non-Accessible Mens Washroom",
+          "description": "Non-Accessible Mens Washroom.",
+         "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 104,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Mechanical Room",
+          "description": "Dedicated space for mechanical equipment and systems..",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "MC Elevator A",
+          "description": "Elevator that can take you up to the Third Floor and down to Ground Floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "MC Elevator C",
+          "description": "Elevator that can take you up to the Fourth Floor and down to Ground Floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Ramp 1",
+          "description": "Accessibility ramp for handicap in classroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Ramp 2",
+          "description": "Accessibility ramp for handicap in classroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Mechanical Shaft",
+          "description": "Vertical space that houses mechanical systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Non-Accessible Mens Washroom",
+          "description": "Non-Accessible Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 114,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "MC Elevator A",
+          "description": "Elevator that can take you up to the Third Floor and down to Ground Floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 124,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "MC Elevator C",
+          "description": "Elevator that can take you up to the Fourth Floor and down to Ground Floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 124,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 124,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Barrier Free Mens Washroom",
+          "description": "Barrier Free Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 124,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Server Room",
+          "description": "Climate-controlled space that houses servers and networking equipment.",
+          "x": 0,
+          "y": 0,
+          "floor": 134,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "MC Elevator A",
+          "description": "Elevator that can take you down to Ground Floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 134,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "MC Elevator C",
+          "description": "Elevator that can take you up to the Fourth Floor and down to Ground Floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 134,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 134,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Duct Shaft",
+          "description": "Vertical space that houses ductwork used for heating, ventilation, and air conditioning.",
+          "x": 0,
+          "y": 0,
+          "floor": 134,
+          "layer": "MAINTENANCE"
+        },
+        {
+          "name": "MC Elevator C",
+          "description": "Elevator that can take you down to Ground Floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 144,
+          "layer": "ACCESSIBILITY"
         }
 
       ]
