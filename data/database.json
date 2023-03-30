@@ -351,14 +351,232 @@
           "floor": 134,
           "layer": "MAINTENANCE"
         },
+
         {
           "name": "MC Elevator C",
-          "description": "Elevator that can take you down to Ground Floor.",
+          "description": "Elevator that can take you down to Ground floor.",
           "x": 0,
           "y": 0,
           "floor": 144,
           "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Talbot College Stage",
+          "description": "Stage for musical performances.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "ENTERTAINMENT"
+        },
+
+        {
+          "name": "Talbot College Theatre",
+          "description": "Seating area for all guests.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "ENTERTAINMENT"
+        },
+
+        {
+          "name": "TC Elevator A",
+          "description": "Elevator that can take you up to the Fourth floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Talbot College Encore Cafe",
+          "description": "Talbot College Cafe for food.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "EATERY"
+        },
+
+        {
+          "name": "Talbot College Library Collection",
+          "description": "Music Library collection for music sheets and pickup for music students.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "EDUCATIONAL"
+        },
+
+        {
+          "name": "Accessible Unisex Washroom",
+          "description": "All gender accessible washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Mens Washroom",
+          "description": "Barrier Free Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Womens Washroom",
+          "description": "Barrier Free Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 214,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "TC Elevator A",
+          "description": "Elevator that can take you up to the Fourth floor or down to the First floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 224,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Non-Accessible Mens Washroom",
+          "description": "Non-Accessible Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 224,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 224,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Mechanical Room",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 224,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Music Library",
+          "description": "Music Library accessible to any Western Students.",
+          "x": 0,
+          "y": 0,
+          "floor": 224,
+          "layer": "EDUCATIONAL"
+        },
+
+        {
+          "name": "TC Elevator A",
+          "description": "Elevator that can take you up to the Fourth floor or down to the First floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 234,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Non-Accessible Mens Washroom",
+          "description": "Non-Accessible Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 234,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 234,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Mechanical Room",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 234,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Exam Room",
+          "description": "Dedicated space for examinations.",
+          "x": 0,
+          "y": 0,
+          "floor": 234,
+          "layer": "EDUCATIONAL"
+        },
+
+        {
+          "name": "Non-Accessible Mens Washroom",
+          "description": "Non-Accessible Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 244,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 244,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "TC Elevator A",
+          "description": "Elevator that can take you up down to the First floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 244,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Mechanical Room 1",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 244,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Mechanical Room 2",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 244,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Mechanical Room 3 ",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 244,
+          "layer": "MAINTENANCE"
         }
+
 
       ]
     }
