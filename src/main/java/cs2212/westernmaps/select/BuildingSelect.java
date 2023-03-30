@@ -29,12 +29,14 @@ public class BuildingSelect extends JPanel implements ActionListener {
 
     private JButton selectButton;
 
+    private JLabel noBuildingSelectedError;
+
     public BuildingSelect() {
 
         setLayout(new BorderLayout());
 
         // Create selection pane components
-        JLabel heading = new JLabel("Select a building:");
+        JLabel heading = new JLabel("Select a Building:");
         heading.putClientProperty(FlatClientProperties.STYLE_CLASS, "h0");
 
         list = new JList<>(BUILDING_LIST);
@@ -66,6 +68,12 @@ public class BuildingSelect extends JPanel implements ActionListener {
 
         // Create back button
         backButton = new JButton("Back");
+
+        // Create Error label
+        noBuildingSelectedError = new JLabel("Please select a building");
+        noBuildingSelectedError.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
+        noBuildingSelectedError.setForeground(UIManager.getColor("Actions.Red"));
+        noBuildingSelectedError.setVisible(false);
 
         // Stack and center components in a grid bag layout
         JPanel selectPane = new JPanel(new GridBagLayout());
@@ -101,6 +109,14 @@ public class BuildingSelect extends JPanel implements ActionListener {
         c.weighty = 1.0f;
         selectPane.add(list, c);
 
+        // Add error when nothing selected
+        c.gridx = 1;
+        c.gridy = 2;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.insets = new Insets(0, 290, 100, 0);
+        selectPane.add(noBuildingSelectedError, c);
+
         // Add layout to final content pane
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.add(selectPane, BorderLayout.CENTER);
@@ -132,6 +148,10 @@ public class BuildingSelect extends JPanel implements ActionListener {
 
     public JList<String> getList() {
         return list;
+    }
+
+    public JLabel getNoBuildingSelectedError() {
+        return noBuildingSelectedError;
     }
 
     @Override

@@ -44,8 +44,8 @@ public final class MainWindow extends JFrame {
         // navigation between panels
         loginPanel.getCreateAccountLink().addActionListener(e -> changeToCreateAccount());
         loginPanel.getSignInButton().addActionListener(e -> changeToBuildingSelect());
-        createAccountPanel.getBackButton().addActionListener(e -> changeToLoginFromBuilding());
-        createAccountPanel.getCreateAccountButton().addActionListener(e -> changeToLoginFromBuilding());
+        createAccountPanel.getBackButton().addActionListener(e -> changeToLoginFromCreate());
+        createAccountPanel.getCreateAccountButton().addActionListener(e -> changeToLoginFromCreate());
         createAccountPanel.getBackButton().addActionListener(e -> changeToLogin());
         buildingSelect.getBackButton().addActionListener(e -> changeToLogin());
         buildingSelect.getSelectButton().addActionListener(e -> changeToMap());
@@ -59,6 +59,8 @@ public final class MainWindow extends JFrame {
     }
 
     public void changeToCreateAccount() {
+        // creating a new panel to clear text fields
+        createAccountPanel = new CreateAccountPanel();
         setTitle("Create Account");
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "create");
     }
@@ -74,6 +76,13 @@ public final class MainWindow extends JFrame {
     }
 
     public void changeToMap() {
+        buildingSelect.getNoBuildingSelectedError().setVisible(false);
+
+        if (buildingSelect.getList().isSelectionEmpty()) {
+            buildingSelect.getNoBuildingSelectedError().setVisible(true);
+            buildingSelect.getList().clearSelection();
+            return;
+        }
 
         // getting the building
         Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
@@ -92,11 +101,12 @@ public final class MainWindow extends JFrame {
             mapPanel = new MapWindow(new Building("Rec centre", floors));
         }
 
+        buildingSelect.getList().clearSelection();
         setTitle("Map");
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "map");
     }
 
-    public void changeToLoginFromBuilding() {
+    public void changeToLoginFromCreate() {
         createAccountPanel.getPasswordMatchError().setVisible(false);
         createAccountPanel.getPasswordInvalidError().setVisible(false);
 
