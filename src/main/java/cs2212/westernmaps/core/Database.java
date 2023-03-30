@@ -10,30 +10,25 @@ import java.nio.file.StandardOpenOption;
 // TODO: Add Javadoc.
 
 public final class Database implements Closeable {
-    private final Path baseDirectory;
+    private final Path directory;
     private final FileChannel channel;
     private final UndoHistory history;
 
-    private Database(Path baseDirectory, FileChannel channel, UndoHistory history) {
-        this.baseDirectory = baseDirectory;
+    private Database(Path directory, FileChannel channel, UndoHistory history) {
+        this.directory = directory;
         this.channel = channel;
         this.history = history;
     }
 
-    public static Database open(Path path) throws IOException {
-        var absolutePath = path.toAbsolutePath();
-        var baseDirectory = absolutePath.getParent();
-        if (baseDirectory == null) {
-            throw new RuntimeException("Unable to determine data directory from database path");
-        }
-
-        var channel = FileChannel.open(absolutePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+    public static Database openDirectory(Path directory) throws IOException {
+        var jsonFile = directory.resolve("database.json");
+        var channel = FileChannel.open(jsonFile, StandardOpenOption.READ, StandardOpenOption.WRITE);
 
         var stream = Channels.newInputStream(channel);
         var state = DatabaseState.loadFromStream(stream);
         var history = new UndoHistory(state);
 
-        return new Database(baseDirectory, channel, history);
+        return new Database(directory, channel, history);
     }
 
     public UndoHistory getHistory() {
