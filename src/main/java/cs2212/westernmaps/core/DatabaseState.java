@@ -20,19 +20,15 @@ import java.util.function.Function;
  * @param pois      The points of interest (POIs) contained in this database.
  */
 public record DatabaseState(List<Account> accounts, List<Building> buildings, List<POI> pois) {
+    /**
+     * A database state with no accounts, buildings, or POIs.
+     */
+    public static final DatabaseState EMPTY = new DatabaseState(List.of(), List.of(), List.of());
+
     public DatabaseState {
         accounts = List.copyOf(accounts);
         buildings = List.copyOf(buildings);
         pois = List.copyOf(pois);
-    }
-
-    /**
-     * Creates a database state with no accounts, buildings, or POIs.
-     *
-     * @return A new database state.
-     */
-    public static DatabaseState empty() {
-        return new DatabaseState(List.of(), List.of(), List.of());
     }
 
     /**

@@ -8,13 +8,13 @@ public final class UndoHistoryTest {
 
     @Test
     public void testInitialState() {
-        var history = new UndoHistory(DatabaseState.empty());
-        Assertions.assertEquals(DatabaseState.empty(), history.getCurrentState());
+        var history = new UndoHistory(DatabaseState.EMPTY);
+        Assertions.assertEquals(DatabaseState.EMPTY, history.getCurrentState());
     }
 
     @Test
     public void testPushState() {
-        var state0 = DatabaseState.empty();
+        var state0 = DatabaseState.EMPTY;
         var history = new UndoHistory(state0);
         Assertions.assertEquals(state0, history.getCurrentState());
 
@@ -41,7 +41,7 @@ public final class UndoHistoryTest {
 
     @Test
     public void testPushStateInThePast() {
-        var state0 = DatabaseState.empty();
+        var state0 = DatabaseState.EMPTY;
         var history = new UndoHistory(state0);
         Assertions.assertEquals(state0, history.getCurrentState());
 
@@ -80,7 +80,7 @@ public final class UndoHistoryTest {
 
     @Test
     public void testUndoAndRedo() {
-        var state0 = DatabaseState.empty();
+        var state0 = DatabaseState.EMPTY;
         var history = new UndoHistory(state0);
         Assertions.assertEquals(state0, history.getCurrentState());
 
@@ -122,7 +122,7 @@ public final class UndoHistoryTest {
 
     @Test
     public void testReplaceHistoryWithState() {
-        var state0 = DatabaseState.empty();
+        var state0 = DatabaseState.EMPTY;
         var history = new UndoHistory(state0);
         Assertions.assertEquals(state0, history.getCurrentState());
 
