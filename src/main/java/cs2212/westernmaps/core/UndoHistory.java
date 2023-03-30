@@ -48,6 +48,8 @@ public final class UndoHistory {
      *
      * <p>After this function is called, undo and redo will not be possible. The
      * current state is left intact.</p>
+     *
+     * @param state The state to replace the history with.
      */
     public void replaceHistoryWithState(DatabaseState state) {
         history.clear();
