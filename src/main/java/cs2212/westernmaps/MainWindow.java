@@ -1,65 +1,120 @@
 package cs2212.westernmaps;
 
-import cs2212.westernmaps.help.HelpWindow;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import cs2212.westernmaps.core.Building;
+import cs2212.westernmaps.core.Floor;
+import cs2212.westernmaps.login.CreateAccountPanel;
+import cs2212.westernmaps.login.LoginPanel;
+import cs2212.westernmaps.maps.MapWindow;
+import cs2212.westernmaps.select.BuildingSelect;
+import java.awt.*;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.*;
 
-public class MainWindow extends JFrame {
+public final class MainWindow extends JFrame {
+
+    private LoginPanel loginPanel; // the log in panel, the starting location of app
+    private CreateAccountPanel createAccountPanel; // the create account panel
+    private BuildingSelect buildingSelect; // the building select panel
+    private MapWindow mapPanel; // the map viewer panel
+    private JPanel cardPanel; // the panel that holds all the above panels
+
     public MainWindow() {
-        super(Main.APPLICATION_NAME);
+        super("Sign in");
+
+        // delete this once database is implemented
+        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
+        ArrayList<Floor> floors = new ArrayList<>();
+        floors.add(floor1);
+
+        // creating all the panels
+        loginPanel = new LoginPanel();
+        createAccountPanel = new CreateAccountPanel();
+        buildingSelect = new BuildingSelect();
+        cardPanel = new JPanel(new CardLayout());
+        mapPanel = new MapWindow(new Building("TEST", floors));
+
+        // adding all panels to the card panel
+        cardPanel.add(loginPanel, "login");
+        cardPanel.add(createAccountPanel, "create");
+        cardPanel.add(buildingSelect, "building");
+        cardPanel.add(mapPanel, "map");
+
+        // navigation between panels
+        loginPanel.getCreateAccountLink().addActionListener(e -> changeToCreateAccount());
+        loginPanel.getSignInButton().addActionListener(e -> changeToBuildingSelect());
+        createAccountPanel.getBackButton().addActionListener(e -> changeToLoginFromBuilding());
+        createAccountPanel.getCreateAccountButton().addActionListener(e -> changeToLoginFromBuilding());
+        createAccountPanel.getBackButton().addActionListener(e -> changeToLogin());
+        buildingSelect.getBackButton().addActionListener(e -> changeToLogin());
+        buildingSelect.getSelectButton().addActionListener(e -> changeToMap());
+        mapPanel.getBackButton().addActionListener(e -> changeToBuildingSelect());
+
+        // setting up the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        setJMenuBar(createMenuBar());
-
-        setPreferredSize(new Dimension(1280, 720));
+        add(cardPanel);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         pack();
     }
 
-    private JMenuBar createMenuBar() {
-        var fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
-        fileMenu.add(new QuitAction());
-
-        var helpMenu = new JMenu("Help");
-        helpMenu.setMnemonic(KeyEvent.VK_H);
-        helpMenu.add(new HelpWindow.ShowAction());
-        helpMenu.add(new AboutAction());
-
-        var menuBar = new JMenuBar();
-        menuBar.add(fileMenu);
-        menuBar.add(helpMenu);
-
-        return menuBar;
+    public void changeToCreateAccount() {
+        setTitle("Create Account");
+        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "create");
     }
 
-    private class AboutAction extends AbstractAction {
-        public AboutAction() {
-            super("About " + Main.APPLICATION_NAME);
-            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            JOptionPane.showMessageDialog(
-                    MainWindow.this,
-                    "Information about the application should go here.",
-                    getName(),
-                    JOptionPane.INFORMATION_MESSAGE);
-        }
+    public void changeToLogin() {
+        setTitle("Sign in");
+        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
     }
 
-    private class QuitAction extends AbstractAction {
-        public QuitAction() {
-            super("Quit");
-            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Q);
-            putValue(Action.SHORT_DESCRIPTION, "Quit the application.");
+    public void changeToBuildingSelect() {
+        setTitle("Select Building");
+        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "building");
+    }
+
+    public void changeToMap() {
+
+        // getting the building
+        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
+        ArrayList<Floor> floors = new ArrayList<>();
+        floors.add(floor1);
+
+        switch (buildingSelect.getList().getSelectedIndex()) {
+            case 0 ->
+            // Go to Middlesex College
+            mapPanel = new MapWindow(new Building("Middlesex College", floors));
+            case 1 ->
+            // Go to Talbot College
+            mapPanel = new MapWindow(new Building("Talbot College", floors));
+            case 2 ->
+            // Go to Recreation Centre
+            mapPanel = new MapWindow(new Building("Rec centre", floors));
         }
 
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            MainWindow.this.dispose();
+        setTitle("Map");
+        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "map");
+    }
+
+    public void changeToLoginFromBuilding() {
+        createAccountPanel.getPasswordMatchError().setVisible(false);
+        createAccountPanel.getPasswordInvalidError().setVisible(false);
+
+        // checking if the password was valid, if not displaying error
+        if (!Arrays.equals(
+                createAccountPanel.getPassword().getPassword(),
+                createAccountPanel.getConfirmPassword().getPassword()))
+            createAccountPanel.getPasswordMatchError().setVisible(true); // passwords not matching
+        else if (!createAccountPanel.isPasswordValid(
+                createAccountPanel.getPassword().getPassword())) // password not valid
+        createAccountPanel.getPasswordInvalidError().setVisible(true);
+
+        // todo add more checks
+
+        // if all checks passed, change to login
+        else {
+            setTitle("Sign in");
+            ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
         }
     }
 }

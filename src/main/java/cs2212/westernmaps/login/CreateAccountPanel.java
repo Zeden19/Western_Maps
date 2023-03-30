@@ -113,7 +113,7 @@ public final class CreateAccountPanel extends JPanel {
     }
 
     // checking if password is valid, checking length, symbols, number and character
-    boolean isPasswordValid(char[] password) {
+    public boolean isPasswordValid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
         Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
