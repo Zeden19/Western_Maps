@@ -5,7 +5,7 @@ import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.login.CreateAccountPanel;
 import cs2212.westernmaps.login.LoginPanel;
-import cs2212.westernmaps.maps.MapWindow;
+import cs2212.westernmaps.maps.MapPanel;
 import cs2212.westernmaps.select.BuildingSelect;
 import java.awt.*;
 import java.nio.file.*;
@@ -19,7 +19,7 @@ public final class MainWindow extends JFrame {
     private LoginPanel loginPanel; // the log in panel, the starting location of app
     private CreateAccountPanel createAccountPanel; // the create account panel
     private BuildingSelect buildingSelect; // the building select panel
-    private MapWindow mapPanel; // the map viewer panel
+    private MapPanel mapPanel; // the map viewer panel
     private JPanel cardPanel; // the panel that holds all the above panels
     boolean developerMode = false;
 
@@ -40,7 +40,7 @@ public final class MainWindow extends JFrame {
         createAccountPanel = new CreateAccountPanel();
         buildingSelect = new BuildingSelect();
         cardPanel = new JPanel(new CardLayout());
-        mapPanel = new MapWindow(new Building("TEST", floors));
+        mapPanel = new MapPanel(new Building("TEST", floors));
 
         // adding all panels to the card panel
         cardPanel.add(loginPanel, "login");
@@ -138,13 +138,13 @@ public final class MainWindow extends JFrame {
         switch (buildingSelect.getList().getSelectedIndex()) {
             case 0 ->
             // Go to Middlesex College
-            mapPanel = new MapWindow(new Building("Middlesex College", floors));
+            mapPanel = new MapPanel(new Building("Middlesex College", floors));
             case 1 ->
             // Go to Talbot College
-            mapPanel = new MapWindow(new Building("Talbot College", floors));
+            mapPanel = new MapPanel(new Building("Talbot College", floors));
             case 2 ->
             // Go to Recreation Centre
-            mapPanel = new MapWindow(new Building("Rec centre", floors));
+            mapPanel = new MapPanel(new Building("Rec centre", floors));
         }
 
         if (developerMode) {

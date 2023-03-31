@@ -18,12 +18,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-public final class MapWindow extends JPanel {
+public final class MapPanel extends JPanel {
 
     private Building selectedBuilding;
     private JButton back = new JButton("Back");
 
-    public MapWindow(Building building) {
+    public MapPanel(Building building) {
         selectedBuilding = building;
 
         // temporary code, just printing out name of selected building
