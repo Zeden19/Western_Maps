@@ -54,7 +54,7 @@ public final class Main {
                 throw new RuntimeException(ex);
             }
 
-            var window = new MainWindow();
+            var window = new MainWindow(database);
             window.setVisible(true);
         });
     }

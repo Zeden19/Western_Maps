@@ -2,6 +2,7 @@ package cs2212.westernmaps;
 
 import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Building;
+import cs2212.westernmaps.core.Database;
 import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.login.CreateAccountPanel;
 import cs2212.westernmaps.login.LoginPanel;
@@ -11,20 +12,24 @@ import java.awt.*;
 import java.nio.file.*;
 import java.util.List;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 
 public final class MainWindow extends JFrame {
     private final LoginPanel loginPanel;
     private final CreateAccountPanel createAccountPanel;
     private final BuildingSelectPanel buildingSelectPanel;
-
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
 
     private @Nullable Account loggedInAccount = null;
+    Database database;
 
-    public MainWindow() {
+    public MainWindow(Database database) {
         super("Sign in");
+        this.database = database;
 
         // delete this once database is implemented
         var floors = List.of(new Floor("g1", "Ground", Path.of("resources")));
@@ -91,5 +96,6 @@ public final class MainWindow extends JFrame {
         setTitle(titleBuilder.toString());
         cardPanel.add(panel, "Current");
         cardLayout.show(cardPanel, "Current");
+
     }
 }
