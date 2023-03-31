@@ -569,15 +569,382 @@
         },
 
         {
-          "name": "Mechanical Room 3 ",
+          "name": "Mechanical Room 3",
           "description": "Dedicated space for mechanical equipment and systems.",
           "x": 0,
           "y": 0,
           "floor": 244,
           "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Barrier Free Mens Washroom",
+          "description": "Barrier Free Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Womens Washroom",
+          "description": "Barrier Free Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Elevator C",
+          "description": "Elevator that can take you up to to the Second floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Pool",
+          "description": "Swimming pool accessible by all Western Students.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Mechanical Room",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Electrical Room",
+          "description": "Dedicated space that houses electrical equipment.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Duct Areaway",
+          "description": "Dedicated space that allows easy access for maintenance and repairs.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Sub-Station",
+          "description": "Dedicated space that houses electrical equipment for the distribution of electrical power.",
+          "x": 0,
+          "y": 0,
+          "floor": 340,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Garbage",
+          "description": "Facilities garbage room.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Elevator A",
+          "description": "Elevator that can take you up to to the Second floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Elevator C",
+          "description": "Elevator that can take you up to to the Second floor or Basement.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Stacked-bleachers",
+          "description": "Seating area for all guests that overviews the Hockey Rink and Track.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "SEATING"
+        },
+
+        {
+          "name": "Bleachers",
+          "description": "Seating area for all guests that overviews the Hockey Rink and Track.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "SEATING"
+        },
+
+        {
+          "name": "Mechanical Room 1",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Men's Locker Room",
+          "description": "Dedicated space for Men Locker Room.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Women's Locker Room",
+          "description": "Dedicated space for Women's Locker Room.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Family Locker Room",
+          "description": "Dedicated space for Family Locker Room.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Mechanical Room 2",
+          "description": "Dedicated space for mechanical equipment and systems.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "MAINTENANCE"
+        },
+
+        {
+          "name": "Barrier Free Mens Washroom",
+          "description": "Barrier Free Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Womens Washroom",
+          "description": "Barrier Free Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Unisex Washroom",
+          "description": "Barrier Free Unisex Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Pool",
+          "description": "Swimming pool accessible by all Western Students.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Laundry Room",
+          "description": "Laundry room for towels and clothes.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FACILITIES"
+        },
+
+        {
+          "name": "Squash Court 1",
+          "description": "Dedicated space for squash court 1.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Squash Court 2",
+          "description": "Dedicated space for squash court 2.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Squash Court 3",
+          "description": "Dedicated space for squash court 3.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Squash Court 4",
+          "description": "Dedicated space for squash court 4.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Squash Court 5",
+          "description": "Dedicated space for squash court 5.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "200m Track",
+          "description": "200 meter track accessible by all Western Students.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Hockey Rink",
+          "description": "Hockey Rink accessible by all Western Students.",
+          "x": 0,
+          "y": 0,
+          "floor": 304,
+          "layer": "FITNESS"
+        },
+
+        {
+          "name": "Non-Accessible Womens Washroom",
+          "description": "Non-Accessible Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 314,
+          "layer": "RESTROOM"
+        },
+
+        {
+          "name": "Barrier Free Mens Washroom Rink",
+          "description": "Barrier Free Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 314,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Womens Washroom Rink",
+          "description": "Barrier Free Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 314,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Mens Washroom Gym",
+          "description": "Barrier Free Mens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 314,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Barrier Free Womens Washroom Gym",
+          "description": "Barrier Free Womens Washroom.",
+          "x": 0,
+          "y": 0,
+          "floor": 314,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Elevator A",
+          "description": "Elevator that can take you up to to the Second floor or down to the Ground floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 314,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Elevator C",
+          "description": "Elevator that can take you up to to the Second floor or down to the Basement floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 314,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Press Box",
+          "description": "Spectator area for the press.",
+          "x": 0,
+          "y": 0,
+          "floor": 324,
+          "layer": "SEATING"
+        },
+
+        {
+          "name": "Elevator A",
+          "description": "Elevator that can take you up to to the Second floor or down to the Ground floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 324,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Elevator C",
+          "description": "Elevator that can take you up to to the Second floor or down to the Basement floor.",
+          "x": 0,
+          "y": 0,
+          "floor": 324,
+          "layer": "ACCESSIBILITY"
+        },
+
+        {
+          "name": "Mechanical Room",
+          "description": "Dedicated space for mechanical equipment and systems..",
+          "x": 0,
+          "y": 0,
+          "floor": 324,
+          "layer": "MAINTENANCE"
         }
-
-
       ]
     }
   ]
