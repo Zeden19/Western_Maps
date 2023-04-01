@@ -361,7 +361,7 @@
       "x": 0,
       "y": 0,
       "floor": 214,
-      "layer": "EDUCATIONAL"
+      "layer": "LOUNGES"
     },
     {
       "name": "Accessible Unisex Washroom",
@@ -425,7 +425,7 @@
       "x": 0,
       "y": 0,
       "floor": 224,
-      "layer": "EDUCATIONAL"
+      "layer": "LOUNGES"
     },
     {
       "name": "TC Elevator A",
@@ -609,7 +609,7 @@
       "x": 0,
       "y": 0,
       "floor": 304,
-      "layer": "SEATING"
+      "layer": "MISCELLANEOUS"
     },
     {
       "name": "Bleachers",
@@ -617,7 +617,7 @@
       "x": 0,
       "y": 0,
       "floor": 304,
-      "layer": "SEATING"
+      "layer": "MISCELLANEOUS"
     },
     {
       "name": "Mechanical Room 1",
@@ -817,7 +817,7 @@
       "x": 0,
       "y": 0,
       "floor": 324,
-      "layer": "SEATING"
+      "layer": "MISCELLANEOUS"
     },
     {
       "name": "Elevator A",
