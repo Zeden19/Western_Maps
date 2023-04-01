@@ -3,8 +3,7 @@ package cs2212.westernmaps.maps;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +19,6 @@ public final class MapPanel extends JPanel {
 
         // This determines what MainWindow will use as its title.
         setName(building.name());
-
-        // temporary code, just printing out name of selected building
-        System.out.println(building.name());
-
         setLayout(new BorderLayout());
 
         var toolbar = createToolbar();
@@ -39,10 +34,17 @@ public final class MapPanel extends JPanel {
         var mapViewer = new MapViewerPanel(uri, pois);
         mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
 
+        var floatingControls = createFloatingControls(building);
+
+        var layeredPane = new JLayeredPane();
+        layeredPane.setLayout(new OverlayLayout(layeredPane));
+        layeredPane.add(mapViewer, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(floatingControls, JLayeredPane.PALETTE_LAYER);
+
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
         leftPanel.add(toolbar, BorderLayout.PAGE_START);
-        leftPanel.add(mapViewer, BorderLayout.CENTER);
+        leftPanel.add(layeredPane, BorderLayout.CENTER);
 
         var rightPanel = createSidebar();
 
@@ -111,6 +113,26 @@ public final class MapPanel extends JPanel {
         sidebar.add(favoritesListScroller);
 
         return sidebar;
+    }
+
+    private JPanel createFloatingControls(Building building) {
+        var floorSwitcher = new FloorSwitcher(building.floors());
+
+        var floatingControls = new JPanel();
+        floatingControls.setOpaque(false);
+        floatingControls.setLayout(new GridBagLayout());
+
+        var constraints = new GridBagConstraints();
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.LAST_LINE_START;
+        constraints.insets = new Insets(16, 16, 16, 16);
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        floatingControls.add(floorSwitcher, constraints);
+
+        return floatingControls;
     }
 
     public void addBackListener(Runnable listener) {
