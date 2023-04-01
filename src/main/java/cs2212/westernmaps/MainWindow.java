@@ -19,6 +19,8 @@ public final class MainWindow extends JFrame {
     private MapPanel mapPanel; // the map viewer panel
     private JPanel cardPanel; // the panel that holds all the above panels
 
+    private final CardLayout cardLayout;
+
     public MainWindow() {
         super("Sign in");
 
@@ -27,11 +29,13 @@ public final class MainWindow extends JFrame {
         ArrayList<Floor> floors = new ArrayList<>();
         floors.add(floor1);
 
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
         // creating all the panels
         loginPanel = new LoginPanel();
         createAccountPanel = new CreateAccountPanel();
         buildingSelect = new BuildingSelect();
-        cardPanel = new JPanel(new CardLayout());
         mapPanel = new MapPanel(new Building("TEST", floors));
 
         // adding all panels to the card panel
@@ -59,20 +63,20 @@ public final class MainWindow extends JFrame {
     // Changing to account
     public void changeToCreateAccount() {
         setTitle("Create Account");
-        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "create");
+        cardLayout.show(cardPanel, "create");
     }
 
     // Changing to log in
     public void changeToLogin() {
         setTitle("Sign in");
-        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
+        cardLayout.show(cardPanel, "login");
     }
 
     // changing to log-in from the create account screen
     public void changeToLoginFromCreate() {
         if (!createAccountPanel.checkValidCreate()) return;
         setTitle("Sign in");
-        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
+        cardLayout.show(cardPanel, "login");
     }
 
     // changing to the building select screen
@@ -86,7 +90,7 @@ public final class MainWindow extends JFrame {
         }
 
         // changing the layout
-        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "building");
+        cardLayout.show(cardPanel, "building");
     }
 
     // changing to the map
@@ -99,6 +103,6 @@ public final class MainWindow extends JFrame {
             setTitle("Map");
         }
 
-        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "map");
+        cardLayout.show(cardPanel, "map");
     }
 }
