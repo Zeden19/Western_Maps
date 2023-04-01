@@ -14,7 +14,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.net.URI;
 import java.util.List;
 import javax.swing.JPanel;
@@ -31,8 +33,7 @@ public final class MapViewerPanel extends JPanel {
         this.displayedPois = displayedPois;
 
         var mouseAdapter = new MouseAdapter() {
-            private int lastMouseX;
-            private int lastMouseY;
+            private final Point lastMousePosition = new Point();
             private boolean dragging = false;
 
             @Override
@@ -40,8 +41,7 @@ public final class MapViewerPanel extends JPanel {
                 // Only pan the map with left click (button 1) or middle click
                 // (button 2).
                 if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON2) {
-                    lastMouseX = e.getX();
-                    lastMouseY = e.getY();
+                    lastMousePosition.setLocation(e.getX(), e.getY());
                     dragging = true;
                     setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                 }
@@ -57,14 +57,32 @@ public final class MapViewerPanel extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (dragging) {
-                    int deltaX = e.getX() - lastMouseX;
-                    lastMouseX = e.getX();
-                    int deltaY = e.getY() - lastMouseY;
-                    lastMouseY = e.getY();
+                    var deltaX = e.getX() - lastMousePosition.x;
+                    var deltaY = e.getY() - lastMousePosition.y;
+                    lastMousePosition.setLocation(e.getX(), e.getY());
 
-                    transform.translate(deltaX, deltaY);
+                    var scaleFactor = 1.0 / transform.getScaleX();
+
+                    transform.translate(deltaX * scaleFactor, deltaY * scaleFactor);
                     repaint();
                 }
+            }
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                var scaleFactor = Math.pow(1.5, -e.getPreciseWheelRotation());
+
+                var mouseLocation = new Point(e.getX(), e.getY());
+                try {
+                    transform.inverseTransform(mouseLocation, mouseLocation);
+                } catch (NoninvertibleTransformException ex) {
+                    throw new RuntimeException(ex);
+                }
+                transform.translate(mouseLocation.x, mouseLocation.y);
+                transform.scale(scaleFactor, scaleFactor);
+                transform.translate(-mouseLocation.x, -mouseLocation.y);
+
+                repaint();
             }
         };
         addMouseListener(mouseAdapter);
