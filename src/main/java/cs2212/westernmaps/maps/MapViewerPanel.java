@@ -5,6 +5,7 @@ import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGException;
 import com.kitfox.svg.SVGUniverse;
 import cs2212.westernmaps.core.POI;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -89,6 +90,7 @@ public final class MapViewerPanel extends JPanel {
         addMouseMotionListener(mouseAdapter);
         addMouseWheelListener(mouseAdapter);
 
+        setBackground(Color.WHITE);
         setBorder(new FlatBorder());
         setFocusable(true);
         addFocusListener(new FocusListener() {
