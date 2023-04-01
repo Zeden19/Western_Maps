@@ -173,22 +173,39 @@ public final class MapViewerPanel extends JPanel {
         // Render icons for each displayed POI.
         gfx.setTransform(oldTransform);
         for (var poi : displayedPois) {
-            var icon = poi.layer().getIcon();
+            // If the POI is hovered, skip it since it will be rendered on top
+            // of everything else later. Comparison by reference is intentional.
+            if (poi == hoveredPoi) {
+                continue;
+            }
 
             // POI icons are rendered at the same size regardless of the map's
             // scale, so we need to transform their locations manually.
             var location = new Point(poi.x(), poi.y());
             transform.transform(location, location);
 
-            // If the POI is hovered, draw a background behind it. Comparison by
-            // reference is intentional.
-            if (poi == hoveredPoi) {
-                var radius = POI_HOVER_CIRCLE_RADIUS;
-                gfx.setPaint(POI_HOVER_CIRCLE_COLOR);
-                gfx.fillOval(location.x - radius, location.y - radius, radius * 2, radius * 2);
-            }
+            // Offset the location so that the icon is centered on the POI.
+            var icon = poi.layer().getIcon();
+            location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
+            // Draw the POI icon.
+            icon.paintIcon(this, gfx, location.x, location.y);
+        }
+
+        // Render the hovered POI.
+        if (hoveredPoi != null) {
+            var poi = hoveredPoi;
+
+            // POI icons are rendered at the same size regardless of the map's
+            // scale, so we need to transform their locations manually.
+            var location = new Point(poi.x(), poi.y());
+            transform.transform(location, location);
+
+            var radius = POI_HOVER_CIRCLE_RADIUS;
+            gfx.setPaint(POI_HOVER_CIRCLE_COLOR);
+            gfx.fillOval(location.x - radius, location.y - radius, radius * 2, radius * 2);
 
             // Offset the location so that the icon is centered on the POI.
+            var icon = poi.layer().getIcon();
             location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
             // Draw the POI icon.
             icon.paintIcon(this, gfx, location.x, location.y);
