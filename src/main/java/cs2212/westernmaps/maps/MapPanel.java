@@ -23,6 +23,8 @@ public final class MapPanel extends JPanel {
     private Building selectedBuilding;
     private JButton back = new JButton("Back");
 
+    private boolean developerMode = false;
+
     public MapPanel(Building building) {
         selectedBuilding = building;
 
@@ -114,9 +116,5 @@ public final class MapPanel extends JPanel {
 
     public JButton getBackButton() {
         return back;
-    }
-
-    public void setSelectedBuilding(Building building) {
-        selectedBuilding = building;
     }
 }

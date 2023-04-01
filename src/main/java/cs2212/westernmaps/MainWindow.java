@@ -1,6 +1,5 @@
 package cs2212.westernmaps;
 
-import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.login.CreateAccountPanel;
@@ -10,8 +9,6 @@ import cs2212.westernmaps.select.BuildingSelect;
 import java.awt.*;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainWindow extends JFrame {
@@ -21,17 +18,12 @@ public final class MainWindow extends JFrame {
     private BuildingSelect buildingSelect; // the building select panel
     private MapPanel mapPanel; // the map viewer panel
     private JPanel cardPanel; // the panel that holds all the above panels
-    boolean developerMode = false;
 
     public MainWindow() {
         super("Sign in");
 
-        // temporary accounts until database gets implemented
-        Account testUser = new Account("regular User", new byte[3], false);
-        Account testDeveloper = new Account("developer", new byte[3], true);
-
         // delete this once database is implemented
-        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
+        Floor floor1 = new Floor("g1", "Ground", Path.of("resources"));
         ArrayList<Floor> floors = new ArrayList<>();
         floors.add(floor1);
 
@@ -51,7 +43,6 @@ public final class MainWindow extends JFrame {
         // navigation between panels
         loginPanel.getCreateAccountLink().addActionListener(e -> changeToCreateAccount());
         loginPanel.getSignInButton().addActionListener(e -> changeToBuildingSelect());
-        createAccountPanel.getBackButton().addActionListener(e -> changeToLoginFromCreate());
         createAccountPanel.getCreateAccountButton().addActionListener(e -> changeToLoginFromCreate());
         createAccountPanel.getBackButton().addActionListener(e -> changeToLogin());
         buildingSelect.getBackButton().addActionListener(e -> changeToLogin());
@@ -61,99 +52,53 @@ public final class MainWindow extends JFrame {
         // setting up the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         add(cardPanel);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setPreferredSize(new Dimension(1280, 720));
         pack();
     }
 
+    // Changing to account
     public void changeToCreateAccount() {
-        // creating a new panel to clear text fields
         setTitle("Create Account");
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "create");
     }
 
+    // Changing to log in
     public void changeToLogin() {
         setTitle("Sign in");
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
     }
 
+    // changing to log-in from the create account screen
     public void changeToLoginFromCreate() {
-        createAccountPanel.getPasswordMatchError().setVisible(false);
-        createAccountPanel.getPasswordInvalidError().setVisible(false);
-
-        // checking if the password was valid, if not displaying error
-        if (!Arrays.equals(
-                createAccountPanel.getPassword().getPassword(),
-                createAccountPanel.getConfirmPassword().getPassword()))
-            createAccountPanel.getPasswordMatchError().setVisible(true); // passwords not matching
-        else if (!createAccountPanel.isPasswordValid(
-                createAccountPanel.getPassword().getPassword())) // password not valid
-        createAccountPanel.getPasswordInvalidError().setVisible(true);
-
-        // todo add more checks
-
-        // if all checks passed, change to login
-        else {
-            setTitle("Sign in");
-            ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
-        }
+        if (!createAccountPanel.checkValidCreate()) return;
+        setTitle("Sign in");
+        ((CardLayout) cardPanel.getLayout()).show(cardPanel, "login");
     }
 
+    // changing to the building select screen
     public void changeToBuildingSelect() {
-        loginPanel.getInvalidUserError().setVisible(false);
-        if (!Objects.equals(loginPanel.getUsernameField().getText(), "regular user")
-                && !Objects.equals(loginPanel.getUsernameField().getText(), "developer")) {
-            loginPanel.getInvalidUserError().setVisible(true);
-            return;
-        }
+        if (!loginPanel.checkValidLogin()) return;
 
-        if (Objects.equals(loginPanel.getUsernameField().getText(), "regular user")) {
-            developerMode = false;
-        }
-        if (Objects.equals(loginPanel.getUsernameField().getText(), "developer")) {
-            developerMode = true;
-        }
-
-        if (developerMode) {
+        if (loginPanel.getIsDeveloper()) {
             setTitle("Developer Mode: Select Building");
         } else {
             setTitle("Select Building");
         }
+
+        // changing the layout
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "building");
     }
 
+    // changing to the map
     public void changeToMap() {
-        buildingSelect.getNoBuildingSelectedError().setVisible(false);
+        if (!buildingSelect.checkValidSelection()) return;
 
-        if (buildingSelect.getList().isSelectionEmpty()) {
-            buildingSelect.getNoBuildingSelectedError().setVisible(true);
-            buildingSelect.getList().clearSelection();
-            return;
-        }
-
-        // getting the building
-        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
-        ArrayList<Floor> floors = new ArrayList<>();
-        floors.add(floor1);
-
-        switch (buildingSelect.getList().getSelectedIndex()) {
-            case 0 ->
-            // Go to Middlesex College
-            mapPanel = new MapPanel(new Building("Middlesex College", floors));
-            case 1 ->
-            // Go to Talbot College
-            mapPanel = new MapPanel(new Building("Talbot College", floors));
-            case 2 ->
-            // Go to Recreation Centre
-            mapPanel = new MapPanel(new Building("Rec centre", floors));
-        }
-
-        if (developerMode) {
+        if (loginPanel.getIsDeveloper()) {
             setTitle("Developer Mode: Map");
         } else {
             setTitle("Map");
         }
 
-        buildingSelect.getList().clearSelection();
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, "map");
     }
 }

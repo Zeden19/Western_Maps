@@ -10,7 +10,6 @@ import cs2212.westernmaps.core.Database;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
-
 import javax.swing.SwingUtilities;
 
 public final class Main {
@@ -45,7 +44,6 @@ public final class Main {
                 FlatInspector.install("ctrl shift alt X");
                 FlatUIDefaultsInspector.install("ctrl shift alt Y");
             }
-
 
             // Load the database.
             Database database;

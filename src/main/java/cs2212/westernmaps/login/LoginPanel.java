@@ -1,7 +1,9 @@
 package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import cs2212.westernmaps.core.Account;
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
@@ -10,9 +12,9 @@ public final class LoginPanel extends JPanel {
     private JPasswordField passwordField;
     private JTextField usernameField;
     private JLabel invalidUserError;
+    private boolean developerMode;
 
     public LoginPanel() {
-
         // When a GridBagLayout has one child, it will center it.
         setLayout(new GridBagLayout());
 
@@ -69,6 +71,28 @@ public final class LoginPanel extends JPanel {
         add(panel);
     }
 
+    public boolean checkValidLogin() {
+        // temporary accounts until database gets implemented
+        Account testUser = new Account("regular User", new byte[3], false);
+        Account testDeveloper = new Account("developer", new byte[3], true);
+
+        invalidUserError.setVisible(false);
+        if (!Objects.equals(usernameField.getText(), "regular user")
+                && !Objects.equals(usernameField.getText(), "developer")) {
+            invalidUserError.setVisible(true);
+            return false;
+        }
+
+        if (Objects.equals(usernameField.getText(), "regular user")) {
+            developerMode = false;
+        }
+        if (Objects.equals(usernameField.getText(), "developer")) {
+            developerMode = true;
+        }
+
+        return true;
+    }
+
     public LinkButton getCreateAccountLink() {
         return createAccountLink;
     }
@@ -77,15 +101,7 @@ public final class LoginPanel extends JPanel {
         return signInButton;
     }
 
-    public JPasswordField getPasswordField() {
-        return passwordField;
-    }
-
-    public JTextField getUsernameField() {
-        return usernameField;
-    }
-
-    public JLabel getInvalidUserError() {
-        return invalidUserError;
+    public boolean getIsDeveloper() {
+        return developerMode;
     }
 }

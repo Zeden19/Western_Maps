@@ -2,14 +2,18 @@ package cs2212.westernmaps.select;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.Main;
+import cs2212.westernmaps.core.Building;
+import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.help.HelpWindow;
+import cs2212.westernmaps.maps.MapPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +23,7 @@ import javax.swing.*;
  *       - Add Javadoc comments.
  */
 
-public class BuildingSelect extends JPanel implements ActionListener {
+public class BuildingSelect extends JPanel {
     final String[] BUILDING_LIST = {"Middlesex College", "Talbot College", "Recreation Centre"};
     final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
 
@@ -46,7 +50,6 @@ public class BuildingSelect extends JPanel implements ActionListener {
 
         selectButton = new JButton("Select Building");
         selectButton.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
-        selectButton.addActionListener(this);
 
         JPanel weather = new JPanel();
         // Temporary
@@ -138,6 +141,35 @@ public class BuildingSelect extends JPanel implements ActionListener {
         add(contentPane);
     }
 
+    public boolean checkValidSelection() {
+        noBuildingSelectedError.setVisible(false);
+
+        if (list.isSelectionEmpty()) {
+            noBuildingSelectedError.setVisible(true);
+            list.clearSelection();
+            return false;
+        }
+
+        // getting the building
+        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
+        ArrayList<Floor> floors = new ArrayList<>();
+        floors.add(floor1);
+
+        switch (list.getSelectedIndex()) {
+            case 0 ->
+            // Go to Middlesex College
+            new MapPanel(new Building("Middlesex College", floors));
+            case 1 ->
+            // Go to Talbot College
+            new MapPanel(new Building("Talbot College", floors));
+            case 2 ->
+            // Go to Recreation Centre
+            new MapPanel(new Building("Rec centre", floors));
+        }
+        list.clearSelection();
+        return true;
+    }
+
     public JButton getBackButton() {
         return backButton;
     }
@@ -145,17 +177,6 @@ public class BuildingSelect extends JPanel implements ActionListener {
     public JButton getSelectButton() {
         return selectButton;
     }
-
-    public JList<String> getList() {
-        return list;
-    }
-
-    public JLabel getNoBuildingSelectedError() {
-        return noBuildingSelectedError;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {}
 
     private class AboutAction extends AbstractAction {
         public AboutAction() {

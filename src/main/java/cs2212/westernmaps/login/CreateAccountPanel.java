@@ -2,6 +2,7 @@ package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -112,7 +113,19 @@ public final class CreateAccountPanel extends JPanel {
         add(mainPanel);
     }
 
-    // checking if password is valid, checking length, symbols, number and character
+    public boolean checkValidCreate() {
+        getPasswordMatchError().setVisible(false);
+        getPasswordInvalidError().setVisible(false);
+        // checking if the password was valid, if not displaying error
+        if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword())) {
+            getPasswordMatchError().setVisible(true); // passwords not matching
+            return false;
+        } else if (!isPasswordValid(passwordField.getPassword())) {
+            getPasswordInvalidError().setVisible(true); // password not valid
+            return false;
+        } else return true;
+    }
+
     public boolean isPasswordValid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
