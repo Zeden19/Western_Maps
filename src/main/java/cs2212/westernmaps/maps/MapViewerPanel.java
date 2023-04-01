@@ -30,6 +30,9 @@ public final class MapViewerPanel extends JPanel {
     private static final int POI_HOVER_CIRCLE_RADIUS = 18;
     private static final Color POI_HOVER_CIRCLE_COLOR = new Color(0x00, 0x00, 0x00, 0x1F);
 
+    private static final double ZOOM_OUT_LIMIT = 0.1;
+    private static final double ZOOM_IN_LIMIT = 10.0;
+
     private final SVGUniverse universe = SVGCache.getSVGUniverse();
     private final AffineTransform transform = new AffineTransform();
 
@@ -102,6 +105,14 @@ public final class MapViewerPanel extends JPanel {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 var scaleFactor = Math.pow(1.5, -e.getPreciseWheelRotation());
+
+                // Correct the scale factor to enforce the zoom limit.
+                if (transform.getScaleX() * scaleFactor < ZOOM_OUT_LIMIT) {
+                    scaleFactor = ZOOM_OUT_LIMIT / transform.getScaleX();
+                }
+                if (transform.getScaleX() * scaleFactor > ZOOM_IN_LIMIT) {
+                    scaleFactor = ZOOM_IN_LIMIT / transform.getScaleX();
+                }
 
                 var mouseLocation = new Point(e.getX(), e.getY());
                 try {
