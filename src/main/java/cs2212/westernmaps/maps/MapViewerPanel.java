@@ -19,7 +19,9 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import javax.swing.JPanel;
 
@@ -30,6 +32,8 @@ public final class MapViewerPanel extends JPanel {
 
     private final SVGUniverse universe = SVGCache.getSVGUniverse();
     private final AffineTransform transform = new AffineTransform();
+
+    private final List<Consumer<POI>> poiClickListeners = new ArrayList<>();
 
     private URI currentMapUri;
     private List<POI> displayedPois;
@@ -48,7 +52,9 @@ public final class MapViewerPanel extends JPanel {
             public void mousePressed(MouseEvent e) {
                 // Only pan the map with left click (button 1) or middle click
                 // (button 2).
-                if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON2) {
+                if (hoveredPoi != null) {
+                    poiClickListeners.forEach(listener -> listener.accept(hoveredPoi));
+                } else if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON2) {
                     lastMousePosition.setLocation(e.getX(), e.getY());
                     dragging = true;
                     setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -58,8 +64,10 @@ public final class MapViewerPanel extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                dragging = false;
-                setCursor(null);
+                if (dragging) {
+                    dragging = false;
+                    setCursor(null);
+                }
             }
 
             @Override
@@ -142,6 +150,10 @@ public final class MapViewerPanel extends JPanel {
 
     public void setDisplayedPois(List<POI> pois) {
         displayedPois = pois;
+    }
+
+    public void addPoiClickListener(Consumer<POI> listener) {
+        poiClickListeners.add(listener);
     }
 
     @Override

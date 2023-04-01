@@ -36,6 +36,7 @@ public final class MapPanel extends JPanel {
                 new POI("Test POI 3", "POI added for testing.", 600, 400, false, floor, Layer.ACCESSIBILITY));
 
         var mapViewer = new MapViewerPanel(uri, pois);
+        mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
 
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
