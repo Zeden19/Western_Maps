@@ -74,6 +74,7 @@ public class BuildingSelect extends JPanel {
 
         // Create Error label
         noBuildingSelectedError = new JLabel("Please select a building");
+        noBuildingSelectedError.setHorizontalAlignment(SwingConstants.CENTER);
         noBuildingSelectedError.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         noBuildingSelectedError.setForeground(UIManager.getColor("Actions.Red"));
         noBuildingSelectedError.setVisible(false);
@@ -117,7 +118,7 @@ public class BuildingSelect extends JPanel {
         c.gridy = 2;
         c.weightx = 0;
         c.weighty = 0;
-        c.insets = new Insets(0, 290, 100, 0);
+        c.insets = new Insets(0, 0, 100, 0);
         selectPane.add(noBuildingSelectedError, c);
 
         // Add layout to final content pane
