@@ -6,7 +6,7 @@ import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.login.CreateAccountPanel;
 import cs2212.westernmaps.login.LoginPanel;
 import cs2212.westernmaps.maps.MapPanel;
-import cs2212.westernmaps.select.BuildingSelect;
+import cs2212.westernmaps.select.BuildingSelectPanel;
 import java.awt.*;
 import java.nio.file.*;
 import java.util.List;
@@ -16,7 +16,7 @@ import javax.swing.*;
 public final class MainWindow extends JFrame {
     private final LoginPanel loginPanel;
     private final CreateAccountPanel createAccountPanel;
-    private final BuildingSelect buildingSelectPanel;
+    private final BuildingSelectPanel buildingSelectPanel;
 
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
@@ -40,7 +40,7 @@ public final class MainWindow extends JFrame {
         // creating all the panels
         loginPanel = new LoginPanel();
         createAccountPanel = new CreateAccountPanel();
-        buildingSelectPanel = new BuildingSelect(buildings);
+        buildingSelectPanel = new BuildingSelectPanel(buildings);
 
         // navigation between panels
         loginPanel.addCreateAccountClickListener(() -> changeTo(createAccountPanel));

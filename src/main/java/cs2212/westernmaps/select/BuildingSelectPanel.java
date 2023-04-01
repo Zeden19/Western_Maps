@@ -22,7 +22,7 @@ import javax.swing.*;
  *       - Add Javadoc comments.
  */
 
-public class BuildingSelect extends JPanel {
+public class BuildingSelectPanel extends JPanel {
     private static final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
 
     private final JList<Building> buildingList;
@@ -31,7 +31,7 @@ public class BuildingSelect extends JPanel {
     private final List<Runnable> logOutListeners = new ArrayList<>();
     private final List<Consumer<Building>> buildingSelectListeners = new ArrayList<>();
 
-    public BuildingSelect(List<Building> buildings) {
+    public BuildingSelectPanel(List<Building> buildings) {
         // This determines what MainWindow will use as its title.
         setName("Building Select");
 
@@ -127,7 +127,7 @@ public class BuildingSelect extends JPanel {
 
         // Add image to final content pane
         try {
-            @Nullable InputStream imageFile = BuildingSelect.class.getResourceAsStream(PATH_TO_IMAGE);
+            @Nullable InputStream imageFile = BuildingSelectPanel.class.getResourceAsStream(PATH_TO_IMAGE);
             if (imageFile == null) throw new IOException();
             BufferedImage imageBuffer = ImageIO.read(imageFile);
             ImageIcon imageIcon = new ImageIcon(
@@ -171,7 +171,7 @@ public class BuildingSelect extends JPanel {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             JOptionPane.showMessageDialog(
-                    BuildingSelect.this,
+                    BuildingSelectPanel.this,
                     "Information about the application should go here.",
                     getName(),
                     JOptionPane.INFORMATION_MESSAGE);
