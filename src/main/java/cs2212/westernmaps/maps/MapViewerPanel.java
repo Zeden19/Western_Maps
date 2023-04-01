@@ -20,9 +20,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.net.URI;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 
 public final class MapViewerPanel extends JPanel {
+    private static final int POI_CLICK_TARGET_SIZE = 16;
+
     private final SVGUniverse universe = SVGCache.getSVGUniverse();
     private final AffineTransform transform = new AffineTransform();
 
@@ -53,6 +56,23 @@ public final class MapViewerPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 dragging = false;
                 setCursor(null);
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                var mouseLocation = new Point(e.getX(), e.getY());
+                try {
+                    transform.inverseTransform(mouseLocation, mouseLocation);
+                } catch (NoninvertibleTransformException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                var hoveredPoi = getHoveredPoiByChebyshevDistance(mouseLocation.x, mouseLocation.y);
+                if (hoveredPoi != null) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                } else {
+                    setCursor(null);
+                }
             }
 
             @Override
@@ -162,5 +182,23 @@ public final class MapViewerPanel extends JPanel {
 
             icon.paintIcon(this, gfx, location.x, location.y);
         }
+    }
+
+    private @Nullable POI getHoveredPoiByChebyshevDistance(int mouseX, int mouseY) {
+        POI hoveredPoi = null;
+        int hoveredPoiDistance = Integer.MAX_VALUE;
+        for (var poi : displayedPois) {
+            var distance = chebyshevDistance(poi.x(), poi.y(), mouseX, mouseY);
+            if (distance <= POI_CLICK_TARGET_SIZE && distance < hoveredPoiDistance) {
+                hoveredPoi = poi;
+                hoveredPoiDistance = distance;
+            }
+        }
+        return hoveredPoi;
+    }
+
+    // https://en.wikipedia.org/wiki/Chebyshev_distance
+    private static int chebyshevDistance(int x1, int y1, int x2, int y2) {
+        return Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
     }
 }

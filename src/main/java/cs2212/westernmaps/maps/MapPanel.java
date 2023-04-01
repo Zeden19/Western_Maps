@@ -29,14 +29,11 @@ public final class MapPanel extends JPanel {
 
         // Temporary code; remove before merging.
         var uri = Path.of("MiddleSex-2.svg").toUri();
-        var pois = List.of(new POI(
-                "Test POI",
-                "POI added for testing.",
-                0,
-                0,
-                false,
-                new Floor("T", "Test Floor", Path.of("asdf")),
-                Layer.UTILITIES));
+        var floor = new Floor("T", "Test Floor", Path.of("asdf"));
+        var pois = List.of(
+                new POI("Test POI", "POI added for testing.", 500, 300, false, floor, Layer.UTILITIES),
+                new POI("Test POI 2", "POI added for testing.", 600, 300, false, floor, Layer.CLASSROOMS),
+                new POI("Test POI 3", "POI added for testing.", 600, 400, false, floor, Layer.ACCESSIBILITY));
 
         var mapViewer = new MapViewerPanel(uri, pois);
 
