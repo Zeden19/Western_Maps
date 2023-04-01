@@ -6,11 +6,12 @@ package cs2212.westernmaps.core;
  * @see POI
  */
 public enum Layer {
-    FAVORITES,
-    UTILITIES,
-    CLASSROOMS,
-    EATERIES,
-    LOUNGES,
     ACCESSIBILITY,
+    CLASSROOMS,
     CUSTOM,
+    EATERIES,
+    FITNESS,
+    LOUNGES,
+    MISCELLANEOUS,
+    UTILITIES,
 }
