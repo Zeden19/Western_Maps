@@ -3,22 +3,15 @@ package cs2212.westernmaps.maps;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.Building;
+import cs2212.westernmaps.core.Floor;
+import cs2212.westernmaps.core.Layer;
 import cs2212.westernmaps.core.POI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
@@ -36,8 +29,14 @@ public final class MapPanel extends JPanel {
 
         // Temporary code; remove before merging.
         var uri = Path.of("MiddleSex-2.svg").toUri();
+        var floor = new Floor("T", "Test Floor", Path.of("asdf"));
+        var pois = List.of(
+                new POI("Test POI", "POI added for testing.", 500, 300, false, floor, Layer.UTILITIES),
+                new POI("Test POI 2", "POI added for testing.", 600, 300, false, floor, Layer.CLASSROOMS),
+                new POI("Test POI 3", "POI added for testing.", 600, 400, false, floor, Layer.ACCESSIBILITY));
 
-        var mapViewer = new MapViewerPanel(uri);
+        var mapViewer = new MapViewerPanel(uri, pois);
+        mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
 
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
