@@ -133,8 +133,14 @@ public final class MapViewerPanel extends JPanel {
         // we can just use that instead of keeping a copy ourselves.
         var diagram = universe.getDiagram(currentMapUri);
 
+        var mapPath = diagram.getRoot().getChild("map");
+        var lineThickness = Math.min(1.0 / transform.getScaleX(), 1.0);
+
         // Render the map SVG.
         try {
+            if (mapPath != null) {
+                mapPath.setAttribute("stroke-width", 2, Double.toString(lineThickness));
+            }
             diagram.render(this, gfx);
         } catch (SVGException ex) {
             throw new RuntimeException(ex);
