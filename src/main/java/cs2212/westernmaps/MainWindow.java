@@ -1,5 +1,6 @@
 package cs2212.westernmaps;
 
+import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.login.CreateAccountPanel;
@@ -8,101 +9,82 @@ import cs2212.westernmaps.maps.MapPanel;
 import cs2212.westernmaps.select.BuildingSelect;
 import java.awt.*;
 import java.nio.file.*;
-import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 public final class MainWindow extends JFrame {
+    private final LoginPanel loginPanel;
+    private final CreateAccountPanel createAccountPanel;
+    private final BuildingSelect buildingSelectPanel;
 
-    private LoginPanel loginPanel; // the log in panel, the starting location of app
-    private CreateAccountPanel createAccountPanel; // the create account panel
-    private BuildingSelect buildingSelect; // the building select panel
-    private MapPanel mapPanel; // the map viewer panel
-    private JPanel cardPanel; // the panel that holds all the above panels
-
+    private final JPanel cardPanel;
     private final CardLayout cardLayout;
+
+    private @Nullable Account loggedInAccount = null;
 
     public MainWindow() {
         super("Sign in");
 
         // delete this once database is implemented
-        Floor floor1 = new Floor("g1", "Ground", Path.of("resources"));
-        ArrayList<Floor> floors = new ArrayList<>();
-        floors.add(floor1);
+        var floors = List.of(new Floor("g1", "Ground", Path.of("resources")));
+        var buildings = List.of(
+                new Building("Middlesex College", floors),
+                new Building("Talbot College", floors),
+                new Building("Western Student Recreation Centre", floors));
 
+        // Create a card layout to allow switching between panels.
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
         // creating all the panels
         loginPanel = new LoginPanel();
         createAccountPanel = new CreateAccountPanel();
-        buildingSelect = new BuildingSelect();
-        mapPanel = new MapPanel(new Building("TEST", floors));
-
-        // adding all panels to the card panel
-        cardPanel.add(loginPanel, "login");
-        cardPanel.add(createAccountPanel, "create");
-        cardPanel.add(buildingSelect, "building");
-        cardPanel.add(mapPanel, "map");
+        buildingSelectPanel = new BuildingSelect(buildings);
 
         // navigation between panels
-        loginPanel.getCreateAccountLink().addActionListener(e -> changeToCreateAccount());
-        loginPanel.getSignInButton().addActionListener(e -> changeToBuildingSelect());
-        createAccountPanel.getCreateAccountButton().addActionListener(e -> changeToLoginFromCreate());
-        createAccountPanel.getBackButton().addActionListener(e -> changeToLogin());
-        buildingSelect.getBackButton().addActionListener(e -> changeToLogin());
-        buildingSelect.getSelectButton().addActionListener(e -> changeToMap());
-        mapPanel.getBackButton().addActionListener(e -> changeToBuildingSelect());
+        loginPanel.addCreateAccountClickListener(() -> changeTo(createAccountPanel));
+        loginPanel.addLoginListener(account -> {
+            loggedInAccount = account;
+            changeTo(buildingSelectPanel);
+        });
+
+        createAccountPanel.addAccountCreateListener(account -> {
+            // TODO: Add the created account to the database.
+            changeTo(loginPanel);
+        });
+
+        buildingSelectPanel.addLogOutListener(() -> {
+            loggedInAccount = null;
+            changeTo(loginPanel);
+        });
+        buildingSelectPanel.addBuildingSelectListener(building -> {
+            var mapPanel = new MapPanel(building);
+            mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
+            changeTo(mapPanel);
+        });
+
+        // Start at the login screen.
+        changeTo(loginPanel);
 
         // setting up the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        add(cardPanel);
+        setContentPane(cardPanel);
         setPreferredSize(new Dimension(1280, 720));
         pack();
     }
 
-    // Changing to account
-    public void changeToCreateAccount() {
-        setTitle("Create Account");
-        cardLayout.show(cardPanel, "create");
-    }
-
-    // Changing to log in
-    public void changeToLogin() {
-        setTitle("Sign in");
-        cardLayout.show(cardPanel, "login");
-    }
-
-    // changing to log-in from the create account screen
-    public void changeToLoginFromCreate() {
-        if (!createAccountPanel.checkValidCreate()) return;
-        setTitle("Sign in");
-        cardLayout.show(cardPanel, "login");
-    }
-
-    // changing to the building select screen
-    public void changeToBuildingSelect() {
-        if (!loginPanel.checkValidLogin()) return;
-
-        if (loginPanel.getIsDeveloper()) {
-            setTitle("Developer Mode: Select Building");
-        } else {
-            setTitle("Select Building");
+    private void changeTo(JPanel panel) {
+        var titleBuilder = new StringBuilder();
+        titleBuilder.append(Main.APPLICATION_NAME);
+        titleBuilder.append(": ");
+        titleBuilder.append(panel.getName());
+        if (loggedInAccount != null && loggedInAccount.developer()) {
+            titleBuilder.append(" (Developer Mode)");
         }
 
-        // changing the layout
-        cardLayout.show(cardPanel, "building");
-    }
-
-    // changing to the map
-    public void changeToMap() {
-        if (!buildingSelect.checkValidSelection()) return;
-
-        if (loginPanel.getIsDeveloper()) {
-            setTitle("Developer Mode: Map");
-        } else {
-            setTitle("Map");
-        }
-
-        cardLayout.show(cardPanel, "map");
+        setTitle(titleBuilder.toString());
+        cardPanel.add(panel, "Current");
+        cardLayout.show(cardPanel, "Current");
     }
 }

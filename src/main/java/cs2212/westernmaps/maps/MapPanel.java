@@ -7,6 +7,8 @@ import cs2212.westernmaps.core.POI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -19,18 +21,14 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 public final class MapPanel extends JPanel {
-
-    private Building selectedBuilding;
-    private JButton back = new JButton("Back");
-
-    private boolean developerMode = false;
+    private final List<Runnable> backListeners = new ArrayList<>();
 
     public MapPanel(Building building) {
-        selectedBuilding = building;
+        // This determines what MainWindow will use as its title.
+        setName(building.name());
 
         // temporary code, just printing out name of selected building
-        if (selectedBuilding == null) System.out.println("Error!");
-        else System.out.println(selectedBuilding.name());
+        System.out.println(building.name());
 
         setLayout(new BorderLayout());
 
@@ -52,13 +50,14 @@ public final class MapPanel extends JPanel {
         splitPane.setResizeWeight(0.75);
         splitPane.setOneTouchExpandable(true);
         splitPane.putClientProperty(FlatClientProperties.SPLIT_PANE_EXPANDABLE_SIDE, "left");
-
-        //        setContentPane(splitPane);
         splitPane.setDividerLocation(splitPane.getResizeWeight());
+
         add(splitPane);
     }
 
     private JPanel createToolbar() {
+        var backButton = new JButton("Back");
+        backButton.addActionListener(e -> backListeners.forEach(Runnable::run));
 
         var searchBar = new JTextField(30);
         searchBar.setMaximumSize(new Dimension(384, Short.MAX_VALUE));
@@ -71,7 +70,7 @@ public final class MapPanel extends JPanel {
         toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.LINE_AXIS));
         toolbar.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        toolbar.add(back);
+        toolbar.add(backButton);
         toolbar.add(Box.createHorizontalStrut(8));
         toolbar.add(searchBar);
         toolbar.add(Box.createHorizontalStrut(8));
@@ -114,7 +113,7 @@ public final class MapPanel extends JPanel {
         return sidebar;
     }
 
-    public JButton getBackButton() {
-        return back;
+    public void addBackListener(Runnable listener) {
+        backListeners.add(listener);
     }
 }

@@ -3,17 +3,16 @@ package cs2212.westernmaps.select;
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.Main;
 import cs2212.westernmaps.core.Building;
-import cs2212.westernmaps.core.Floor;
 import cs2212.westernmaps.help.HelpWindow;
-import cs2212.westernmaps.maps.MapPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,18 +23,17 @@ import javax.swing.*;
  */
 
 public class BuildingSelect extends JPanel {
-    final String[] BUILDING_LIST = {"Middlesex College", "Talbot College", "Recreation Centre"};
-    final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
+    private static final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
 
-    private JList<String> list;
+    private final JList<Building> buildingList;
+    private final JLabel noBuildingSelectedError;
 
-    private JButton backButton;
+    private final List<Runnable> logOutListeners = new ArrayList<>();
+    private final List<Consumer<Building>> buildingSelectListeners = new ArrayList<>();
 
-    private JButton selectButton;
-
-    private JLabel noBuildingSelectedError;
-
-    public BuildingSelect() {
+    public BuildingSelect(List<Building> buildings) {
+        // This determines what MainWindow will use as its title.
+        setName("Building Select");
 
         setLayout(new BorderLayout());
 
@@ -43,13 +41,14 @@ public class BuildingSelect extends JPanel {
         JLabel heading = new JLabel("Select a Building:");
         heading.putClientProperty(FlatClientProperties.STYLE_CLASS, "h0");
 
-        list = new JList<>(BUILDING_LIST);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
-        list.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
+        buildingList = new JList<>(buildings.toArray(Building[]::new));
+        buildingList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        buildingList.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
+        buildingList.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
 
-        selectButton = new JButton("Select Building");
+        var selectButton = new JButton("Select Building");
         selectButton.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
+        selectButton.addActionListener(e -> validateAndSubmit());
 
         JPanel weather = new JPanel();
         // Temporary
@@ -70,7 +69,8 @@ public class BuildingSelect extends JPanel {
         helpBox.add(aboutButton);
 
         // Create back button
-        backButton = new JButton("Back");
+        var logOutButton = new JButton("Log Out");
+        logOutButton.addActionListener(e -> logOutListeners.forEach(Runnable::run));
 
         // Create Error label
         noBuildingSelectedError = new JLabel("Please select a building");
@@ -85,7 +85,7 @@ public class BuildingSelect extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(5, 5, 0, 0);
-        selectPane.add(backButton, c);
+        selectPane.add(logOutButton, c);
 
         c.insets = new Insets(10, 0, 0, 0);
         c.gridx = 1;
@@ -110,7 +110,7 @@ public class BuildingSelect extends JPanel {
         c.insets = new Insets(30, 30, 30, 30);
         c.weightx = 1.0f;
         c.weighty = 1.0f;
-        selectPane.add(list, c);
+        selectPane.add(buildingList, c);
 
         // Add error when nothing selected
         c.gridx = 1;
@@ -141,41 +141,24 @@ public class BuildingSelect extends JPanel {
         add(contentPane);
     }
 
-    public boolean checkValidSelection() {
-        noBuildingSelectedError.setVisible(false);
+    public void addLogOutListener(Runnable listener) {
+        logOutListeners.add(listener);
+    }
 
-        if (list.isSelectionEmpty()) {
+    public void addBuildingSelectListener(Consumer<Building> listener) {
+        buildingSelectListeners.add(listener);
+    }
+
+    private void validateAndSubmit() {
+        // Determine which building was selected.
+        var selectedBuilding = buildingList.getSelectedValue();
+        if (selectedBuilding != null) {
+            noBuildingSelectedError.setVisible(false);
+            buildingSelectListeners.forEach(listener -> listener.accept(selectedBuilding));
+        } else {
             noBuildingSelectedError.setVisible(true);
-            list.clearSelection();
-            return false;
+            buildingList.clearSelection();
         }
-
-        // getting the building
-        Floor floor1 = new Floor("g1", "Ground", Paths.get("resources"));
-        ArrayList<Floor> floors = new ArrayList<>();
-        floors.add(floor1);
-
-        switch (list.getSelectedIndex()) {
-            case 0 ->
-            // Go to Middlesex College
-            new MapPanel(new Building("Middlesex College", floors));
-            case 1 ->
-            // Go to Talbot College
-            new MapPanel(new Building("Talbot College", floors));
-            case 2 ->
-            // Go to Recreation Centre
-            new MapPanel(new Building("Rec centre", floors));
-        }
-        list.clearSelection();
-        return true;
-    }
-
-    public JButton getBackButton() {
-        return backButton;
-    }
-
-    public JButton getSelectButton() {
-        return selectButton;
     }
 
     private class AboutAction extends AbstractAction {

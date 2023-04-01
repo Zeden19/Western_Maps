@@ -1,8 +1,14 @@
 package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import java.awt.*;
+import cs2212.westernmaps.core.Account;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,7 +22,12 @@ public final class CreateAccountPanel extends JPanel {
     private JLabel passwordMatchError;
     private JLabel passwordInvalidError;
 
+    private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
+
     public CreateAccountPanel() {
+        // This determines what MainWindow will use as its title.
+        setName("Create Account");
+
         // Setting layout for the whole panel
         setLayout(new OverlayLayout(this));
         setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -58,6 +69,14 @@ public final class CreateAccountPanel extends JPanel {
         // Create account Button
         createAccountButton = new JButton("Create Account");
         createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        createAccountButton.addActionListener(e -> {
+            if (!checkPasswordFields()) {
+                return;
+            }
+            // TODO: Hash the provided password and use it for the account.
+            var account = new Account(usernameField.getText(), new byte[0], false);
+            accountCreateListeners.forEach(listener -> listener.accept(account));
+        });
 
         // error if password doesn't match
         passwordMatchError = new JLabel("Passwords do not match");
@@ -113,20 +132,26 @@ public final class CreateAccountPanel extends JPanel {
         add(mainPanel);
     }
 
-    public boolean checkValidCreate() {
-        getPasswordMatchError().setVisible(false);
-        getPasswordInvalidError().setVisible(false);
-        // checking if the password was valid, if not displaying error
-        if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword())) {
-            getPasswordMatchError().setVisible(true); // passwords not matching
-            return false;
-        } else if (!isPasswordValid(passwordField.getPassword())) {
-            getPasswordInvalidError().setVisible(true); // password not valid
-            return false;
-        } else return true;
+    public void addAccountCreateListener(Consumer<Account> listener) {
+        accountCreateListeners.add(listener);
     }
 
-    public boolean isPasswordValid(char[] password) {
+    private boolean checkPasswordFields() {
+        passwordMatchError.setVisible(false);
+        passwordInvalidError.setVisible(false);
+        // checking if the password was valid, if not displaying error
+        if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword())) {
+            passwordMatchError.setVisible(true); // passwords not matching
+            return false;
+        } else if (!isPasswordValid(passwordField.getPassword())) {
+            passwordInvalidError.setVisible(true); // password not valid
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isPasswordValid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
         Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
@@ -143,29 +168,5 @@ public final class CreateAccountPanel extends JPanel {
                 digit.matcher(stringPassword).find()
                 && // checking for numbers
                 special.matcher(stringPassword).find()); // checking for special characters
-    }
-
-    public JButton getBackButton() {
-        return back;
-    }
-
-    public JButton getCreateAccountButton() {
-        return createAccountButton;
-    }
-
-    public JPasswordField getPassword() {
-        return passwordField;
-    }
-
-    public JPasswordField getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public JLabel getPasswordMatchError() {
-        return passwordMatchError;
-    }
-
-    public JLabel getPasswordInvalidError() {
-        return passwordInvalidError;
     }
 }

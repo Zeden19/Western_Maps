@@ -3,7 +3,9 @@ package cs2212.westernmaps.login;
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.Account;
 import java.awt.*;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
@@ -12,9 +14,14 @@ public final class LoginPanel extends JPanel {
     private JPasswordField passwordField;
     private JTextField usernameField;
     private JLabel invalidUserError;
-    private boolean developerMode;
+
+    private final List<Consumer<Account>> loginListeners = new ArrayList<>();
+    private final List<Runnable> createAccountClickListeners = new ArrayList<>();
 
     public LoginPanel() {
+        // This determines what MainWindow will use as its title.
+        setName("Sign In");
+
         // When a GridBagLayout has one child, it will center it.
         setLayout(new GridBagLayout());
 
@@ -41,10 +48,12 @@ public final class LoginPanel extends JPanel {
         // Sign in button
         signInButton = new JButton("Sign In");
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        signInButton.addActionListener(e -> validateAndSubmit());
 
         // Create account link
         createAccountLink = new LinkButton("Create an Account");
         createAccountLink.setAlignmentX(Component.CENTER_ALIGNMENT);
+        createAccountLink.addActionListener(e -> createAccountClickListeners.forEach(Runnable::run));
 
         // Error message for invalid user
         invalidUserError = new JLabel("Username not found");
@@ -71,37 +80,28 @@ public final class LoginPanel extends JPanel {
         add(panel);
     }
 
-    public boolean checkValidLogin() {
+    public void addLoginListener(Consumer<Account> listener) {
+        loginListeners.add(listener);
+    }
+
+    public void addCreateAccountClickListener(Runnable listener) {
+        createAccountClickListeners.add(listener);
+    }
+
+    private void validateAndSubmit() {
         // temporary accounts until database gets implemented
-        Account testUser = new Account("regular User", new byte[3], false);
-        Account testDeveloper = new Account("developer", new byte[3], true);
+        var accounts =
+                List.of(new Account("regular user", new byte[3], false), new Account("developer", new byte[3], true));
 
-        invalidUserError.setVisible(false);
-        if (!Objects.equals(usernameField.getText(), "regular user")
-                && !Objects.equals(usernameField.getText(), "developer")) {
+        var username = usernameField.getText();
+        var account =
+                accounts.stream().filter(a -> a.username().equals(username)).findFirst();
+
+        if (account.isPresent()) {
+            invalidUserError.setVisible(false);
+            loginListeners.forEach(listener -> listener.accept(account.get()));
+        } else {
             invalidUserError.setVisible(true);
-            return false;
         }
-
-        if (Objects.equals(usernameField.getText(), "regular user")) {
-            developerMode = false;
-        }
-        if (Objects.equals(usernameField.getText(), "developer")) {
-            developerMode = true;
-        }
-
-        return true;
-    }
-
-    public LinkButton getCreateAccountLink() {
-        return createAccountLink;
-    }
-
-    public JButton getSignInButton() {
-        return signInButton;
-    }
-
-    public boolean getIsDeveloper() {
-        return developerMode;
     }
 }
