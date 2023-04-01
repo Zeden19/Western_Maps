@@ -14,13 +14,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public final class CreateAccountPanel extends JPanel {
-
-    private JButton back;
-    private JButton createAccountButton;
-    private JPasswordField passwordField;
-    private JPasswordField confirmPassword;
-    private JLabel passwordMatchError;
-    private JLabel passwordInvalidError;
+    private final JPasswordField passwordField;
+    private final JPasswordField confirmPassword;
+    private final JLabel passwordMatchError;
+    private final JLabel passwordInvalidError;
 
     private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
 
@@ -33,9 +30,9 @@ public final class CreateAccountPanel extends JPanel {
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
         // back button
-        back = new JButton("Back");
-        back.setAlignmentX(Component.LEFT_ALIGNMENT);
-        back.setAlignmentY(Component.TOP_ALIGNMENT);
+        var backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        backButton.setAlignmentY(Component.TOP_ALIGNMENT);
 
         // Title
         var title = new JLabel("Create Account");
@@ -67,7 +64,7 @@ public final class CreateAccountPanel extends JPanel {
         confirmPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Confirm Password");
 
         // Create account Button
-        createAccountButton = new JButton("Create Account");
+        var createAccountButton = new JButton("Create Account");
         createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         createAccountButton.addActionListener(e -> {
             if (!checkPasswordFields()) {
@@ -128,7 +125,7 @@ public final class CreateAccountPanel extends JPanel {
         mainPanel.add(panel);
 
         // adding back button and gridbag layout into the overlay layout
-        add(back);
+        add(backButton);
         add(mainPanel);
     }
 

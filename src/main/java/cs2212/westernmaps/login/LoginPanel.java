@@ -9,11 +9,8 @@ import java.util.function.Consumer;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
-    private LinkButton createAccountLink;
-    private JButton signInButton;
-    private JPasswordField passwordField;
-    private JTextField usernameField;
-    private JLabel invalidUserError;
+    private final JTextField usernameField;
+    private final JLabel invalidUserError;
 
     private final List<Consumer<Account>> loginListeners = new ArrayList<>();
     private final List<Runnable> createAccountClickListeners = new ArrayList<>();
@@ -40,18 +37,18 @@ public final class LoginPanel extends JPanel {
         usernameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Username");
 
         // Password field
-        passwordField = new JPasswordField();
+        var passwordField = new JPasswordField();
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setColumns(20);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
 
         // Sign in button
-        signInButton = new JButton("Sign In");
+        var signInButton = new JButton("Sign In");
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         signInButton.addActionListener(e -> validateAndSubmit());
 
         // Create account link
-        createAccountLink = new LinkButton("Create an Account");
+        var createAccountLink = new LinkButton("Create an Account");
         createAccountLink.setAlignmentX(Component.CENTER_ALIGNMENT);
         createAccountLink.addActionListener(e -> createAccountClickListeners.forEach(Runnable::run));
 
