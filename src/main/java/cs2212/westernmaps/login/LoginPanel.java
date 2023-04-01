@@ -2,6 +2,7 @@ package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.Account;
+import cs2212.westernmaps.core.Database;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public final class LoginPanel extends JPanel {
     private final List<Consumer<Account>> loginListeners = new ArrayList<>();
     private final List<Runnable> createAccountClickListeners = new ArrayList<>();
 
-    public LoginPanel() {
+    public LoginPanel(Database database) {
         // This determines what MainWindow will use as its title.
         setName("Sign In");
 
@@ -45,7 +46,7 @@ public final class LoginPanel extends JPanel {
         // Sign in button
         var signInButton = new JButton("Sign In");
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        signInButton.addActionListener(e -> validateAndSubmit());
+        signInButton.addActionListener(e -> validateAndSubmit(database));
 
         // Create account link
         var createAccountLink = new LinkButton("Create an Account");
@@ -85,10 +86,8 @@ public final class LoginPanel extends JPanel {
         createAccountClickListeners.add(listener);
     }
 
-    private void validateAndSubmit() {
-        // temporary accounts until database gets implemented
-        var accounts =
-                List.of(new Account("regular user", new byte[3], false), new Account("developer", new byte[3], true));
+    private void validateAndSubmit(Database database) {
+        List<Account> accounts = database.getCurrentState().accounts();
 
         var username = usernameField.getText();
         var account =
