@@ -1,65 +1,95 @@
 package cs2212.westernmaps;
 
-import cs2212.westernmaps.help.HelpWindow;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import cs2212.westernmaps.core.Account;
+import cs2212.westernmaps.core.Building;
+import cs2212.westernmaps.core.Floor;
+import cs2212.westernmaps.login.CreateAccountPanel;
+import cs2212.westernmaps.login.LoginPanel;
+import cs2212.westernmaps.maps.MapPanel;
+import cs2212.westernmaps.select.BuildingSelectPanel;
+import java.awt.*;
+import java.nio.file.*;
+import java.util.List;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
-public class MainWindow extends JFrame {
+public final class MainWindow extends JFrame {
+    private final LoginPanel loginPanel;
+    private final CreateAccountPanel createAccountPanel;
+    private final BuildingSelectPanel buildingSelectPanel;
+
+    private final JPanel cardPanel;
+    private final CardLayout cardLayout;
+
+    private @Nullable Account loggedInAccount = null;
+
     public MainWindow() {
-        super(Main.APPLICATION_NAME);
+        super("Sign in");
+
+        // delete this once database is implemented
+        var floors = List.of(new Floor("g1", "Ground", Path.of("resources")));
+        var buildings = List.of(
+                new Building("Middlesex College", floors),
+                new Building("Talbot College", floors),
+                new Building("Western Student Recreation Centre", floors));
+
+        // Create a card layout to allow switching between panels.
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
+        // creating all the panels
+        loginPanel = new LoginPanel();
+        createAccountPanel = new CreateAccountPanel();
+        buildingSelectPanel = new BuildingSelectPanel(buildings);
+
+        // navigation between panels
+        loginPanel.addCreateAccountClickListener(() -> changeTo(createAccountPanel));
+        loginPanel.addLoginListener(account -> {
+            loggedInAccount = account;
+            changeTo(buildingSelectPanel);
+        });
+
+        createAccountPanel.addAccountCreateListener(account -> {
+            // TODO: Add the created account to the database.
+            changeTo(loginPanel);
+        });
+
+        createAccountPanel.addBackListener(() -> {
+            changeTo(loginPanel);
+            loggedInAccount = null;
+        });
+
+        buildingSelectPanel.addLogOutListener(() -> {
+            loggedInAccount = null;
+            changeTo(loginPanel);
+        });
+        buildingSelectPanel.addBuildingSelectListener(building -> {
+            var mapPanel = new MapPanel(building);
+            mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
+            changeTo(mapPanel);
+        });
+
+        // Start at the login screen.
+        changeTo(loginPanel);
+
+        // setting up the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        setJMenuBar(createMenuBar());
-
+        setContentPane(cardPanel);
         setPreferredSize(new Dimension(1280, 720));
         pack();
     }
 
-    private JMenuBar createMenuBar() {
-        var fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
-        fileMenu.add(new QuitAction());
-
-        var helpMenu = new JMenu("Help");
-        helpMenu.setMnemonic(KeyEvent.VK_H);
-        helpMenu.add(new HelpWindow.ShowAction());
-        helpMenu.add(new AboutAction());
-
-        var menuBar = new JMenuBar();
-        menuBar.add(fileMenu);
-        menuBar.add(helpMenu);
-
-        return menuBar;
-    }
-
-    private class AboutAction extends AbstractAction {
-        public AboutAction() {
-            super("About " + Main.APPLICATION_NAME);
-            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+    private void changeTo(JPanel panel) {
+        var titleBuilder = new StringBuilder();
+        titleBuilder.append(Main.APPLICATION_NAME);
+        titleBuilder.append(": ");
+        titleBuilder.append(panel.getName());
+        if (loggedInAccount != null && loggedInAccount.developer()) {
+            titleBuilder.append(" (Developer Mode)");
         }
 
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            JOptionPane.showMessageDialog(
-                    MainWindow.this,
-                    "Information about the application should go here.",
-                    getName(),
-                    JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private class QuitAction extends AbstractAction {
-        public QuitAction() {
-            super("Quit");
-            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Q);
-            putValue(Action.SHORT_DESCRIPTION, "Quit the application.");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            MainWindow.this.dispose();
-        }
+        setTitle(titleBuilder.toString());
+        cardPanel.add(panel, "Current");
+        cardLayout.show(cardPanel, "Current");
     }
 }

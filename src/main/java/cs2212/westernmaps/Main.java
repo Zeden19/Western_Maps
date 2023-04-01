@@ -7,7 +7,6 @@ import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.formdev.flatlaf.fonts.inter.FlatInterFont;
 import cs2212.westernmaps.core.Database;
-import cs2212.westernmaps.login.LoginWindow;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -55,8 +54,7 @@ public final class Main {
                 throw new RuntimeException(ex);
             }
 
-            // var window = new MainWindow();
-            var window = new LoginWindow();
+            var window = new MainWindow();
             window.setVisible(true);
         });
     }

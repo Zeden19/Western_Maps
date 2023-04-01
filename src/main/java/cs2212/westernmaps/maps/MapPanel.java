@@ -2,16 +2,17 @@ package cs2212.westernmaps.maps;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
-import cs2212.westernmaps.Main;
+import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.core.POI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -19,9 +20,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-public final class MapWindow extends JFrame {
-    public MapWindow() {
-        super(Main.APPLICATION_NAME);
+public final class MapPanel extends JPanel {
+    private final List<Runnable> backListeners = new ArrayList<>();
+
+    public MapPanel(Building building) {
+        // This determines what MainWindow will use as its title.
+        setName(building.name());
+
+        // temporary code, just printing out name of selected building
+        System.out.println(building.name());
+
+        setLayout(new BorderLayout());
 
         var toolbar = createToolbar();
 
@@ -41,17 +50,14 @@ public final class MapWindow extends JFrame {
         splitPane.setResizeWeight(0.75);
         splitPane.setOneTouchExpandable(true);
         splitPane.putClientProperty(FlatClientProperties.SPLIT_PANE_EXPANDABLE_SIDE, "left");
-
-        setContentPane(splitPane);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(1280, 720));
-        pack();
-
         splitPane.setDividerLocation(splitPane.getResizeWeight());
+
+        add(splitPane);
     }
 
     private JPanel createToolbar() {
-        var logOutButton = new JButton("Log Out");
+        var backButton = new JButton("Back");
+        backButton.addActionListener(e -> backListeners.forEach(Runnable::run));
 
         var searchBar = new JTextField(30);
         searchBar.setMaximumSize(new Dimension(384, Short.MAX_VALUE));
@@ -64,7 +70,7 @@ public final class MapWindow extends JFrame {
         toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.LINE_AXIS));
         toolbar.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        toolbar.add(logOutButton);
+        toolbar.add(backButton);
         toolbar.add(Box.createHorizontalStrut(8));
         toolbar.add(searchBar);
         toolbar.add(Box.createHorizontalStrut(8));
@@ -105,5 +111,9 @@ public final class MapWindow extends JFrame {
         sidebar.add(favoritesListScroller);
 
         return sidebar;
+    }
+
+    public void addBackListener(Runnable listener) {
+        backListeners.add(listener);
     }
 }

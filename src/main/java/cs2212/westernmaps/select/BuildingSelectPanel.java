@@ -2,14 +2,17 @@ package cs2212.westernmaps.select;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.Main;
+import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.help.HelpWindow;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,28 +22,33 @@ import javax.swing.*;
  *       - Add Javadoc comments.
  */
 
-public class BuildingSelect extends JFrame implements ActionListener {
-    final String[] BUILDING_LIST = {"Middlesex College", "Talbot College", "Recreation Centre"};
-    final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
+public class BuildingSelectPanel extends JPanel {
+    private static final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
 
-    JList<String> list;
+    private final JList<Building> buildingList;
+    private final JLabel noBuildingSelectedError;
 
-    public BuildingSelect() {
-        super(Main.APPLICATION_NAME + ": Select a building");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    private final List<Runnable> logOutListeners = new ArrayList<>();
+    private final List<Consumer<Building>> buildingSelectListeners = new ArrayList<>();
+
+    public BuildingSelectPanel(List<Building> buildings) {
+        // This determines what MainWindow will use as its title.
+        setName("Building Select");
+
+        setLayout(new BorderLayout());
 
         // Create selection pane components
-        JLabel heading = new JLabel("Select a building:");
+        JLabel heading = new JLabel("Select a Building:");
         heading.putClientProperty(FlatClientProperties.STYLE_CLASS, "h0");
 
-        list = new JList<>(BUILDING_LIST);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
-        list.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
+        buildingList = new JList<>(buildings.toArray(Building[]::new));
+        buildingList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        buildingList.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
+        buildingList.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
 
-        JButton selectButton = new JButton("Select Building");
+        var selectButton = new JButton("Select Building");
         selectButton.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
-        selectButton.addActionListener(this);
+        selectButton.addActionListener(e -> validateAndSubmit());
 
         JPanel weather = new JPanel();
         // Temporary
@@ -61,8 +69,15 @@ public class BuildingSelect extends JFrame implements ActionListener {
         helpBox.add(aboutButton);
 
         // Create back button
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new BackAction());
+        var logOutButton = new JButton("Log Out");
+        logOutButton.addActionListener(e -> logOutListeners.forEach(Runnable::run));
+
+        // Create Error label
+        noBuildingSelectedError = new JLabel("Please select a building");
+        noBuildingSelectedError.setHorizontalAlignment(SwingConstants.CENTER);
+        noBuildingSelectedError.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
+        noBuildingSelectedError.setForeground(UIManager.getColor("Actions.Red"));
+        noBuildingSelectedError.setVisible(false);
 
         // Stack and center components in a grid bag layout
         JPanel selectPane = new JPanel(new GridBagLayout());
@@ -71,7 +86,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(5, 5, 0, 0);
-        selectPane.add(backButton, c);
+        selectPane.add(logOutButton, c);
 
         c.insets = new Insets(10, 0, 0, 0);
         c.gridx = 1;
@@ -96,7 +111,15 @@ public class BuildingSelect extends JFrame implements ActionListener {
         c.insets = new Insets(30, 30, 30, 30);
         c.weightx = 1.0f;
         c.weighty = 1.0f;
-        selectPane.add(list, c);
+        selectPane.add(buildingList, c);
+
+        // Add error when nothing selected
+        c.gridx = 1;
+        c.gridy = 2;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.insets = new Insets(0, 0, 100, 0);
+        selectPane.add(noBuildingSelectedError, c);
 
         // Add layout to final content pane
         JPanel contentPane = new JPanel(new BorderLayout());
@@ -104,7 +127,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
 
         // Add image to final content pane
         try {
-            @Nullable InputStream imageFile = BuildingSelect.class.getResourceAsStream(PATH_TO_IMAGE);
+            @Nullable InputStream imageFile = BuildingSelectPanel.class.getResourceAsStream(PATH_TO_IMAGE);
             if (imageFile == null) throw new IOException();
             BufferedImage imageBuffer = ImageIO.read(imageFile);
             ImageIcon imageIcon = new ImageIcon(
@@ -115,30 +138,27 @@ public class BuildingSelect extends JFrame implements ActionListener {
         } catch (IOException e) {
             System.out.println("Error opening file: " + PATH_TO_IMAGE);
         }
-        setContentPane(contentPane);
-        setPreferredSize(new Dimension(1280, 720));
-        pack();
+
+        add(contentPane);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (list.getSelectedIndex()) {
-            case 0 ->
-            // Go to Middlesex College
-            System.out.println("Middlesex College selected.");
-            case 1 ->
-            // Go to Talbot College
-            System.out.println("Talbot College selected.");
-            case 2 ->
-            // Go to Recreation Centre
-            System.out.println("Recreation Centre selected.");
-        }
+    public void addLogOutListener(Runnable listener) {
+        logOutListeners.add(listener);
     }
 
-    private class BackAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            // Go back to log-in screen
+    public void addBuildingSelectListener(Consumer<Building> listener) {
+        buildingSelectListeners.add(listener);
+    }
+
+    private void validateAndSubmit() {
+        // Determine which building was selected.
+        var selectedBuilding = buildingList.getSelectedValue();
+        if (selectedBuilding != null) {
+            noBuildingSelectedError.setVisible(false);
+            buildingSelectListeners.forEach(listener -> listener.accept(selectedBuilding));
+        } else {
+            noBuildingSelectedError.setVisible(true);
+            buildingList.clearSelection();
         }
     }
 
@@ -151,7 +171,7 @@ public class BuildingSelect extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             JOptionPane.showMessageDialog(
-                    BuildingSelect.this,
+                    BuildingSelectPanel.this,
                     "Information about the application should go here.",
                     getName(),
                     JOptionPane.INFORMATION_MESSAGE);

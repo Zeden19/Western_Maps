@@ -1,25 +1,41 @@
 package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import java.awt.*;
+import cs2212.westernmaps.core.Account;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public final class CreateAccountPanel extends JPanel {
-
-    private JButton back;
+    private final JPasswordField passwordField;
+    private final JPasswordField confirmPassword;
+    private final JLabel passwordMatchError;
+    private final JLabel passwordInvalidError;
+    private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
+    private final List<Runnable> backButtonListeners = new ArrayList<>();
 
     public CreateAccountPanel() {
+        // This determines what MainWindow will use as its title.
+        setName("Create Account");
+
         // Setting layout for the whole panel
         setLayout(new OverlayLayout(this));
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
         // back button
-        back = new JButton("Back");
-        back.setAlignmentX(Component.LEFT_ALIGNMENT);
-        back.setAlignmentY(Component.TOP_ALIGNMENT);
+        var backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        backButton.setAlignmentY(Component.TOP_ALIGNMENT);
+        backButton.addActionListener(e -> {
+            backButtonListeners.forEach(Runnable::run);
+        });
 
         // Title
         var title = new JLabel("Create Account");
@@ -39,13 +55,13 @@ public final class CreateAccountPanel extends JPanel {
         passwordSpecifiers.setFont(new Font("Arial", Font.ITALIC, 10));
 
         // The password field
-        var passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setColumns(20);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
 
         // Confirm password field, where user would retype password
-        var confirmPassword = new JPasswordField();
+        confirmPassword = new JPasswordField();
         confirmPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
         confirmPassword.setColumns(20);
         confirmPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Confirm Password");
@@ -53,15 +69,23 @@ public final class CreateAccountPanel extends JPanel {
         // Create account Button
         var createAccountButton = new JButton("Create Account");
         createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        createAccountButton.addActionListener(e -> {
+            if (!checkPasswordFields()) {
+                return;
+            }
+            // TODO: Hash the provided password and use it for the account.
+            var account = new Account(usernameField.getText(), new byte[0], false);
+            accountCreateListeners.forEach(listener -> listener.accept(account));
+        });
 
         // error if password doesn't match
-        var passwordMatchError = new JLabel("Passwords do not match");
+        passwordMatchError = new JLabel("Passwords do not match");
         passwordMatchError.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordMatchError.setVisible(false);
         passwordMatchError.setForeground(UIManager.getColor("Actions.Red"));
 
         // error if password is invalid
-        var passwordInvalidError = new JLabel("Password not strong enough");
+        passwordInvalidError = new JLabel("Password not strong enough");
         passwordInvalidError.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordInvalidError.setVisible(false);
         passwordInvalidError.setForeground(UIManager.getColor("Actions.Red"));
@@ -104,22 +128,33 @@ public final class CreateAccountPanel extends JPanel {
         mainPanel.add(panel);
 
         // adding back button and gridbag layout into the overlay layout
-        add(back);
+        add(backButton);
         add(mainPanel);
-
-        // checking if password is valid
-        createAccountButton.addActionListener(e -> {
-            passwordMatchError.setVisible(false);
-            passwordInvalidError.setVisible(false);
-
-            if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword()))
-                passwordMatchError.setVisible(true); // passwords not matching
-            else if (!isPasswordValid(passwordField.getPassword())) // password not valid
-            passwordInvalidError.setVisible(true);
-        });
     }
 
-    // checking if password is valid, checking length, symbols, number and character
+    public void addAccountCreateListener(Consumer<Account> listener) {
+        accountCreateListeners.add(listener);
+    }
+
+    public void addBackListener(Runnable listener) {
+        backButtonListeners.add(listener);
+    }
+
+    private boolean checkPasswordFields() {
+        passwordMatchError.setVisible(false);
+        passwordInvalidError.setVisible(false);
+        // checking if the password was valid, if not displaying error
+        if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword())) {
+            passwordMatchError.setVisible(true); // passwords not matching
+            return false;
+        } else if (!isPasswordValid(passwordField.getPassword())) {
+            passwordInvalidError.setVisible(true); // password not valid
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private boolean isPasswordValid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
@@ -137,9 +172,5 @@ public final class CreateAccountPanel extends JPanel {
                 digit.matcher(stringPassword).find()
                 && // checking for numbers
                 special.matcher(stringPassword).find()); // checking for special characters
-    }
-
-    public JButton getBackButton() {
-        return back;
     }
 }

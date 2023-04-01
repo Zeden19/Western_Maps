@@ -12,4 +12,14 @@ public record Building(String name, List<Floor> floors) {
     public Building {
         floors = List.copyOf(floors);
     }
+
+    /**
+     * Alias of {@link #name()} used by Java Swing components.
+     *
+     * @return The display name of this building.
+     */
+    @Override
+    public String toString() {
+        return name();
+    }
 }
