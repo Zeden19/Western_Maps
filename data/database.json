@@ -181,7 +181,7 @@
     },
     {
       "name": "Mechanical Room",
-      "description": "Dedicated space for mechanical equipment and systems..",
+      "description": "Dedicated space for mechanical equipment and systems.",
       "x": 0,
       "y": 0,
       "floor": 114,
@@ -228,16 +228,16 @@
       "layer": "UTILITIES"
     },
     {
-      "name": "Non-Accessible Mens Washroom",
-      "description": "Non-Accessible Mens Washroom.",
+      "name": "Non-Accessible Men's Washroom",
+      "description": "Non-Accessible Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 114,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Non-Accessible Womens Washroom",
-      "description": "Non-Accessible Womens Washroom.",
+      "name": "Non-Accessible Women's Washroom",
+      "description": "Non-Accessible Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 114,
@@ -268,8 +268,8 @@
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Mens Washroom",
-      "description": "Barrier Free Mens Washroom.",
+      "name": "Barrier Free Men's Washroom",
+      "description": "Barrier Free Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 124,
@@ -300,8 +300,8 @@
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Non-Accessible Womens Washroom",
-      "description": "Non-Accessible Womens Washroom.",
+      "name": "Non-Accessible Women's Washroom",
+      "description": "Non-Accessible Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 134,
@@ -372,8 +372,8 @@
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Mens Washroom",
-      "description": "Barrier Free Mens Washroom.",
+      "name": "Barrier Free Men's Washroom",
+      "description": "Barrier Free Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 214,
@@ -381,7 +381,7 @@
     },
     {
       "name": "Barrier Free Women's Washroom",
-      "description": "Barrier Free Womens Washroom.",
+      "description": "Barrier Free Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 214,
@@ -396,16 +396,16 @@
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Non-Accessible Mens Washroom",
-      "description": "Non-Accessible Mens Washroom.",
+      "name": "Non-Accessible Men's Washroom",
+      "description": "Non-Accessible Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 224,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Non-Accessible Womens Washroom",
-      "description": "Non-Accessible Womens Washroom.",
+      "name": "Non-Accessible Women's Washroom",
+      "description": "Non-Accessible Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 224,
@@ -436,16 +436,16 @@
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Non-Accessible Mens Washroom",
-      "description": "Non-Accessible Mens Washroom.",
+      "name": "Non-Accessible Men's Washroom",
+      "description": "Non-Accessible Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 234,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Non-Accessible Womens Washroom",
-      "description": "Non-Accessible Womens Washroom.",
+      "name": "Non-Accessible Women's Washroom",
+      "description": "Non-Accessible Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 234,
@@ -468,16 +468,16 @@
       "layer": "CLASSROOMS"
     },
     {
-      "name": "Non-Accessible Mens Washroom",
-      "description": "Non-Accessible Mens Washroom.",
+      "name": "Non-Accessible Men's Washroom",
+      "description": "Non-Accessible Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 244,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Non-Accessible Womens Washroom",
-      "description": "Non-Accessible Womens Washroom.",
+      "name": "Non-Accessible Women's Washroom",
+      "description": "Non-Accessible Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 244,
@@ -516,16 +516,16 @@
       "layer": "UTILITIES"
     },
     {
-      "name": "Barrier Free Mens Washroom",
-      "description": "Barrier Free Mens Washroom.",
+      "name": "Barrier Free Men's Washroom",
+      "description": "Barrier Free Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 340,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Womens Washroom",
-      "description": "Barrier Free Womens Washroom.",
+      "name": "Barrier Free Women's Washroom",
+      "description": "Barrier Free Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 340,
@@ -660,16 +660,16 @@
       "layer": "UTILITIES"
     },
     {
-      "name": "Barrier Free Mens Washroom",
-      "description": "Barrier Free Mens Washroom.",
+      "name": "Barrier Free Men's Washroom",
+      "description": "Barrier Free Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 304,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Womens Washroom",
-      "description": "Barrier Free Womens Washroom.",
+      "name": "Barrier Free Women's Washroom",
+      "description": "Barrier Free Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 304,
@@ -756,40 +756,40 @@
       "layer": "FITNESS"
     },
     {
-      "name": "Non-Accessible Womens Washroom",
-      "description": "Non-Accessible Womens Washroom.",
+      "name": "Non-Accessible Women's Washroom",
+      "description": "Non-Accessible Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 314,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Mens Washroom Rink",
-      "description": "Barrier Free Mens Washroom.",
+      "name": "Barrier Free Men's Washroom Rink",
+      "description": "Barrier Free Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 314,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Womens Washroom Rink",
-      "description": "Barrier Free Womens Washroom.",
+      "name": "Barrier Free Women's Washroom Rink",
+      "description": "Barrier Free Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 314,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Mens Washroom Gym",
-      "description": "Barrier Free Mens Washroom.",
+      "name": "Barrier Free Men's Washroom Gym",
+      "description": "Barrier Free Men's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 314,
       "layer": "ACCESSIBILITY"
     },
     {
-      "name": "Barrier Free Womens Washroom Gym",
-      "description": "Barrier Free Womens Washroom.",
+      "name": "Barrier Free Women's Washroom Gym",
+      "description": "Barrier Free Women's Washroom.",
       "x": 0,
       "y": 0,
       "floor": 314,
@@ -837,7 +837,7 @@
     },
     {
       "name": "Mechanical Room",
-      "description": "Dedicated space for mechanical equipment and systems..",
+      "description": "Dedicated space for mechanical equipment and systems.",
       "x": 0,
       "y": 0,
       "floor": 324,
