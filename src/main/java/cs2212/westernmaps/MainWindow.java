@@ -54,6 +54,11 @@ public final class MainWindow extends JFrame {
             changeTo(loginPanel);
         });
 
+        createAccountPanel.addBackListener(() -> {
+            changeTo(loginPanel);
+            loggedInAccount = null;
+        });
+
         buildingSelectPanel.addLogOutListener(() -> {
             loggedInAccount = null;
             changeTo(loginPanel);

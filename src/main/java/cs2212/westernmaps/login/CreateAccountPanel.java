@@ -18,8 +18,8 @@ public final class CreateAccountPanel extends JPanel {
     private final JPasswordField confirmPassword;
     private final JLabel passwordMatchError;
     private final JLabel passwordInvalidError;
-
     private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
+    private final List<Runnable> backButtonListeners = new ArrayList<>();
 
     public CreateAccountPanel() {
         // This determines what MainWindow will use as its title.
@@ -33,6 +33,9 @@ public final class CreateAccountPanel extends JPanel {
         var backButton = new JButton("Back");
         backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         backButton.setAlignmentY(Component.TOP_ALIGNMENT);
+        backButton.addActionListener(e -> {
+            backButtonListeners.forEach(Runnable::run);
+        });
 
         // Title
         var title = new JLabel("Create Account");
@@ -131,6 +134,10 @@ public final class CreateAccountPanel extends JPanel {
 
     public void addAccountCreateListener(Consumer<Account> listener) {
         accountCreateListeners.add(listener);
+    }
+
+    public void addBackListener(Runnable listener) {
+        backButtonListeners.add(listener);
     }
 
     private boolean checkPasswordFields() {
