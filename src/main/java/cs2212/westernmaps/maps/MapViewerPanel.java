@@ -25,12 +25,16 @@ import javax.swing.JPanel;
 
 public final class MapViewerPanel extends JPanel {
     private static final int POI_CLICK_TARGET_SIZE = 16;
+    private static final int POI_HOVER_CIRCLE_RADIUS = 18;
+    private static final Color POI_HOVER_CIRCLE_COLOR = new Color(0x00, 0x00, 0x00, 0x1F);
 
     private final SVGUniverse universe = SVGCache.getSVGUniverse();
     private final AffineTransform transform = new AffineTransform();
 
     private URI currentMapUri;
     private List<POI> displayedPois;
+
+    private @Nullable POI hoveredPoi = null;
 
     public MapViewerPanel(URI initialMapUri, List<POI> displayedPois) {
         currentMapUri = initialMapUri;
@@ -60,14 +64,12 @@ public final class MapViewerPanel extends JPanel {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                var mouseLocation = new Point(e.getX(), e.getY());
-                try {
-                    transform.inverseTransform(mouseLocation, mouseLocation);
-                } catch (NoninvertibleTransformException ex) {
-                    throw new RuntimeException(ex);
+                var hoveredPoi = getHoveredPoiByChebyshevDistance(e.getX(), e.getY());
+                if (hoveredPoi != MapViewerPanel.this.hoveredPoi) {
+                    repaint();
+                    MapViewerPanel.this.hoveredPoi = hoveredPoi;
                 }
 
-                var hoveredPoi = getHoveredPoiByChebyshevDistance(mouseLocation.x, mouseLocation.y);
                 if (hoveredPoi != null) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 } else {
@@ -177,9 +179,18 @@ public final class MapViewerPanel extends JPanel {
             // scale, so we need to transform their locations manually.
             var location = new Point(poi.x(), poi.y());
             transform.transform(location, location);
+
+            // If the POI is hovered, draw a background behind it. Comparison by
+            // reference is intentional.
+            if (poi == hoveredPoi) {
+                var radius = POI_HOVER_CIRCLE_RADIUS;
+                gfx.setPaint(POI_HOVER_CIRCLE_COLOR);
+                gfx.fillOval(location.x - radius, location.y - radius, radius * 2, radius * 2);
+            }
+
             // Offset the location so that the icon is centered on the POI.
             location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
-
+            // Draw the POI icon.
             icon.paintIcon(this, gfx, location.x, location.y);
         }
     }
@@ -188,7 +199,12 @@ public final class MapViewerPanel extends JPanel {
         POI hoveredPoi = null;
         int hoveredPoiDistance = Integer.MAX_VALUE;
         for (var poi : displayedPois) {
-            var distance = chebyshevDistance(poi.x(), poi.y(), mouseX, mouseY);
+            // POI icons are rendered at the same size regardless of the map's
+            // scale, so we need to transform their locations manually.
+            var location = new Point(poi.x(), poi.y());
+            transform.transform(location, location);
+
+            var distance = chebyshevDistance(location.x, location.y, mouseX, mouseY);
             if (distance <= POI_CLICK_TARGET_SIZE && distance < hoveredPoiDistance) {
                 hoveredPoi = poi;
                 hoveredPoiDistance = distance;
