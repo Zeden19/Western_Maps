@@ -40,6 +40,8 @@ public final class MapPanel extends JPanel {
         layeredPane.setLayout(new OverlayLayout(layeredPane));
         layeredPane.add(mapViewer, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(floatingControls, JLayeredPane.PALETTE_LAYER);
+        // Make sure the mouse cursor can still change.
+        mapViewer.setCursorComponent(layeredPane);
 
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
