@@ -16,7 +16,8 @@ public enum Layer {
     FITNESS("fitness"),
     LOUNGES("lounge"),
     MISCELLANEOUS("miscellaneous"),
-    UTILITIES("utility");
+    UTILITIES("utility"),
+    WASHROOMS("washroom");
 
     private final FlatSVGIcon icon;
 
