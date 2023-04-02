@@ -7,7 +7,6 @@ import cs2212.westernmaps.login.LoginPanel;
 import cs2212.westernmaps.maps.MapPanel;
 import cs2212.westernmaps.select.BuildingSelectPanel;
 import java.awt.*;
-import java.nio.file.*;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
@@ -17,13 +16,10 @@ public final class MainWindow extends JFrame {
     private final BuildingSelectPanel buildingSelectPanel;
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
-
     private @Nullable Account loggedInAccount = null;
-    Database database;
 
     public MainWindow(Database database) {
         super("Sign in");
-        this.database = database;
 
         // Create a card layout to allow switching between panels.
         cardLayout = new CardLayout();
@@ -31,7 +27,7 @@ public final class MainWindow extends JFrame {
 
         // creating all the panels
         loginPanel = new LoginPanel(database);
-        createAccountPanel = new CreateAccountPanel(database);
+        createAccountPanel = new CreateAccountPanel();
         buildingSelectPanel = new BuildingSelectPanel(database.getCurrentState().buildings());
 
         // navigation between panels
@@ -65,6 +61,9 @@ public final class MainWindow extends JFrame {
 
         // building select to map
         buildingSelectPanel.addBuildingSelectListener(building -> {
+            if (loggedInAccount == null) {
+                return;
+            }
             var mapPanel = new MapPanel(building, loggedInAccount);
             mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
             changeTo(mapPanel);

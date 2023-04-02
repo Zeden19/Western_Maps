@@ -2,7 +2,6 @@ package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.Account;
-import cs2212.westernmaps.core.Database;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -22,7 +21,7 @@ public final class CreateAccountPanel extends JPanel {
     private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
     private final List<Runnable> backButtonListeners = new ArrayList<>();
 
-    public CreateAccountPanel(Database database) {
+    public CreateAccountPanel() {
         // This determines what MainWindow will use as its title.
         setName("Create Account");
 

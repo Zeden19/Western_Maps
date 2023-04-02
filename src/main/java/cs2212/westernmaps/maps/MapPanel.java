@@ -8,19 +8,12 @@ import java.awt.Dimension;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
-    Account loggedInAccount;
 
-    public MapPanel(Building building, @Nullable Account loggedInAccount) {
-
-        if (loggedInAccount == null) {
-            throw new IllegalArgumentException("loggedInAccount cannot be null");
-        }
-        this.loggedInAccount = loggedInAccount;
+    public MapPanel(Building building, Account loggedInAccount) {
 
         // temporary code, just printing out if user is a developer
         System.out.println(loggedInAccount.developer());
