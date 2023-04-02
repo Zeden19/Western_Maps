@@ -2,10 +2,7 @@ package cs2212.westernmaps.maps;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
-import cs2212.westernmaps.core.Building;
-import cs2212.westernmaps.core.Floor;
-import cs2212.westernmaps.core.Layer;
-import cs2212.westernmaps.core.POI;
+import cs2212.westernmaps.core.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.nio.file.Path;
@@ -16,7 +13,11 @@ import javax.swing.*;
 public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
 
-    public MapPanel(Building building) {
+    public MapPanel(Building building, Account loggedInAccount) {
+
+        // temporary code, just printing out if user is a developer
+        System.out.println(loggedInAccount.developer());
+
         // This determines what MainWindow will use as its title.
         setName(building.name());
 

@@ -1,15 +1,12 @@
 package cs2212.westernmaps;
 
 import cs2212.westernmaps.core.Account;
-import cs2212.westernmaps.core.Building;
-import cs2212.westernmaps.core.Floor;
+import cs2212.westernmaps.core.Database;
 import cs2212.westernmaps.login.CreateAccountPanel;
 import cs2212.westernmaps.login.LoginPanel;
 import cs2212.westernmaps.maps.MapPanel;
 import cs2212.westernmaps.select.BuildingSelectPanel;
 import java.awt.*;
-import java.nio.file.*;
-import java.util.List;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
@@ -17,54 +14,57 @@ public final class MainWindow extends JFrame {
     private final LoginPanel loginPanel;
     private final CreateAccountPanel createAccountPanel;
     private final BuildingSelectPanel buildingSelectPanel;
-
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
-
     private @Nullable Account loggedInAccount = null;
 
-    public MainWindow() {
+    public MainWindow(Database database) {
         super("Sign in");
-
-        // delete this once database is implemented
-        var floors = List.of(new Floor("g1", "Ground", Path.of("resources")));
-        var buildings = List.of(
-                new Building("Middlesex College", floors),
-                new Building("Talbot College", floors),
-                new Building("Western Student Recreation Centre", floors));
 
         // Create a card layout to allow switching between panels.
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
         // creating all the panels
-        loginPanel = new LoginPanel();
+        loginPanel = new LoginPanel(database);
         createAccountPanel = new CreateAccountPanel();
-        buildingSelectPanel = new BuildingSelectPanel(buildings);
+        buildingSelectPanel = new BuildingSelectPanel(database.getCurrentState().buildings());
 
         // navigation between panels
+
+        // log in to create account
         loginPanel.addCreateAccountClickListener(() -> changeTo(createAccountPanel));
+
+        // change to building select panel
         loginPanel.addLoginListener(account -> {
             loggedInAccount = account;
             changeTo(buildingSelectPanel);
         });
 
+        // create account to log in, once account has been made
         createAccountPanel.addAccountCreateListener(account -> {
             // TODO: Add the created account to the database.
             changeTo(loginPanel);
         });
 
+        // create account to log in, if user decides not to create account
         createAccountPanel.addBackListener(() -> {
-            changeTo(loginPanel);
             loggedInAccount = null;
+            changeTo(loginPanel);
         });
 
+        // building select to log in screen (log out)
         buildingSelectPanel.addLogOutListener(() -> {
             loggedInAccount = null;
             changeTo(loginPanel);
         });
+
+        // building select to map
         buildingSelectPanel.addBuildingSelectListener(building -> {
-            var mapPanel = new MapPanel(building);
+            if (loggedInAccount == null) {
+                throw new IllegalStateException("No account is logged in.");
+            }
+            var mapPanel = new MapPanel(building, loggedInAccount);
             mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
             changeTo(mapPanel);
         });
