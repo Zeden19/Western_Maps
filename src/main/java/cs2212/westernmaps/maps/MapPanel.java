@@ -42,7 +42,7 @@ public final class MapPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // for everything at the top of the map panel, like search, back, and create poi.
-        var toolbar = createToolbar(glassPane);
+        var toolbar = createToolbar(glassPane, building, database);
 
         currentFloor = building.floors().get(0);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
@@ -136,7 +136,7 @@ public final class MapPanel extends JPanel {
         add(splitPane);
     }
 
-    private JPanel createToolbar(Container glassPane) {
+    private JPanel createToolbar(Container glassPane, Building building, Database database) {
 
         // back button
         var backButton = new JButton("Back");
@@ -149,18 +149,15 @@ public final class MapPanel extends JPanel {
         searchBar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSearchIcon());
 
         searchResults = new JList<>();
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(0, 0, 608, 1000);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(0, 0, 608, 950);
         searchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         searchResults.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         searchResults.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
 
         searchBar.addActionListener(e -> {
             var query = searchBar.getText();
-
-            // add function to get search results
-            searchResults.setListData(new String[] {query});
-            glassPane.add(searchResults, c);
+            glassPane.add(searchResults, constraints);
             glassPane.setVisible(true);
         });
 
