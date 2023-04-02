@@ -62,7 +62,7 @@ public final class MainWindow extends JFrame {
         // building select to map
         buildingSelectPanel.addBuildingSelectListener(building -> {
             if (loggedInAccount == null) {
-                return;
+                throw new IllegalStateException("No account is logged in.");
             }
             var mapPanel = new MapPanel(building, loggedInAccount);
             mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
