@@ -96,6 +96,14 @@ public final class MapPanel extends JPanel {
         return (poiNames.toArray(String[]::new));
     }
 
+    private String[] getPOIFavourites(Database database) {
+        List<POI> pois = database.getCurrentState().pois();
+        List<POI> poisOnFloor = pois.stream().filter(POI::favorite).toList();
+        List<String> poiNames = poisOnFloor.stream().map(POI::name).toList();
+
+        return (poiNames.toArray(String[]::new));
+    }
+
     private JPanel createSidebar(Database database, Building building) {
         var poiListHeader = new JLabel("POIs on this map");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
@@ -110,7 +118,7 @@ public final class MapPanel extends JPanel {
         var favoritesListHeader = new JLabel("Favourite POIs");
         favoritesListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
-        var favoritesList = new JList<POI>();
+        var favoritesList = new JList<>(getPOIFavourites(database));
 
         var favoritesListScroller = new JScrollPane(favoritesList);
         favoritesListScroller.setAlignmentX(0.0f);
