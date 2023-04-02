@@ -87,13 +87,13 @@ public final class MapPanel extends JPanel {
         return toolbar;
     }
 
-    private JList<String> addToPOIList(Floor floor, Database database) {
+    private String[] getPOIsToAdd(Floor floor, Database database) {
         List<POI> pois = database.getCurrentState().pois();
         List<POI> poisOnFloor =
                 pois.stream().filter(a -> a.floor().equals(floor)).toList();
         List<String> poiNames = poisOnFloor.stream().map(POI::name).toList();
 
-        return new JList<>(poiNames.toArray(String[]::new));
+        return (poiNames.toArray(String[]::new));
     }
 
     private JPanel createSidebar(Database database, Building building) {
@@ -101,7 +101,7 @@ public final class MapPanel extends JPanel {
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // todo make the panel get the actual floor, instead of just the first one
-        var poiList = addToPOIList(building.floors().get(1), database);
+        var poiList = new JList<>(getPOIsToAdd(building.floors().get(0), database));
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
