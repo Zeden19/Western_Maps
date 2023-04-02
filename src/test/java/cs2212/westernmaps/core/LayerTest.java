@@ -25,7 +25,8 @@ class LayerTest {
             Layer.FITNESS,
             Layer.LOUNGES,
             Layer.MISCELLANEOUS,
-            Layer.UTILITIES
+            Layer.UTILITIES,
+            Layer.WASHROOMS
         };
         assertArrayEquals(layers, Layer.values());
     }
