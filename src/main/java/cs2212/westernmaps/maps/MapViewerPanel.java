@@ -2,22 +2,15 @@ package cs2212.westernmaps.maps;
 
 import com.formdev.flatlaf.ui.FlatBorder;
 import com.kitfox.svg.SVGCache;
+import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGException;
 import com.kitfox.svg.SVGUniverse;
 import cs2212.westernmaps.core.POI;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +28,8 @@ public final class MapViewerPanel extends JPanel {
 
     private final SVGUniverse universe = SVGCache.getSVGUniverse();
     private final AffineTransform transform = new AffineTransform();
+
+    private @Nullable BufferedImage cachedMapImage = null;
 
     private final List<Consumer<POI>> poiClickListeners = new ArrayList<>();
 
@@ -124,6 +119,7 @@ public final class MapViewerPanel extends JPanel {
                 transform.scale(scaleFactor, scaleFactor);
                 transform.translate(-mouseLocation.x, -mouseLocation.y);
 
+                cachedMapImage = null;
                 repaint();
             }
         };
@@ -153,6 +149,9 @@ public final class MapViewerPanel extends JPanel {
 
     public void setCurrentMapUri(URI uri) {
         this.currentMapUri = uri;
+
+        cachedMapImage = null;
+        repaint();
     }
 
     public List<POI> getDisplayedPois() {
@@ -173,28 +172,21 @@ public final class MapViewerPanel extends JPanel {
 
         var gfx = (Graphics2D) g.create();
         gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        var oldTransform = gfx.getTransform();
-        gfx.transform(transform);
 
         // The SVG universe keeps a cached version of all loaded documents, so
         // we can just use that instead of keeping a copy ourselves.
         var diagram = universe.getDiagram(currentMapUri);
 
-        var mapPath = diagram.getRoot().getChild("map");
-        var lineThickness = Math.min(1.0 / transform.getScaleX(), 1.0);
-
-        // Render the map SVG.
-        try {
-            if (mapPath != null) {
-                mapPath.setAttribute("stroke-width", 2, Double.toString(lineThickness));
-            }
-            diagram.render(this, gfx);
-        } catch (SVGException ex) {
-            throw new RuntimeException(ex);
+        // Render the map SVG to an image and cache the result.
+        if (cachedMapImage == null) {
+            cachedMapImage = renderMapSvg(diagram, transform.getScaleX());
         }
+        // Render the cached map image at the correct position.
+        var mapPosition = new Point(0, 0);
+        transform.transform(mapPosition, mapPosition);
+        gfx.drawImage(cachedMapImage, mapPosition.x, mapPosition.y, this);
 
         // Render icons for each displayed POI.
-        gfx.setTransform(oldTransform);
         for (var poi : displayedPois) {
             // If the POI is hovered, skip it since it will be rendered on top
             // of everything else later. Comparison by reference is intentional.
@@ -233,6 +225,31 @@ public final class MapViewerPanel extends JPanel {
             // Draw the POI icon.
             icon.paintIcon(this, gfx, location.x, location.y);
         }
+    }
+
+    private static BufferedImage renderMapSvg(SVGDiagram diagram, double scale) {
+        var width = (int) Math.ceil(diagram.getWidth() * scale);
+        var height = (int) Math.ceil(diagram.getHeight() * scale);
+
+        var image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        var gfx = (Graphics2D) image.createGraphics();
+        gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        gfx.scale(scale, scale);
+
+        var mapPath = diagram.getRoot().getChild("map");
+        var lineThickness = Math.min(1.0 / scale, 1.0);
+
+        // Render the map SVG to an image and cache the result.
+        try {
+            if (mapPath != null) {
+                mapPath.setAttribute("stroke-width", 2, Double.toString(lineThickness));
+            }
+            diagram.render(null, gfx);
+        } catch (SVGException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return image;
     }
 
     private @Nullable POI getHoveredPoiByChebyshevDistance(int mouseX, int mouseY) {
