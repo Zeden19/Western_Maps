@@ -12,15 +12,28 @@ public class POITestWindow extends JFrame {
 
         POI testPOI = new POI(
                 "Electrical 1",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra aliquam odio et lobortis.",
+                "This is an uneditable description.",
                 50,
                 100,
                 false,
                 new Floor("2", "Floor 2", Path.of("test.svg")),
                 Layer.UTILITIES);
-        setContentPane(new POISummary(testPOI));
+        POI testCustomPOI = new POI(
+                "Grad Club Patio",
+                "This is an editable description.",
+                123,
+                456,
+                false,
+                new Floor("2", "Floor 2", Path.of("test.svg")),
+                Layer.CUSTOM);
+        JPanel content = new JPanel();
+        content.setLayout(new BoxLayout(content, BoxLayout.LINE_AXIS));
+        content.add(new POISummary(testPOI));
+        content.add(new POISummary(testCustomPOI));
 
-        setPreferredSize(new Dimension(300, 400));
+        setContentPane(content);
+
+        setPreferredSize(new Dimension(600, 400));
         pack();
     }
 }
