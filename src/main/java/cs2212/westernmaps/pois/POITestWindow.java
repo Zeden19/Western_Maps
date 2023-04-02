@@ -10,22 +10,11 @@ public class POITestWindow extends JFrame {
         super();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        final Floor testFloor = new Floor("2", "Floor 2", Path.of("test.svg"));
         POI testPOI = new POI(
-                "Electrical 1",
-                "This is an uneditable description.",
-                50,
-                100,
-                false,
-                new Floor("2", "Floor 2", Path.of("test.svg")),
-                Layer.UTILITIES);
+                "Electrical 1", "This is an uneditable description.", 50, 100, false, testFloor, Layer.UTILITIES);
         POI testCustomPOI = new POI(
-                "Grad Club Patio",
-                "This is an editable description.",
-                123,
-                456,
-                false,
-                new Floor("2", "Floor 2", Path.of("test.svg")),
-                Layer.CUSTOM);
+                "Grad Club Patio", "This is an editable description.", 123, 456, false, testFloor, Layer.CUSTOM);
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.LINE_AXIS));
         content.add(new POISummary(testPOI));
