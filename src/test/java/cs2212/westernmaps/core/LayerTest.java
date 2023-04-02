@@ -2,24 +2,38 @@ package cs2212.westernmaps.core;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import javax.swing.*;
 import org.junit.jupiter.api.Test;
 
 class LayerTest {
-
-    @BeforeEach
-    void setUp() {}
-
-    @AfterEach
-    void tearDown() {}
+    @Test
+    // fixme make proper comparison between icons
+    void getIcon() {
+        Layer layer = Layer.ACCESSIBILITY;
+        Icon icon = new FlatSVGIcon("cs2212/westernmaps/poi-icons/accessibility.svg", Layer.class.getClassLoader());
+        assertEquals(icon.getIconHeight(), layer.getIcon().getIconHeight());
+    }
 
     @Test
-    void getIcon() {}
+    void values() {
+        Layer[] layers = {
+            Layer.ACCESSIBILITY,
+            Layer.CLASSROOMS,
+            Layer.CUSTOM,
+            Layer.EATERIES,
+            Layer.FITNESS,
+            Layer.LOUNGES,
+            Layer.MISCELLANEOUS,
+            Layer.UTILITIES
+        };
+        assertArrayEquals(layers, Layer.values());
+    }
 
     @Test
-    void values() {}
-
-    @Test
-    void valueOf() {}
+    void valueOf() {
+        Layer layer = Layer.CUSTOM;
+        assertEquals(Layer.CUSTOM, layer);
+        assertEquals(layer, Layer.valueOf("CUSTOM"));
+    }
 }
