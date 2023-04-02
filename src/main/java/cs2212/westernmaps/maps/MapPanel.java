@@ -24,19 +24,25 @@ public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
+    private JList<String> searchResults = new JList<>();
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
-    public MapPanel(Database database, Building building, Account loggedInAccount) {
+    public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
+
         this.database = database;
         this.building = building;
         this.loggedInAccount = loggedInAccount;
 
+        glassPane.setLayout(new GridBagLayout());
+
         // This determines what MainWindow will use as its title.
         setName(building.name());
+
         setLayout(new BorderLayout());
 
-        var toolbar = createToolbar();
+        // for everything at the top of the map panel, like search, back, and create poi.
+        var toolbar = createToolbar(glassPane);
 
         currentFloor = building.floors().get(0);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
@@ -111,6 +117,7 @@ public final class MapPanel extends JPanel {
         // Make sure the mouse cursor can still change.
         mapViewer.setCursorComponent(layeredPane);
 
+        // everything to the left of the map panel
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
         leftPanel.add(toolbar, BorderLayout.PAGE_START);
@@ -119,6 +126,7 @@ public final class MapPanel extends JPanel {
         // the right panel, where the favourites and pois on the floor go
         var rightPanel = createSidebar(database, building);
 
+        // wrapping everything in a split pane
         var splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
         splitPane.setResizeWeight(0.75);
         splitPane.setOneTouchExpandable(true);
@@ -128,15 +136,42 @@ public final class MapPanel extends JPanel {
         add(splitPane);
     }
 
-    private JPanel createToolbar() {
+    private JPanel createToolbar(Container glassPane) {
+
+        // back button
         var backButton = new JButton("Back");
         backButton.addActionListener(e -> backListeners.forEach(Runnable::run));
 
+        // search bar
         var searchBar = new JTextField(30);
         searchBar.setMaximumSize(new Dimension(384, Short.MAX_VALUE));
         searchBar.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search");
         searchBar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSearchIcon());
 
+        searchResults = new JList<>();
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(0, 0, 608, 1000);
+        searchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        searchResults.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
+        searchResults.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
+
+        searchBar.addActionListener(e -> {
+            var query = searchBar.getText();
+
+            // add function to get search results
+            searchResults.setListData(new String[] {query});
+            glassPane.add(searchResults, c);
+            glassPane.setVisible(true);
+        });
+
+        // removing list when focus is lost
+        searchResults.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                glassPane.setVisible(false);
+            }
+        });
+
+        // create POI button
         var createPOIButton = new JButton("Create POI");
         createPOIButton.addActionListener(e -> {
             // Determine the location in the center of the map view right now,
@@ -160,6 +195,7 @@ public final class MapPanel extends JPanel {
             refreshPois();
         });
 
+        // wrapping it all in a toolbar
         var toolbar = new JPanel();
         toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.LINE_AXIS));
         toolbar.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));

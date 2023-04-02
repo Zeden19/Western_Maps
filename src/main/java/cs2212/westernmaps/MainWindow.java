@@ -82,7 +82,18 @@ public final class MainWindow extends JFrame {
             if (loggedInAccount == null) {
                 throw new IllegalStateException("No account is logged in.");
             }
-            var mapPanel = new MapPanel(database, building, loggedInAccount);
+
+            setGlassPane(new JComponent() {
+                @Override
+                public void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.setColor(new Color(0, 0, 0, 0));
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            });
+
+            Container glassPane = (Container) getGlassPane();
+            var mapPanel = new MapPanel(database, building, loggedInAccount, glassPane);
             mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
             changeTo(mapPanel);
         });
