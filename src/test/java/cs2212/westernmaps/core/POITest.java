@@ -1,6 +1,4 @@
 package cs2212.westernmaps.core;
-
-<<<<<<< HEAD
 import java.nio.file.Path;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
@@ -41,4 +39,58 @@ public final class POITest {
             Assertions.assertFalse(poi.isFavoriteOfAccount(account2));
         }
     }
+
+    @Test
+    void name() {
+        POI poi = new POI(
+                "name",
+                "description",
+                0,
+                0,
+                null,
+                new Floor("testName", "test", Path.of("resources")),
+                Layer.ACCESSIBILITY,
+                null);
+        Assertions.assertEquals("name", poi.name());
+    }
+
+    @Test
+    void description() {
+        POI poi = new POI(
+                "name",
+                "description",
+                0,
+                0,
+                null,
+                new Floor("testName", "test", Path.of("resources")),
+                Layer.ACCESSIBILITY, null);
+        Assertions.assertEquals("description", poi.description());
+    }
+
+    @Test
+    void x() {
+        POI poi = new POI(
+                "name",
+                "description",
+                0,
+                0,
+                null,
+                new Floor("testName", "test", Path.of("resources")),
+                Layer.ACCESSIBILITY, null);
+        Assertions.assertEquals(0, poi.x());
+    }
+
+    @Test
+    void y() {
+        POI poi = new POI(
+                "name",
+                "description",
+                0,
+                100,
+                null,
+                new Floor("testName", "test", Path.of("resources")),
+                Layer.ACCESSIBILITY,null);
+        Assertions.assertEquals(100, poi.y());
+    }
+
 }
