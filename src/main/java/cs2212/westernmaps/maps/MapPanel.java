@@ -49,7 +49,8 @@ public final class MapPanel extends JPanel {
         leftPanel.add(toolbar, BorderLayout.PAGE_START);
         leftPanel.add(layeredPane, BorderLayout.CENTER);
 
-        var rightPanel = createSidebar();
+        // todo make the panel get the actual floor, instead of just the first one
+        var rightPanel = createSidebar(database, building);
 
         var splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
         splitPane.setResizeWeight(0.75);
@@ -86,11 +87,21 @@ public final class MapPanel extends JPanel {
         return toolbar;
     }
 
-    private JPanel createSidebar() {
+    private JList<String> addToPOIList(Floor floor, Database database) {
+        List<POI> pois = database.getCurrentState().pois();
+        List<POI> poisOnFloor =
+                pois.stream().filter(a -> a.floor().equals(floor)).toList();
+        List<String> poiNames = poisOnFloor.stream().map(POI::name).toList();
+
+        return new JList<>(poiNames.toArray(String[]::new));
+    }
+
+    private JPanel createSidebar(Database database, Building building) {
         var poiListHeader = new JLabel("POIs on this map");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
-        var poiList = new JList<POI>();
+        // todo make the panel get the actual floor, instead of just the first one
+        var poiList = addToPOIList(building.floors().get(1), database);
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
