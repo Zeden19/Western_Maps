@@ -162,6 +162,7 @@ public final class MapViewerPanel extends JPanel {
 
     public void setCurrentMapUri(URI uri) {
         renderCache.setDiagram(universe.getDiagram(uri));
+        this.currentMapUri = uri;
         repaint();
     }
 
@@ -171,6 +172,7 @@ public final class MapViewerPanel extends JPanel {
 
     public void setDisplayedPois(List<POI> pois) {
         displayedPois = pois;
+        repaint();
     }
 
     public void addPoiClickListener(Consumer<POI> listener) {

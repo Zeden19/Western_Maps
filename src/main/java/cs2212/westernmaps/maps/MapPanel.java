@@ -4,15 +4,18 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
 import java.awt.*;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
+    private final Database database;
+    private final MapViewerPanel mapViewer;
+
     private final List<Runnable> backListeners = new ArrayList<>();
 
-    public MapPanel(Building building, Account loggedInAccount) {
+    public MapPanel(Database database, Building building, Account loggedInAccount) {
+        this.database = database;
 
         // temporary code, just printing out if user is a developer
         System.out.println(loggedInAccount.developer());
@@ -23,16 +26,14 @@ public final class MapPanel extends JPanel {
 
         var toolbar = createToolbar();
 
-        // Temporary code; remove before merging.
-        var uri = Path.of("MiddleSex-2.svg").toUri();
-        var floor = new Floor("T", "Test Floor", Path.of("asdf"));
-        var pois = List.of(
-                new POI("Test POI", "POI added for testing.", 500, 300, false, floor, Layer.UTILITIES),
-                new POI("Test POI 2", "POI added for testing.", 600, 300, false, floor, Layer.CLASSROOMS),
-                new POI("Test POI 3", "POI added for testing.", 600, 400, false, floor, Layer.ACCESSIBILITY));
+        var floors = building.floors();
+        var initialFloor = floors.get(0);
+        var initialMapUri = database.resolveFloorMapUri(initialFloor);
 
-        var mapViewer = new MapViewerPanel(uri, pois);
+        mapViewer = new MapViewerPanel(initialMapUri, List.of());
         mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
+        // This adds the POIs to the map.
+        changeToFloor(initialFloor);
 
         var floatingControls = createFloatingControls(building);
 
@@ -119,6 +120,7 @@ public final class MapPanel extends JPanel {
 
     private JPanel createFloatingControls(Building building) {
         var floorSwitcher = new FloorSwitcher(building.floors());
+        floorSwitcher.addFloorSwitchListener(this::changeToFloor);
 
         var floatingControls = new JPanel();
         floatingControls.setOpaque(false);
@@ -135,6 +137,16 @@ public final class MapPanel extends JPanel {
         floatingControls.add(floorSwitcher, constraints);
 
         return floatingControls;
+    }
+
+    // Does not update the selection of the floor switcher.
+    private void changeToFloor(Floor floor) {
+        mapViewer.setCurrentMapUri(database.resolveFloorMapUri(floor));
+
+        var pois = database.getCurrentState().pois().stream()
+                .filter(poi -> poi.floor().equals(floor))
+                .toList();
+        mapViewer.setDisplayedPois(pois);
     }
 
     public void addBackListener(Runnable listener) {
