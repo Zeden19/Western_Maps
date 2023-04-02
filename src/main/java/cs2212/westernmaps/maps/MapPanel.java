@@ -13,6 +13,9 @@ public final class MapPanel extends JPanel {
     private final MapViewerPanel mapViewer;
 
     private final List<Runnable> backListeners = new ArrayList<>();
+    JList<String> poiList = new JList<>();
+    JList<String> favoritesList = new JList<>();
+
 
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
@@ -109,7 +112,7 @@ public final class MapPanel extends JPanel {
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // todo make the panel get the actual floor, instead of just the first one
-        var poiList = new JList<>(getPOIsToAdd(building.floors().get(0), database));
+        poiList = new JList<>(getPOIsToAdd(building.floors().get(0), database));
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
@@ -118,7 +121,7 @@ public final class MapPanel extends JPanel {
         var favoritesListHeader = new JLabel("Favourite POIs");
         favoritesListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
-        var favoritesList = new JList<>(getPOIFavourites(database));
+        favoritesList = new JList<>(getPOIFavourites(database));
 
         var favoritesListScroller = new JScrollPane(favoritesList);
         favoritesListScroller.setAlignmentX(0.0f);
