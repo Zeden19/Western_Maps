@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 public final class MapRenderCache {
     private static final double MAX_CACHED_SCALE = 5.0;
     private static final double MIN_CACHED_SCALE = 0.0;
+    private static final long RENDER_DELAY_MS = 200;
 
     private final ExecutorService executor = Executors.newCachedThreadPool(runnable -> {
         var thread = new Thread(runnable);
@@ -68,7 +69,10 @@ public final class MapRenderCache {
     private @Nullable BufferedImage getCachedImageIfReady() {
         if (cachedImageFuture == null) {
             if (scale <= MAX_CACHED_SCALE && scale >= MIN_CACHED_SCALE) {
-                cachedImageFuture = executor.submit(() -> renderSvgToImage(diagram, scale));
+                cachedImageFuture = executor.submit(() -> {
+                    Thread.sleep(RENDER_DELAY_MS);
+                    return renderSvgToImage(diagram, scale);
+                });
             }
             return null;
         }
