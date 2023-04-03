@@ -285,7 +285,7 @@ public final class MapViewerPanel extends JPanel {
             // If the POI is being hovered or dragged, skip it since it will be
             // rendered on top of everything else later. Comparison by reference
             // is intentional.
-            if (poi == hoveredPoi) {
+            if (poi == hoveredPoi || poi == draggedPoi) {
                 continue;
             }
             // If the POI's layer is not visible, skip it.
