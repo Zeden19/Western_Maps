@@ -6,7 +6,9 @@ import cs2212.westernmaps.core.*;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -16,6 +18,7 @@ import javax.swing.text.Document;
 public class POISummaryPanel extends JPanel {
     private static final int MAX_COLUMNS = 10;
     private POI poi;
+    private final List<BiConsumer<POI, POI>> poiSummaryListeners = new ArrayList<>();
     /**
      * Summary window of a POI that displays its metadata.
      *
@@ -35,6 +38,7 @@ public class POISummaryPanel extends JPanel {
         JTextField title = new JTextField(poi.name());
         title.putClientProperty(FlatClientProperties.STYLE_CLASS, "h3");
         title.setEditable(developer);
+
         title.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -194,6 +198,14 @@ public class POISummaryPanel extends JPanel {
         contentBox.setBorder(new FlatButtonBorder());
 
         add(contentBox);
+    }
+
+    /**
+     * Registers an event listener that is called when a field of the POI summary is edited.
+     * @param listener Event listener, taking two arguments: the old POI and the modified POI.
+     */
+    public void addPoiSummaryListener(BiConsumer<POI, POI> listener) {
+        poiSummaryListeners.add(listener);
     }
 
     private static void addToBox(JPanel box, JComponent component) {
