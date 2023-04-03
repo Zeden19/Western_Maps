@@ -52,6 +52,7 @@ public final class MapPanel extends JPanel {
             }
             refreshPois();
         });
+        mapViewer.setPoiMoveCondition(poi -> loggedInAccount.developer() || poi.layer() == Layer.CUSTOM);
         refreshPois();
 
         var floatingControls = createFloatingControls(building);

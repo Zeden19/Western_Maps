@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -35,6 +36,7 @@ public final class MapViewerPanel extends JPanel {
 
     private final List<Consumer<POI>> poiClickListeners = new ArrayList<>();
     private final List<BiConsumer<POI, Point>> poiMoveListeners = new ArrayList<>();
+    private Predicate<POI> poiMoveCondition = poi -> true;
 
     private Component cursorComponent;
     private URI currentMapUri;
@@ -120,6 +122,13 @@ public final class MapViewerPanel extends JPanel {
                         var poi = Objects.requireNonNull(hoveredPoi);
                         var distanceToPoi = chebyshevDistanceToPoi(poi, e.getX(), e.getY());
                         if (distanceToPoi > POI_CLICK_TARGET_SIZE) {
+                            if (!poiMoveCondition.test(poi)) {
+                                // The user is not allowed to move this POI.
+                                dragState = DragState.NONE;
+                                cursorComponent.setCursor(null);
+                                return;
+                            }
+
                             dragState = DragState.DRAGGING_POI;
                             draggedPoi = poi;
                             hoveredPoi = null;
@@ -263,6 +272,16 @@ public final class MapViewerPanel extends JPanel {
      */
     public void addPoiMoveListener(BiConsumer<POI, Point> listener) {
         poiMoveListeners.add(listener);
+    }
+
+    /**
+     * Sets the predicate that determines what POIs can be moved the user.
+     *
+     * @param condition A function taking a {@link POI} and returning whether
+     *                  that POI should be able to be moved by the user.
+     */
+    public void setPoiMoveCondition(@Nullable Predicate<POI> condition) {
+        poiMoveCondition = Objects.requireNonNullElse(condition, poi -> true);
     }
 
     @Override
