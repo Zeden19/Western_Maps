@@ -17,6 +17,7 @@ public class POISummary extends JPanel {
     public POISummary(POI poi) {
 
         final int MAX_COLUMNS = 10;
+        // DatabaseState currentState = database.getCurrentState();
 
         // Temporary variable, will eventually check if logged-in user is a developer
         final boolean developer = true;
@@ -29,6 +30,7 @@ public class POISummary extends JPanel {
         JTextArea title = new JTextArea(poi.name(), 1, MAX_COLUMNS);
         title.putClientProperty(FlatClientProperties.STYLE_CLASS, "h3");
         title.setEditable(developer);
+        title.setLineWrap(true);
         addToBox(summaryBox, title);
 
         // Layer
@@ -76,7 +78,7 @@ public class POISummary extends JPanel {
 
         // Description
         JTextArea desc = new JTextArea(poi.description(), 3, MAX_COLUMNS);
-        desc.setEditable(isCustom);
+        desc.setEditable(isCustom || developer);
         desc.setLineWrap(true);
         desc.setWrapStyleWord(true);
         addToBox(summaryBox, desc);
