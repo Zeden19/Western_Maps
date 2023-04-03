@@ -24,6 +24,7 @@ public final class CreateAccountPanel extends JPanel {
     private final JLabel passwordInvalidError;
     private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
     private final List<Runnable> backButtonListeners = new ArrayList<>();
+    private final JLabel userNameTakenError;
 
     public CreateAccountPanel(Database database) {
         // This determines what MainWindow will use as its title.
@@ -73,10 +74,15 @@ public final class CreateAccountPanel extends JPanel {
         // Create account Button
         var createAccountButton = new JButton("Create Account");
         createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         createAccountButton.addActionListener(e -> {
-            if (!checkPasswordFields()) {
+
+            // checking if user can create account with given username and password
+            if (!checkPasswordFields() | isUsernameTaken(database, usernameField.getText())) {
                 return;
             }
+
+            System.out.println("uwu");
             PasswordAuthenticator auth = new PasswordAuthenticator();
             String hash = auth.hash(passwordField.getPassword());
 
@@ -106,6 +112,12 @@ public final class CreateAccountPanel extends JPanel {
         passwordInvalidError.setVisible(false);
         passwordInvalidError.setForeground(UIManager.getColor("Actions.Red"));
 
+        // error if account name is already taken
+        userNameTakenError = new JLabel("Username has already been taken");
+        userNameTakenError.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userNameTakenError.setVisible(false);
+        userNameTakenError.setForeground(UIManager.getColor("Actions.Red"));
+
         // The main panel, a gridbagLayout, containing an inner boxLayout and the back button
         var mainPanel = new JPanel();
         mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -133,9 +145,11 @@ public final class CreateAccountPanel extends JPanel {
         panel.add(Box.createVerticalStrut(16));
 
         panel.add(Box.createVerticalStrut(8));
-        panel.add(passwordMatchError);
 
+        panel.add(passwordMatchError);
         panel.add(passwordInvalidError);
+        panel.add(userNameTakenError);
+
         panel.add(Box.createVerticalStrut(8));
 
         panel.add(createAccountButton);
@@ -156,6 +170,7 @@ public final class CreateAccountPanel extends JPanel {
         backButtonListeners.add(listener);
     }
 
+    // checking if passwords match
     private boolean checkPasswordFields() {
         passwordMatchError.setVisible(false);
         passwordInvalidError.setVisible(false);
@@ -163,7 +178,7 @@ public final class CreateAccountPanel extends JPanel {
         if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword())) {
             passwordMatchError.setVisible(true); // passwords not matching
             return false;
-        } else if (!isPasswordValid(passwordField.getPassword())) {
+        } else if (isPasswordValid(passwordField.getPassword())) {
             passwordInvalidError.setVisible(true); // password not valid
             return false;
         } else {
@@ -171,6 +186,21 @@ public final class CreateAccountPanel extends JPanel {
         }
     }
 
+    // checking if the username was taken
+    private boolean isUsernameTaken(Database database, String username) {
+        userNameTakenError.setVisible(false);
+        Account accountFound = database.getCurrentState().accounts().stream()
+                .filter(account -> account.username().equals(username))
+                .findFirst()
+                .orElse(null);
+        if (accountFound != null) {
+            userNameTakenError.setVisible(true); // username already taken
+            return true;
+        }
+        return false;
+    }
+
+    // checking if the password was valid
     private boolean isPasswordValid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
@@ -181,12 +211,12 @@ public final class CreateAccountPanel extends JPanel {
         for (char c : password) {
             stringPassword.append(c);
         }
-        return (password.length >= 8
-                && // checking for length
-                letter.matcher(stringPassword).find()
-                && // checking for letters
-                digit.matcher(stringPassword).find()
-                && // checking for numbers
-                special.matcher(stringPassword).find()); // checking for special characters
+        return (password.length < 8
+                || // checking for length
+                !letter.matcher(stringPassword).find()
+                || // checking for letters
+                !digit.matcher(stringPassword).find()
+                || // checking for numbers
+                !special.matcher(stringPassword).find()); // checking for special characters
     }
 }
