@@ -277,8 +277,11 @@ public final class MapViewerPanel extends JPanel {
         transform.transform(mapPosition, mapPosition);
         renderCache.render(gfx, mapPosition.x, mapPosition.y, this);
 
-        // Render icons for each displayed POI.
-        for (var poi : displayedPois) {
+        // Render icons for each displayed POI. POIs are rendered in reverse
+        // order so that the first POI in the list gets displayed on top.
+        for (int index = displayedPois.size() - 1; index >= 0; index--) {
+            var poi = displayedPois.get(index);
+
             // If the POI is being hovered or dragged, skip it since it will be
             // rendered on top of everything else later. Comparison by reference
             // is intentional.
