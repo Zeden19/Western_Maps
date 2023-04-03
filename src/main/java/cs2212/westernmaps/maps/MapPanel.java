@@ -12,6 +12,7 @@ import javax.swing.*;
 public final class MapPanel extends JPanel {
     private final Database database;
     private final Building building;
+    private Floor currentFloor;
 
     private final MapViewerPanel mapViewer;
 
@@ -32,15 +33,19 @@ public final class MapPanel extends JPanel {
 
         var toolbar = createToolbar();
 
-        var floors = building.floors();
-        var initialFloor = floors.get(0);
-        var initialMapUri = database.resolveFloorMapUri(initialFloor);
+        currentFloor = building.floors().get(0);
+        var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
         mapViewer = new MapViewerPanel(initialMapUri, List.of());
         mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
-        mapViewer.addPoiMoveListener((poi, location) -> System.out.println(poi.name() + " moved to " + location));
-        // This adds the POIs to the map.
-        changeToFloor(initialFloor);
+        mapViewer.addPoiMoveListener((movedPoi, location) -> {
+            var newState = database.getCurrentState().modifyPOIs(pois -> pois.stream()
+                    .map(poi -> poi == movedPoi ? poi.withLocation(location.x, location.y) : poi)
+                    .toList());
+            database.getHistory().pushState(newState);
+            refreshPois();
+        });
+        refreshPois();
 
         var floatingControls = createFloatingControls(building);
 
@@ -95,14 +100,6 @@ public final class MapPanel extends JPanel {
         return toolbar;
     }
 
-    // Updating the POI's on the floor list
-    private void updatePOIsOnFloor(Database database, Floor floor) {
-        POI[] poisToAdd = database.getCurrentState().pois().stream()
-                .filter(poi -> poi.floor().equals(floor))
-                .toArray(POI[]::new);
-        poiList.setListData(poisToAdd);
-    }
-
     // updating the favourites POI list
     private void updateFavouritePOIs(Database database) {
         POI[] poisToAdd =
@@ -113,9 +110,6 @@ public final class MapPanel extends JPanel {
     private JPanel createSidebar(Database database, Building building) {
         var poiListHeader = new JLabel("POIs on this Floor");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
-
-        // the initial POI'S, on the ground floor
-        updatePOIsOnFloor(database, building.floors().get(0));
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
@@ -175,14 +169,17 @@ public final class MapPanel extends JPanel {
 
     // Does not update the selection of the floor switcher.
     private void changeToFloor(Floor floor) {
+        currentFloor = floor;
         mapViewer.setCurrentMapUri(database.resolveFloorMapUri(floor));
+        refreshPois();
+    }
 
-        updatePOIsOnFloor(database, floor);
-
+    private void refreshPois() {
         var pois = database.getCurrentState().pois().stream()
-                .filter(poi -> poi.floor().equals(floor))
+                .filter(poi -> poi.floor().equals(currentFloor))
                 .toList();
         mapViewer.setDisplayedPois(pois);
+        poiList.setListData(pois.toArray(POI[]::new));
     }
 
     public void addBackListener(Runnable listener) {
