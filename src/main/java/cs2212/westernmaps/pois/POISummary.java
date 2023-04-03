@@ -2,7 +2,7 @@ package cs2212.westernmaps.pois;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.*;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 public class POISummary extends JPanel {
-
     private POI poi;
     /**
      * Summary window of a POI that displays its metadata.
@@ -63,8 +62,6 @@ public class POISummary extends JPanel {
                     pois.set(poiIndex, poi);
                     database.getHistory()
                             .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
-
-                    System.out.println(pois.get(poiIndex).name() + " renamed.");
                 } catch (BadLocationException ex) {
                     System.out.println("Error reading Document: " + e);
                 }
@@ -94,8 +91,6 @@ public class POISummary extends JPanel {
                     pois.set(poiIndex, poi);
                     database.getHistory()
                             .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
-
-                    System.out.println(pois.get(poiIndex).name() + " is now on layer " + newLayer.name());
                 }
             });
             layerCombo.setSelectedItem(poi.layer());
@@ -110,6 +105,7 @@ public class POISummary extends JPanel {
 
         // Favorite
         JCheckBox favoriteCheck = new JCheckBox("Favourite");
+        favoriteCheck.setSelected(poi.favorite());
         // TODO: Add icon here
         favoriteCheck.addItemListener(e -> {
             DatabaseState currentState = database.getCurrentState();
@@ -118,8 +114,6 @@ public class POISummary extends JPanel {
             poi = new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
             pois.set(poiIndex, poi);
             database.getHistory().pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
-
-            System.out.println(pois.get(poiIndex).name() + " now has favorite value: " + poi.favorite());
         });
         addToBox(summaryBox, favoriteCheck);
 
@@ -159,8 +153,6 @@ public class POISummary extends JPanel {
                     pois.set(poiIndex, poi);
                     database.getHistory()
                             .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
-
-                    System.out.println(pois.get(poiIndex).name() + " now has description: " + newDesc);
                 } catch (BadLocationException ex) {
                     System.out.println("Error reading Document: " + e);
                 }
@@ -177,7 +169,7 @@ public class POISummary extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int confirmDelete = JOptionPane.showConfirmDialog(
-                            null,
+                            (Component) e.getSource(),
                             "Are you sure you want to delete " + poi.name() + "?",
                             "Delete POI",
                             JOptionPane.YES_NO_OPTION);
@@ -187,8 +179,6 @@ public class POISummary extends JPanel {
                         pois.remove(poi);
                         database.getHistory()
                                 .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
-
-                        System.out.println("Deleted " + poi.name());
                     }
                 }
             });

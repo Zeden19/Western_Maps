@@ -15,8 +15,8 @@ public class POITestWindow extends JFrame {
 
         Floor testFloor = new Floor("2", "Floor 2", Path.of("test.svg"));
         POI testPOI = new POI("Electrical 1", "This is a description.", 50, 100, false, testFloor, Layer.UTILITIES);
-        POI testCustomPOI = new POI(
-                "Grad Club Patio", "This is an editable description.", 123, 456, false, testFloor, Layer.CUSTOM);
+        POI testCustomPOI =
+                new POI("Grad Club Patio", "This is an editable description.", 123, 456, true, testFloor, Layer.CUSTOM);
         List<POI> poiList = new ArrayList<>();
         poiList.add(testPOI);
         poiList.add(testCustomPOI);
