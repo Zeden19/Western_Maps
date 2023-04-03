@@ -26,9 +26,14 @@ public class POITestWindow extends JFrame {
 
         try {
             Database database = Database.openDirectory(Path.of("data"));
+            DatabaseState currentState = database.getCurrentState();
+            List<POI> pois = new ArrayList<>(currentState.pois());
+            pois.add(testPOI);
+            pois.add(testCustomPOI);
+            database.getHistory().pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
 
-            content.add(new POISummary(testPOI, poiList, database, true));
-            content.add(new POISummary(testCustomPOI, poiList, database, true));
+            content.add(new POISummary(testPOI, database, true));
+            content.add(new POISummary(testCustomPOI, database, true));
         } catch (IOException e) {
             System.out.println(e);
         }

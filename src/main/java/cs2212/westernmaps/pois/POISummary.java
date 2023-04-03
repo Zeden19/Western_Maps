@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -14,23 +15,18 @@ import javax.swing.text.Document;
 public class POISummary extends JPanel {
 
     private POI poi;
-    private final List<POI> pois;
-
     /**
      * Summary window of a POI that displays its metadata.
      *
      * @param poiToSummarize POI to summarize
-     * @param allPois List of all POIs in current database state
      * @param database Database
      * @param developer If the logged-in user is a developer
      */
-    public POISummary(POI poiToSummarize, List<POI> allPois, Database database, boolean developer) {
+    public POISummary(POI poiToSummarize, Database database, boolean developer) {
 
         final int MAX_COLUMNS = 10;
-        DatabaseState currentState = database.getCurrentState();
 
         poi = poiToSummarize;
-        pois = allPois;
 
         JPanel summaryBox = new JPanel();
         summaryBox.setLayout(new BoxLayout(summaryBox, BoxLayout.PAGE_AXIS));
@@ -54,6 +50,8 @@ public class POISummary extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                DatabaseState currentState = database.getCurrentState();
+                List<POI> pois = new ArrayList<>(currentState.pois());
                 int poiIndex = pois.indexOf(poi);
                 Document doc = e.getDocument();
                 try {
@@ -61,13 +59,14 @@ public class POISummary extends JPanel {
 
                     poi = new POI(
                             newTitle, poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
+
                     pois.set(poiIndex, poi);
                     database.getHistory()
                             .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
 
                     System.out.println(pois.get(poiIndex).name() + " renamed.");
                 } catch (BadLocationException ex) {
-                    System.out.println("Error reading Document: " + e.toString());
+                    System.out.println("Error reading Document: " + e);
                 }
             }
         });
@@ -86,6 +85,8 @@ public class POISummary extends JPanel {
             layerCombo.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    DatabaseState currentState = database.getCurrentState();
+                    List<POI> pois = new ArrayList<>(currentState.pois());
                     int poiIndex = pois.indexOf(poi);
                     Layer newLayer = (Layer) layerCombo.getSelectedItem();
                     poi = new POI(
@@ -111,6 +112,8 @@ public class POISummary extends JPanel {
         JCheckBox favoriteCheck = new JCheckBox("Favourite");
         // TODO: Add icon here
         favoriteCheck.addItemListener(e -> {
+            DatabaseState currentState = database.getCurrentState();
+            List<POI> pois = new ArrayList<>(currentState.pois());
             int poiIndex = pois.indexOf(poi);
             poi = new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
             pois.set(poiIndex, poi);
@@ -145,6 +148,8 @@ public class POISummary extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                DatabaseState currentState = database.getCurrentState();
+                List<POI> pois = new ArrayList<>(currentState.pois());
                 int poiIndex = pois.indexOf(poi);
                 Document doc = e.getDocument();
                 try {
@@ -157,7 +162,7 @@ public class POISummary extends JPanel {
 
                     System.out.println(pois.get(poiIndex).name() + " now has description: " + newDesc);
                 } catch (BadLocationException ex) {
-                    System.out.println("Error reading Document: " + e.toString());
+                    System.out.println("Error reading Document: " + e);
                 }
             }
         });
@@ -177,6 +182,8 @@ public class POISummary extends JPanel {
                             "Delete POI",
                             JOptionPane.YES_NO_OPTION);
                     if (confirmDelete == JOptionPane.YES_OPTION) {
+                        DatabaseState currentState = database.getCurrentState();
+                        List<POI> pois = new ArrayList<>(currentState.pois());
                         pois.remove(poi);
                         database.getHistory()
                                 .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
