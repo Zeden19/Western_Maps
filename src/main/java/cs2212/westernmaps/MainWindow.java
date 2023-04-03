@@ -16,6 +16,7 @@ public final class MainWindow extends JFrame {
     private final BuildingSelectPanel buildingSelectPanel;
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
+
     private @Nullable Account loggedInAccount = null;
 
     public MainWindow(Database database) {
@@ -64,7 +65,7 @@ public final class MainWindow extends JFrame {
             if (loggedInAccount == null) {
                 throw new IllegalStateException("No account is logged in.");
             }
-            var mapPanel = new MapPanel(building, loggedInAccount);
+            var mapPanel = new MapPanel(database, building, loggedInAccount);
             mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
             changeTo(mapPanel);
         });

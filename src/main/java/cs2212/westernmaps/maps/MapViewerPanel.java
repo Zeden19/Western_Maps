@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 public final class MapViewerPanel extends JPanel {
@@ -29,12 +30,16 @@ public final class MapViewerPanel extends JPanel {
     private final MapRenderCache renderCache;
 
     private final List<Consumer<POI>> poiClickListeners = new ArrayList<>();
-
+    private Component cursorComponent;
+    private URI currentMapUri;
     private List<POI> displayedPois;
 
     private @Nullable POI hoveredPoi = null;
 
     public MapViewerPanel(URI initialMapUri, List<POI> displayedPois) {
+        cursorComponent = this;
+        currentMapUri = initialMapUri;
+
         this.displayedPois = displayedPois;
         this.renderCache = new MapRenderCache(universe.getDiagram(initialMapUri), 1.0);
 
@@ -51,7 +56,7 @@ public final class MapViewerPanel extends JPanel {
                 } else if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON2) {
                     lastMousePosition.setLocation(e.getX(), e.getY());
                     dragging = true;
-                    setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                    cursorComponent.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                 }
                 requestFocusInWindow();
             }
@@ -60,7 +65,7 @@ public final class MapViewerPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 if (dragging) {
                     dragging = false;
-                    setCursor(null);
+                    cursorComponent.setCursor(null);
                 }
             }
 
@@ -73,9 +78,9 @@ public final class MapViewerPanel extends JPanel {
                 }
 
                 if (hoveredPoi != null) {
-                    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    cursorComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 } else {
-                    setCursor(null);
+                    cursorComponent.setCursor(null);
                 }
             }
 
@@ -139,8 +144,25 @@ public final class MapViewerPanel extends JPanel {
         });
     }
 
+    /**
+     * Sets the component that receives cursor changes from this panel.
+     *
+     * <p>This is needed because, when using a {@link JLayeredPane}, only the
+     * topmost component can set the cursor the normal way.</p>
+     *
+     * @param cursorComponent A component that will have its cursor changed.
+     */
+    public void setCursorComponent(@Nullable Component cursorComponent) {
+        this.cursorComponent = cursorComponent == null ? this : cursorComponent;
+    }
+
+    public URI getCurrentMapUri() {
+        return currentMapUri;
+    }
+
     public void setCurrentMapUri(URI uri) {
         renderCache.setDiagram(universe.getDiagram(uri));
+        this.currentMapUri = uri;
         repaint();
     }
 
@@ -150,6 +172,7 @@ public final class MapViewerPanel extends JPanel {
 
     public void setDisplayedPois(List<POI> pois) {
         displayedPois = pois;
+        repaint();
     }
 
     public void addPoiClickListener(Consumer<POI> listener) {

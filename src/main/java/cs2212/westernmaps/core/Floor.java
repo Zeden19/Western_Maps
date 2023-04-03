@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.kitfox.svg.SVGDiagram;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -22,15 +21,6 @@ import java.nio.file.Path;
 @JsonIdentityInfo(generator = IntSequenceGenerator.class)
 public record Floor(
         String shortName, String longName, @JsonSerialize(using = RelativePathSerializer.class) Path mapPath) {
-    /**
-     * Loads the map of this floor as an {@link SVGDiagram}.
-     *
-     * @return An {@code SVGDiagram} of this floor's map.
-     */
-    public SVGDiagram loadMap() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     private static class RelativePathSerializer extends JsonSerializer<Path> {
         @Override
         public void serialize(Path path, JsonGenerator generator, SerializerProvider provider) throws IOException {

@@ -1,6 +1,7 @@
 package cs2212.westernmaps.core;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -35,6 +36,11 @@ public final class Database {
 
     public DatabaseState getCurrentState() {
         return getHistory().getCurrentState();
+    }
+
+    public URI resolveFloorMapUri(Floor floor) {
+        var mapPath = directory.resolve(floor.mapPath());
+        return mapPath.toUri();
     }
 
     public void reload() throws IOException {
