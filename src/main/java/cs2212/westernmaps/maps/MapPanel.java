@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -43,6 +44,12 @@ public final class MapPanel extends JPanel {
                     .map(poi -> poi == movedPoi ? poi.withLocation(location.x, location.y) : poi)
                     .toList());
             database.getHistory().pushState(newState);
+            // Save changes to disk.
+            try {
+                database.save();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             refreshPois();
         });
         refreshPois();
