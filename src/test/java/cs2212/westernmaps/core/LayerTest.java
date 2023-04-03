@@ -6,13 +6,16 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import javax.swing.*;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Testing
+ */
 class LayerTest {
     @Test
-    // fixme make proper comparison between icons
     void getIcon() {
         Layer layer = Layer.ACCESSIBILITY;
-        Icon icon = new FlatSVGIcon("cs2212/westernmaps/poi-icons/accessibility.svg", Layer.class.getClassLoader());
-        assertEquals(icon.getIconHeight(), layer.getIcon().getIconHeight());
+        FlatSVGIcon icon =
+                new FlatSVGIcon("cs2212/westernmaps/poi-icons/accessibility.svg", Layer.class.getClassLoader());
+        assertEquals(icon.getName(), ((FlatSVGIcon) layer.getIcon()).getName());
     }
 
     @Test
