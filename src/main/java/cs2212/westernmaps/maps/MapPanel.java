@@ -13,8 +13,8 @@ public final class MapPanel extends JPanel {
     private final MapViewerPanel mapViewer;
 
     private final List<Runnable> backListeners = new ArrayList<>();
-    JList<POI> poiList = new JList<>();
-    JList<POI> favoritesList = new JList<>();
+    private final JList<POI> poiList = new JList<>();
+    private final JList<POI> favoritesList = new JList<>();
 
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
@@ -43,6 +43,7 @@ public final class MapPanel extends JPanel {
         layeredPane.setLayout(new OverlayLayout(layeredPane));
         layeredPane.add(mapViewer, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(floatingControls, JLayeredPane.PALETTE_LAYER);
+
         // Make sure the mouse cursor can still change.
         mapViewer.setCursorComponent(layeredPane);
 
@@ -51,7 +52,7 @@ public final class MapPanel extends JPanel {
         leftPanel.add(toolbar, BorderLayout.PAGE_START);
         leftPanel.add(layeredPane, BorderLayout.CENTER);
 
-        // todo make the panel get the actual floor, instead of just the first one
+        // the right panel, where the favourites and pois on the floor go
         var rightPanel = createSidebar(database, building);
 
         var splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
@@ -89,18 +90,20 @@ public final class MapPanel extends JPanel {
         return toolbar;
     }
 
-    private void updatePOIs(Database database, Floor floor) {
+    // Updating the POI's on the floor list
+    private void updatePOIsOnFloor(Database database, Floor floor) {
         List<POI> poisToAdd = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.floor().equals(floor))
                 .toList();
         poiList.setListData(poisToAdd.toArray(POI[]::new));
     }
 
+    // updating the favourites POI list
     private void updateFavouritePOIs(Database database) {
-        List<POI> poisToAdd = database.getCurrentState().pois().stream().filter(POI::favorite).toList().stream()
-                .filter(POI::favorite)
-                .toList();
-        favoritesList.setListData(poisToAdd.toArray(POI[]::new));
+        POI[] poisToAdd = database.getCurrentState().pois().stream().filter(POI::favorite).toList().stream()
+                .toList()
+                .toArray(POI[]::new);
+        favoritesList.setListData(poisToAdd);
     }
 
     private JPanel createSidebar(Database database, Building building) {
@@ -108,7 +111,7 @@ public final class MapPanel extends JPanel {
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // the initial POI'S, on the ground floor
-        updatePOIs(database, building.floors().get(0));
+        updatePOIsOnFloor(database, building.floors().get(0));
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
@@ -163,7 +166,7 @@ public final class MapPanel extends JPanel {
     private void changeToFloor(Floor floor) {
         mapViewer.setCurrentMapUri(database.resolveFloorMapUri(floor));
 
-        updatePOIs(database, floor);
+        updatePOIsOnFloor(database, floor);
 
         var pois = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.floor().equals(floor))
