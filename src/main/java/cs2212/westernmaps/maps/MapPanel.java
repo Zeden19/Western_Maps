@@ -13,6 +13,8 @@ public final class MapPanel extends JPanel {
     private final MapViewerPanel mapViewer;
 
     private final List<Runnable> backListeners = new ArrayList<>();
+    private final JList<POI> poiList = new JList<>();
+    private final JList<POI> favoritesList = new JList<>();
 
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
@@ -41,6 +43,7 @@ public final class MapPanel extends JPanel {
         layeredPane.setLayout(new OverlayLayout(layeredPane));
         layeredPane.add(mapViewer, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(floatingControls, JLayeredPane.PALETTE_LAYER);
+
         // Make sure the mouse cursor can still change.
         mapViewer.setCursorComponent(layeredPane);
 
@@ -49,7 +52,8 @@ public final class MapPanel extends JPanel {
         leftPanel.add(toolbar, BorderLayout.PAGE_START);
         leftPanel.add(layeredPane, BorderLayout.CENTER);
 
-        var rightPanel = createSidebar();
+        // the right panel, where the favourites and pois on the floor go
+        var rightPanel = createSidebar(database, building);
 
         var splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
         splitPane.setResizeWeight(0.75);
@@ -86,11 +90,27 @@ public final class MapPanel extends JPanel {
         return toolbar;
     }
 
-    private JPanel createSidebar() {
-        var poiListHeader = new JLabel("POIs on this map");
+    // Updating the POI's on the floor list
+    private void updatePOIsOnFloor(Database database, Floor floor) {
+        POI[] poisToAdd = database.getCurrentState().pois().stream()
+                .filter(poi -> poi.floor().equals(floor))
+                .toArray(POI[]::new);
+        poiList.setListData(poisToAdd);
+    }
+
+    // updating the favourites POI list
+    private void updateFavouritePOIs(Database database) {
+        POI[] poisToAdd =
+                database.getCurrentState().pois().stream().filter(POI::favorite).toArray(POI[]::new);
+        favoritesList.setListData(poisToAdd);
+    }
+
+    private JPanel createSidebar(Database database, Building building) {
+        var poiListHeader = new JLabel("POIs on this Floor");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
-        var poiList = new JList<POI>();
+        // the initial POI'S, on the ground floor
+        updatePOIsOnFloor(database, building.floors().get(0));
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
@@ -99,7 +119,9 @@ public final class MapPanel extends JPanel {
         var favoritesListHeader = new JLabel("Favourite POIs");
         favoritesListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
-        var favoritesList = new JList<POI>();
+        // favourite POIS on the list
+        favoritesList.setCellRenderer(new POIFavouriteCellRenderer());
+        updateFavouritePOIs(database);
 
         var favoritesListScroller = new JScrollPane(favoritesList);
         favoritesListScroller.setAlignmentX(0.0f);
@@ -143,6 +165,8 @@ public final class MapPanel extends JPanel {
     private void changeToFloor(Floor floor) {
         mapViewer.setCurrentMapUri(database.resolveFloorMapUri(floor));
 
+        updatePOIsOnFloor(database, floor);
+
         var pois = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.floor().equals(floor))
                 .toList();
@@ -151,5 +175,19 @@ public final class MapPanel extends JPanel {
 
     public void addBackListener(Runnable listener) {
         backListeners.add(listener);
+    }
+
+    private static class POIFavouriteCellRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent(
+                JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            POI poi = (POI) value;
+            Color color = UIManager.getColor("TextField.placeholderForeground");
+            String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+            setText("<html>" + poi.name() + "<font size=\"-2\" color=\"" + hex + "\">    "
+                    + poi.floor().longName() + "    </font></html>");
+            return this;
+        }
     }
 }
