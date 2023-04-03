@@ -92,8 +92,9 @@ public final class MapPanel extends JPanel {
 
     // Updating the POI's on the floor list
     private void updatePOIsOnFloor(Database database, Floor floor) {
-        POI[] poisToAdd =
-                database.getCurrentState().pois().stream().filter(POI::favorite).toArray(POI[]::new);
+        POI[] poisToAdd = database.getCurrentState().pois().stream()
+                .filter(poi -> poi.floor().equals(floor))
+                .toArray(POI[]::new);
         poiList.setListData(poisToAdd);
     }
 
