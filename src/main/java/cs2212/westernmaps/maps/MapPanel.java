@@ -16,7 +16,6 @@ public final class MapPanel extends JPanel {
     JList<String> poiList = new JList<>();
     JList<String> favoritesList = new JList<>();
 
-
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
 
@@ -90,29 +89,35 @@ public final class MapPanel extends JPanel {
         return toolbar;
     }
 
-    private String[] getPOIsToAdd(Floor floor, Database database) {
+    /**
+     * Getting the POIs to add for a floor, used for poi list
+     * @param floor: the floor to add the pois on
+     * @param database: the database where all pois are stored
+     * @return a list of pois on the floor
+     */
+    private List<POI> getPOIsToAdd(Floor floor, Database database) {
         List<POI> pois = database.getCurrentState().pois();
-        List<POI> poisOnFloor =
-                pois.stream().filter(a -> a.floor().equals(floor)).toList();
-        List<String> poiNames = poisOnFloor.stream().map(POI::name).toList();
-
-        return (poiNames.toArray(String[]::new));
+        return pois.stream().filter(poi -> poi.floor().equals(floor)).toList();
     }
 
-    private String[] getPOIFavourites(Database database) {
+    /**
+     * Getting a list of the pois that are favourites, used for the poi favourite list
+     * @param database: database where POIs are stored
+     * @return a list of favourite pois no matter what building
+     */
+    private List<POI> getPOIFavourites(Database database) {
         List<POI> pois = database.getCurrentState().pois();
-        List<POI> poisOnFloor = pois.stream().filter(POI::favorite).toList();
-        List<String> poiNames = poisOnFloor.stream().map(POI::name).toList();
-
-        return (poiNames.toArray(String[]::new));
+        return pois.stream().filter(POI::favorite).toList();
     }
 
     private JPanel createSidebar(Database database, Building building) {
         var poiListHeader = new JLabel("POIs on this map");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
-        // todo make the panel get the actual floor, instead of just the first one
-        poiList = new JList<>(getPOIsToAdd(building.floors().get(0), database));
+        // the initial POI'S, on the ground floor
+        poiList = new JList<>(getPOIsToAdd(building.floors().get(0), database).stream()
+                .map(POI::name)
+                .toArray(String[]::new));
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
@@ -121,7 +126,9 @@ public final class MapPanel extends JPanel {
         var favoritesListHeader = new JLabel("Favourite POIs");
         favoritesListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
-        favoritesList = new JList<>(getPOIFavourites(database));
+        // favourite POIS on the list
+        favoritesList =
+                new JList<>(getPOIFavourites(database).stream().map(POI::name).toArray(String[]::new));
 
         var favoritesListScroller = new JScrollPane(favoritesList);
         favoritesListScroller.setAlignmentX(0.0f);
