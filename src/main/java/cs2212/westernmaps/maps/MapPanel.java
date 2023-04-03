@@ -5,6 +5,7 @@ import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import javax.swing.*;
 
@@ -141,6 +142,9 @@ public final class MapPanel extends JPanel {
     }
 
     private JPanel createFloatingControls(Building building) {
+        var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
+        layerVisibilityPanel.addLayerToggleListener(mapViewer::setLayerVisible);
+
         var floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
 
@@ -152,10 +156,14 @@ public final class MapPanel extends JPanel {
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.LAST_LINE_START;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.insets = new Insets(16, 16, 16, 16);
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;
+        floatingControls.add(layerVisibilityPanel, constraints);
+
+        constraints.gridy = 1;
+        constraints.anchor = GridBagConstraints.LAST_LINE_START;
         floatingControls.add(floorSwitcher, constraints);
 
         return floatingControls;
