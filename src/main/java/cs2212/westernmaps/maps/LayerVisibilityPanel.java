@@ -5,6 +5,7 @@ import cs2212.westernmaps.core.Layer;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -53,6 +54,10 @@ public final class LayerVisibilityPanel extends JPanel {
 
             constraints.gridy++;
         }
+
+        // Block mouse events so that the map doesn't get panned when the layer
+        // visibility panel is clicked on.
+        addMouseListener(new MouseAdapter() {});
     }
 
     /**
