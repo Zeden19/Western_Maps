@@ -90,21 +90,12 @@ public final class MapViewerPanel extends JPanel {
                 }
                 dragState = DragState.NONE;
                 cursorComponent.setCursor(null);
+                refreshHoveredPoi(e.getX(), e.getY());
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                var hoveredPoi = getHoveredPoiByChebyshevDistance(e.getX(), e.getY());
-                if (hoveredPoi != MapViewerPanel.this.hoveredPoi) {
-                    repaint();
-                    MapViewerPanel.this.hoveredPoi = hoveredPoi;
-                }
-
-                if (hoveredPoi != null) {
-                    cursorComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                } else {
-                    cursorComponent.setCursor(null);
-                }
+                refreshHoveredPoi(e.getX(), e.getY());
             }
 
             @Override
@@ -228,6 +219,7 @@ public final class MapViewerPanel extends JPanel {
 
     public void setDisplayedPois(List<POI> pois) {
         displayedPois = pois;
+        // TODO: Refresh the hovered POI here.
         repaint();
     }
 
@@ -345,6 +337,20 @@ public final class MapViewerPanel extends JPanel {
         location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
         // Draw the POI icon.
         icon.paintIcon(this, gfx, location.x, location.y);
+    }
+
+    private void refreshHoveredPoi(int mouseX, int mouseY) {
+        var hoveredPoi = getHoveredPoiByChebyshevDistance(mouseX, mouseY);
+        if (hoveredPoi != this.hoveredPoi) {
+            repaint();
+            this.hoveredPoi = hoveredPoi;
+        }
+
+        if (hoveredPoi != null) {
+            cursorComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        } else {
+            cursorComponent.setCursor(null);
+        }
     }
 
     private @Nullable POI getHoveredPoiByChebyshevDistance(int mouseX, int mouseY) {
