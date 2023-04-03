@@ -4,23 +4,33 @@ import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 public class POISummary extends JPanel {
+
+    private POI poi;
+    private final List<POI> pois;
+
     /**
      * Summary window of a POI that displays its metadata.
      *
-     * @param poi POI to summarize
+     * @param poiToSummarize POI to summarize
+     * @param allPois List of all POIs in current database state
+     * @param database Database
+     * @param developer If the logged-in user is a developer
      */
-    public POISummary(POI poi) {
+    public POISummary(POI poiToSummarize, List<POI> allPois, Database database, boolean developer) {
 
         final int MAX_COLUMNS = 10;
-        // DatabaseState currentState = database.getCurrentState();
+        DatabaseState currentState = database.getCurrentState();
 
-        // Temporary variable, will eventually check if logged-in user is a developer
-        final boolean developer = true;
+        poi = poiToSummarize;
+        pois = allPois;
 
         JPanel summaryBox = new JPanel();
         summaryBox.setLayout(new BoxLayout(summaryBox, BoxLayout.PAGE_AXIS));
@@ -31,6 +41,37 @@ public class POISummary extends JPanel {
         title.putClientProperty(FlatClientProperties.STYLE_CLASS, "h3");
         title.setEditable(developer);
         title.setLineWrap(true);
+        title.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                this.changedUpdate(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                this.changedUpdate(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                int poiIndex = pois.indexOf(poi);
+                Document doc = e.getDocument();
+                try {
+                    String newTitle = doc.getText(0, doc.getLength());
+
+                    poi = new POI(
+                            newTitle, poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
+                    pois.set(poiIndex, poi);
+                    database.getHistory()
+                            .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
+
+                    System.out.println(pois.get(poiIndex).name() + " renamed.");
+                } catch (BadLocationException ex) {
+                    System.out.println("Error reading Document: " + e.toString());
+                }
+            }
+        });
+
         addToBox(summaryBox, title);
 
         // Layer
@@ -45,7 +86,15 @@ public class POISummary extends JPanel {
             layerCombo.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // TODO: Call a "setLayer" function here
+                    int poiIndex = pois.indexOf(poi);
+                    Layer newLayer = (Layer) layerCombo.getSelectedItem();
+                    poi = new POI(
+                            poi.name(), poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), newLayer);
+                    pois.set(poiIndex, poi);
+                    database.getHistory()
+                            .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
+
+                    System.out.println(pois.get(poiIndex).name() + " is now on layer " + newLayer.name());
                 }
             });
             layerCombo.setSelectedItem(poi.layer());
@@ -61,11 +110,13 @@ public class POISummary extends JPanel {
         // Favorite
         JCheckBox favoriteCheck = new JCheckBox("Favourite");
         // TODO: Add icon here
-        favoriteCheck.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                // TODO: Call a "toggleFavorite" function here
-            }
+        favoriteCheck.addItemListener(e -> {
+            int poiIndex = pois.indexOf(poi);
+            poi = new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
+            pois.set(poiIndex, poi);
+            database.getHistory().pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
+
+            System.out.println(pois.get(poiIndex).name() + " now has favorite value: " + poi.favorite());
         });
         addToBox(summaryBox, favoriteCheck);
 
@@ -81,17 +132,57 @@ public class POISummary extends JPanel {
         desc.setEditable(isCustom || developer);
         desc.setLineWrap(true);
         desc.setWrapStyleWord(true);
+        desc.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                this.changedUpdate(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                this.changedUpdate(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                int poiIndex = pois.indexOf(poi);
+                Document doc = e.getDocument();
+                try {
+                    String newDesc = doc.getText(0, doc.getLength());
+
+                    poi = new POI(poi.name(), newDesc, poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
+                    pois.set(poiIndex, poi);
+                    database.getHistory()
+                            .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
+
+                    System.out.println(pois.get(poiIndex).name() + " now has description: " + newDesc);
+                } catch (BadLocationException ex) {
+                    System.out.println("Error reading Document: " + e.toString());
+                }
+            }
+        });
         addToBox(summaryBox, desc);
 
         summaryBox.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Delete POI button
-        if (isCustom) {
+        if (isCustom || developer) {
             JButton deleteButton = new JButton("Delete POI");
             deleteButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // TODO: Call a "deletePOI" function here
+                    int confirmDelete = JOptionPane.showConfirmDialog(
+                            null,
+                            "Are you sure you want to delete " + poi.name() + "?",
+                            "Delete POI",
+                            JOptionPane.YES_NO_OPTION);
+                    if (confirmDelete == JOptionPane.YES_OPTION) {
+                        pois.remove(poi);
+                        database.getHistory()
+                                .pushState(new DatabaseState(currentState.accounts(), currentState.buildings(), pois));
+
+                        System.out.println("Deleted " + poi.name());
+                    }
                 }
             });
             addToBox(summaryBox, deleteButton);
