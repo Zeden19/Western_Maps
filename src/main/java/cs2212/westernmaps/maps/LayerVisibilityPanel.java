@@ -11,9 +11,19 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import javax.swing.*;
 
+/**
+ * A panel that allows the user to toggle the visibility of individual
+ * {@linkplain Layer POI layers} on the map.
+ */
 public final class LayerVisibilityPanel extends JPanel {
     private final List<BiConsumer<Layer, Boolean>> layerToggleListeners = new ArrayList<>();
 
+    /**
+     * Creates a new layer visibility panel.
+     *
+     * @param initialVisibleLayers The layers whose checkboxes will be checked
+     *                             when the panel is created.
+     */
     public LayerVisibilityPanel(EnumSet<Layer> initialVisibleLayers) {
         setLayout(new GridBagLayout());
         // FlatButtonBorder has rounded corners; FlatBorder doesn't.
@@ -45,6 +55,13 @@ public final class LayerVisibilityPanel extends JPanel {
         }
     }
 
+    /**
+     * Adds an event listener that will be called when a layer's visibility is
+     * toggled on or off.
+     *
+     * @param listener A function that receives the layer that changed state and
+     *                 the visibility state it changed to.
+     */
     public void addLayerToggleListener(BiConsumer<Layer, Boolean> listener) {
         this.layerToggleListeners.add(listener);
     }
