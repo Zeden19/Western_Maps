@@ -89,39 +89,22 @@ public final class MapPanel extends JPanel {
         return toolbar;
     }
 
-    /**
-     * Getting the POIs to add for a floor, used for poi list
-     * @param floor: the floor to add the pois on
-     * @param database: the database where all pois are stored
-     * @return a list of pois on the floor
-     */
-    private List<POI> getPOIsToAdd(Floor floor, Database database) {
-        List<POI> pois = database.getCurrentState().pois();
-        return pois.stream().filter(poi -> poi.floor().equals(floor)).toList();
-    }
-
-    /**
-     * Getting a list of the pois that are favourites, used for the poi favourite list
-     * @param database: database where POIs are stored
-     * @return a list of favourite pois no matter what building
-     */
-    private List<POI> getPOIFavourites(Database database) {
-        List<POI> pois = database.getCurrentState().pois();
-        return pois.stream().filter(POI::favorite).toList();
-    }
-
     private void updatePOIs(Database database, Floor floor) {
-        List<POI> poisToAdd = getPOIsToAdd(floor, database);
+        List<POI> poisToAdd = database.getCurrentState().pois().stream()
+                .filter(poi -> poi.floor().equals(floor))
+                .toList();
         poiList.setListData(poisToAdd.toArray(POI[]::new));
     }
 
     private void updateFavouritePOIs(Database database) {
-        List<POI> poisToAdd = getPOIFavourites(database);
+        List<POI> poisToAdd = database.getCurrentState().pois().stream().filter(POI::favorite).toList().stream()
+                .filter(POI::favorite)
+                .toList();
         favoritesList.setListData(poisToAdd.toArray(POI[]::new));
     }
 
     private JPanel createSidebar(Database database, Building building) {
-        var poiListHeader = new JLabel("POIs on this map");
+        var poiListHeader = new JLabel("POIs on this Floor");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // the initial POI'S, on the ground floor
@@ -135,6 +118,7 @@ public final class MapPanel extends JPanel {
         favoritesListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // favourite POIS on the list
+        favoritesList.setCellRenderer(new POIFavouriteCellRenderer());
         updateFavouritePOIs(database);
 
         var favoritesListScroller = new JScrollPane(favoritesList);
@@ -189,5 +173,19 @@ public final class MapPanel extends JPanel {
 
     public void addBackListener(Runnable listener) {
         backListeners.add(listener);
+    }
+
+    private static class POIFavouriteCellRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent(
+                JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            POI poi = (POI) value;
+            Color color = UIManager.getColor("TextField.placeholderForeground");
+            String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+            setText("<html>" + poi.name() + "<font size=\"-2\" color=\"" + hex + "\">    "
+                    + poi.floor().longName() + "    </font></html>");
+            return this;
+        }
     }
 }
