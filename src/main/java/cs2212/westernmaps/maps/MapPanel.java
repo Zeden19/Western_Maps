@@ -10,6 +10,8 @@ import javax.swing.*;
 
 public final class MapPanel extends JPanel {
     private final Database database;
+    private final Building building;
+
     private final MapViewerPanel mapViewer;
 
     private final List<Runnable> backListeners = new ArrayList<>();
@@ -18,6 +20,7 @@ public final class MapPanel extends JPanel {
 
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
+        this.building = building;
 
         // temporary code, just printing out if user is a developer
         System.out.println(loggedInAccount.developer());
@@ -177,16 +180,35 @@ public final class MapPanel extends JPanel {
         backListeners.add(listener);
     }
 
-    private static class POIFavouriteCellRenderer extends DefaultListCellRenderer {
+    private class POIFavouriteCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(
                 JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             POI poi = (POI) value;
-            Color color = UIManager.getColor("TextField.placeholderForeground");
-            String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-            setText("<html>" + poi.name() + "<font size=\"-2\" color=\"" + hex + "\">    "
-                    + poi.floor().longName() + "    </font></html>");
+
+            var poiBuilding = database.getCurrentState().buildings().stream()
+                    .filter(b -> b.floors().contains(poi.floor()))
+                    .findFirst();
+
+            var textBuilder = new StringBuilder();
+            textBuilder.append("<html>");
+            textBuilder.append(poi.name());
+
+            if (poiBuilding.isPresent() && poiBuilding.get() != building) {
+                textBuilder.append(" <font size=\"-2\" color=\"");
+
+                Color color = UIManager.getColor("TextField.placeholderForeground");
+                String hexColor = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+                textBuilder.append(hexColor);
+                textBuilder.append("\">");
+
+                textBuilder.append(poiBuilding.get().name());
+                textBuilder.append("</font>");
+            }
+            textBuilder.append("</html>");
+
+            setText(textBuilder.toString());
             return this;
         }
     }
