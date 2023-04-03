@@ -3,6 +3,7 @@ package cs2212.westernmaps.maps;
 import com.formdev.flatlaf.ui.FlatBorder;
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGUniverse;
+import cs2212.westernmaps.core.Layer;
 import cs2212.westernmaps.core.POI;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,6 +11,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
@@ -33,6 +35,7 @@ public final class MapViewerPanel extends JPanel {
     private Component cursorComponent;
     private URI currentMapUri;
     private List<POI> displayedPois;
+    private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
     private @Nullable POI hoveredPoi = null;
 
@@ -175,6 +178,30 @@ public final class MapViewerPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * Determines if the given {@linkplain Layer layer} is currently visible.
+     *
+     * @return Whether the given layer is visible.
+     */
+    public boolean isLayerVisible(Layer layer) {
+        return visibleLayers.contains(layer);
+    }
+
+    /**
+     * Changes the visibility of the given {@linkplain Layer layer}.
+     *
+     * @param layer   The layer to change the visibility of.
+     * @param visible Whether the layer should be visible.
+     */
+    public void setLayerVisible(Layer layer, boolean visible) {
+        if (visible) {
+            visibleLayers.add(layer);
+        } else {
+            visibleLayers.remove(layer);
+        }
+        repaint();
+    }
+
     public void addPoiClickListener(Consumer<POI> listener) {
         poiClickListeners.add(listener);
     }
@@ -196,6 +223,10 @@ public final class MapViewerPanel extends JPanel {
             // If the POI is hovered, skip it since it will be rendered on top
             // of everything else later. Comparison by reference is intentional.
             if (poi == hoveredPoi) {
+                continue;
+            }
+            // If the POI's layer is not visible, skip it.
+            if (!isLayerVisible(poi.layer())) {
                 continue;
             }
 

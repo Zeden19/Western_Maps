@@ -121,6 +121,7 @@ public final class MapPanel extends JPanel {
 
     private JPanel createFloatingControls(Building building) {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
+        layerVisibilityPanel.addLayerToggleListener(mapViewer::setLayerVisible);
 
         var floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
