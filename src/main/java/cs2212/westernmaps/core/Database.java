@@ -43,6 +43,10 @@ public final class Database {
         return mapPath.toUri();
     }
 
+    /**
+     *
+     * @throws IOException when the file is not found
+     */
     public void save() throws IOException {
         try (var stream = Files.newOutputStream(jsonFile)) {
             getCurrentState().saveToStream(stream);
