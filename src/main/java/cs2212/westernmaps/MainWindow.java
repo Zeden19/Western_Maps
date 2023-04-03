@@ -28,7 +28,7 @@ public final class MainWindow extends JFrame {
 
         // creating all the panels
         loginPanel = new LoginPanel(database);
-        createAccountPanel = new CreateAccountPanel();
+        createAccountPanel = new CreateAccountPanel(database);
         buildingSelectPanel = new BuildingSelectPanel(database.getCurrentState().buildings());
 
         // navigation between panels

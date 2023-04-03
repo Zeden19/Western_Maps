@@ -1,10 +1,14 @@
 package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import cs2212.westernmaps.auth.PasswordAuthenticator;
 import cs2212.westernmaps.core.Account;
+import cs2212.westernmaps.core.Database;
+import cs2212.westernmaps.core.DatabaseState;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +25,7 @@ public final class CreateAccountPanel extends JPanel {
     private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
     private final List<Runnable> backButtonListeners = new ArrayList<>();
 
-    public CreateAccountPanel() {
+    public CreateAccountPanel(Database database) {
         // This determines what MainWindow will use as its title.
         setName("Create Account");
 
@@ -73,9 +77,21 @@ public final class CreateAccountPanel extends JPanel {
             if (!checkPasswordFields()) {
                 return;
             }
-            // TODO: Hash the provided password and use it for the account.
-            var account = new Account(usernameField.getText(), new byte[0], false);
-            accountCreateListeners.forEach(listener -> listener.accept(account));
+            PasswordAuthenticator auth = new PasswordAuthenticator();
+            String hash = auth.hash(passwordField.getPassword());
+
+            DatabaseState currentState = database.getCurrentState();
+            List<Account> accounts = new ArrayList<>(currentState.accounts());
+
+            var newAccount = new Account(usernameField.getText(), hash.getBytes(), false);
+            accounts.add(newAccount);
+            database.getHistory().pushState(new DatabaseState(accounts, currentState.buildings(), currentState.pois()));
+            try {
+                database.save();
+            } catch (IOException ex) {
+                System.out.println("Error: Couldn't save new account to the database.");
+            }
+            accountCreateListeners.forEach(listener -> listener.accept(newAccount));
         });
 
         // error if password doesn't match
