@@ -2,7 +2,8 @@ package cs2212.westernmaps.pois;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,9 @@ public class POISummary extends JPanel {
                 List<POI> pois = new ArrayList<>(currentState.pois());
                 int poiIndex = pois.indexOf(poi);
                 Document doc = e.getDocument();
+                String newTitle;
                 try {
-                    String newTitle = doc.getText(0, doc.getLength());
+                    newTitle = doc.getText(0, doc.getLength());
 
                     poi = new POI(
                             newTitle, poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
