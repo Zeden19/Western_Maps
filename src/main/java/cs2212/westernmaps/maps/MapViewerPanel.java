@@ -267,6 +267,11 @@ public final class MapViewerPanel extends JPanel {
         POI hoveredPoi = null;
         int hoveredPoiDistance = Integer.MAX_VALUE;
         for (var poi : displayedPois) {
+            // If the is not visible, then it can't be hovered.
+            if (!isLayerVisible(poi.layer())) {
+                continue;
+            }
+
             // POI icons are rendered at the same size regardless of the map's
             // scale, so we need to transform their locations manually.
             var location = new Point(poi.x(), poi.y());
