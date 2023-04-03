@@ -38,7 +38,10 @@ public final class MapPanel extends JPanel {
 
         // This determines what MainWindow will use as its title.
         setName(building.name());
+        glassPane.setLayout(null);
 
+        // This determines what MainWindow will use as its title.
+        setName(building.name());
         setLayout(new BorderLayout());
 
         // for everything at the top of the map panel, like search, back, and create poi.
@@ -149,15 +152,14 @@ public final class MapPanel extends JPanel {
         searchBar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSearchIcon());
 
         searchResults = new JList<>();
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(0, 0, 608, 950);
+        searchResults.setBounds(88, 30, 374, 200);
         searchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         searchResults.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         searchResults.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
 
         searchBar.addActionListener(e -> {
             var query = searchBar.getText();
-            glassPane.add(searchResults, constraints);
+            glassPane.add(searchResults);
             glassPane.setVisible(true);
         });
 
