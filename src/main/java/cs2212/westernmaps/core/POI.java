@@ -11,4 +11,10 @@ package cs2212.westernmaps.core;
  * @param floor       The floor this POI is on.
  * @param layer       The layer this POI is assigned to.
  */
-public record POI(String name, String description, int x, int y, boolean favorite, Floor floor, Layer layer) {}
+public record POI(String name, String description, int x, int y, boolean favorite, Floor floor, Layer layer) {
+
+    @Override
+    public String toString() {
+        return name();
+    }
+}

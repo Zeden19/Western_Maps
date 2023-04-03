@@ -13,8 +13,8 @@ public final class MapPanel extends JPanel {
     private final MapViewerPanel mapViewer;
 
     private final List<Runnable> backListeners = new ArrayList<>();
-    JList<String> poiList = new JList<>();
-    JList<String> favoritesList = new JList<>();
+    JList<POI> poiList = new JList<>();
+    JList<POI> favoritesList = new JList<>();
 
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
@@ -110,14 +110,22 @@ public final class MapPanel extends JPanel {
         return pois.stream().filter(POI::favorite).toList();
     }
 
+    private void updatePOIs(Database database, Floor floor) {
+        List<POI> poisToAdd = getPOIsToAdd(floor, database);
+        poiList.setListData(poisToAdd.toArray(POI[]::new));
+    }
+
+    private void updateFavouritePOIs(Database database) {
+        List<POI> poisToAdd = getPOIFavourites(database);
+        favoritesList.setListData(poisToAdd.toArray(POI[]::new));
+    }
+
     private JPanel createSidebar(Database database, Building building) {
         var poiListHeader = new JLabel("POIs on this map");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // the initial POI'S, on the ground floor
-        poiList = new JList<>(getPOIsToAdd(building.floors().get(0), database).stream()
-                .map(POI::name)
-                .toArray(String[]::new));
+        updatePOIs(database, building.floors().get(0));
 
         var poiListScroller = new JScrollPane(poiList);
         poiListScroller.setAlignmentX(0.0f);
@@ -127,8 +135,7 @@ public final class MapPanel extends JPanel {
         favoritesListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // favourite POIS on the list
-        favoritesList =
-                new JList<>(getPOIFavourites(database).stream().map(POI::name).toArray(String[]::new));
+        updateFavouritePOIs(database);
 
         var favoritesListScroller = new JScrollPane(favoritesList);
         favoritesListScroller.setAlignmentX(0.0f);
@@ -171,6 +178,8 @@ public final class MapPanel extends JPanel {
     // Does not update the selection of the floor switcher.
     private void changeToFloor(Floor floor) {
         mapViewer.setCurrentMapUri(database.resolveFloorMapUri(floor));
+
+        updatePOIs(database, floor);
 
         var pois = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.floor().equals(floor))
