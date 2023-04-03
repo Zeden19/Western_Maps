@@ -38,6 +38,7 @@ public final class MapPanel extends JPanel {
 
         mapViewer = new MapViewerPanel(initialMapUri, List.of());
         mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
+        mapViewer.addPoiMoveListener((poi, location) -> System.out.println(poi.name() + " moved to " + location));
         // This adds the POIs to the map.
         changeToFloor(initialFloor);
 
