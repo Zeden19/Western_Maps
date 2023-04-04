@@ -5,17 +5,16 @@ import com.formdev.flatlaf.ui.FlatButtonBorder;
 import cs2212.westernmaps.core.Floor;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 
 public final class FloorSwitcher extends JPanel {
     private final List<Consumer<Floor>> floorSwitchListeners = new ArrayList<>();
+
+    private final List<FloorButton> floorButtons = new ArrayList<>();
+    private final ButtonGroup buttonGroup;
 
     /**
      * Creates a new floor switcher.
@@ -28,19 +27,35 @@ public final class FloorSwitcher extends JPanel {
     public FloorSwitcher(List<Floor> floors) {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        var buttonGroup = new ButtonGroup();
+        buttonGroup = new ButtonGroup();
 
         for (int index = 0; index < floors.size(); index++) {
             var floorButton = new FloorButton(floors.get(index));
-            if (index == 0) {
-                floorButton.setSelected(true);
-            }
 
             add(floorButton, 0);
             buttonGroup.add(floorButton);
+            floorButtons.add(floorButton);
+
+            if (index == 0) {
+                floorButton.setSelected(true);
+            }
         }
 
         setBorder(new FlatButtonBorder());
+    }
+
+    /**
+     * Sets which floor button is currently displayed as selected.
+     *
+     * @param floor The floor whose button should be selected.
+     */
+    public void setSelectedFloor(Floor floor) {
+        var button =
+                floorButtons.stream().filter(b -> b.getFloor().equals(floor)).findFirst();
+        button.ifPresent(b -> SwingUtilities.invokeLater(() -> {
+            buttonGroup.clearSelection();
+            b.setSelected(true);
+        }));
     }
 
     public void addFloorSwitchListener(Consumer<Floor> listener) {
@@ -50,8 +65,11 @@ public final class FloorSwitcher extends JPanel {
     private final class FloorButton extends JToggleButton {
         private static final Dimension SIZE = new Dimension(40, 40);
 
+        private final Floor floor;
+
         public FloorButton(Floor floor) {
             super(floor.shortName());
+            this.floor = floor;
 
             setPreferredSize(SIZE);
             setMinimumSize(SIZE);
@@ -62,11 +80,15 @@ public final class FloorSwitcher extends JPanel {
 
             putClientProperty(FlatClientProperties.BUTTON_TYPE, "borderless");
 
-            addItemListener(e -> {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
+            addActionListener(e -> {
+                if (isSelected()) {
                     floorSwitchListeners.forEach(listener -> listener.accept(floor));
                 }
             });
+        }
+
+        public Floor getFloor() {
+            return floor;
         }
     }
 }

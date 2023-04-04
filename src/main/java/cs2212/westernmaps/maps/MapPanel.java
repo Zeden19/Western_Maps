@@ -8,12 +8,14 @@ import com.formdev.flatlaf.ui.FlatBorder;
 import cs2212.westernmaps.core.*;
 import cs2212.westernmaps.pois.POISummaryPanel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
@@ -27,7 +29,8 @@ public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
-    private final JList<POI> searchResults = new JList<>();
+    private JList<POI> searchResults = new JList<>();
+    private final FloorSwitcher floorSwitcher;
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
@@ -51,6 +54,7 @@ public final class MapPanel extends JPanel {
         var toolbar = createToolbar(glassPane, building, database);
 
         currentFloor = building.floors().get(0);
+        floorSwitcher = new FloorSwitcher(building.floors());
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
         poiSummaryPanel = new POISummaryPanel(loggedInAccount);
@@ -217,6 +221,7 @@ public final class MapPanel extends JPanel {
         cardPanel.setBackground(UIManager.getColor("List.background"));
 
         // the search
+        searchResults.setCellRenderer(new POICellRenderer(poi -> poi.floor().longName()));
         var poiListScroller = new JScrollPane(searchResults);
 
         cardPanel.add(noResultsFound, "no results");
@@ -260,6 +265,8 @@ public final class MapPanel extends JPanel {
             }
         });
 
+        ListAction.setListAction(searchResults, new JumpToPoiAction());
+
         toolbar.add(backButton);
         toolbar.add(Box.createHorizontalStrut(8));
         toolbar.add(searchBar);
@@ -287,11 +294,27 @@ public final class MapPanel extends JPanel {
         poiListScroller.setAlignmentX(0.0f);
         poiListScroller.getViewport().setPreferredSize(new Dimension(0, 400));
 
+        // if a poi on list got selected then jump to that poi
+        ListAction.setListAction(poiList, new JumpToPoiAction());
+        // if a poi onm favourite list got selected then jump to that poi
+        ListAction.setListAction(favoritesList, new JumpToPoiAction());
+
         var favoritesListHeader = new JLabel("Favourite POIs");
         favoritesListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
 
         // favourite POIS on the list
-        favoritesList.setCellRenderer(new POIFavouriteCellRenderer());
+        favoritesList.setCellRenderer(new POICellRenderer(poi -> {
+            // Check if the POI is on any floor in the current building. If so,
+            // don't show any subtitle.
+            if (building.floors().contains(poi.floor())) {
+                return null;
+            }
+
+            var poiBuilding = database.getCurrentState().buildings().stream()
+                    .filter(b -> b.floors().contains(poi.floor()))
+                    .findFirst();
+            return poiBuilding.map(Building::name).orElse(null);
+        }));
         updateFavouritePOIs(database);
 
         var favoritesListScroller = new JScrollPane(favoritesList);
@@ -374,7 +397,27 @@ public final class MapPanel extends JPanel {
     private void changeToFloor(Floor floor) {
         currentFloor = floor;
         mapViewer.setCurrentMapUri(database.resolveFloorMapUri(floor));
+        floorSwitcher.setSelectedFloor(floor);
         refreshPois();
+    }
+
+    // when the user selects a POI from favourite, search or POI list, this function will jump to the poi and
+    // open the summmary panel
+    private void jumpToPoi(POI poi) {
+        System.out.println("Jumping to POI: " + poi.name());
+
+        // Scroll map to put the POI in the center.
+        mapViewer.scrollPoiToCenter(poi);
+
+        // Switch to the floor containing the selected POI.
+        // TODO: Jump to a different building if necessary.
+        if (!poi.floor().equals(currentFloor)) {
+            changeToFloor(poi.floor());
+        }
+
+        // opening the summary panel
+        poiSummaryPanel.setCurrentPoi(poi);
+        poiSummaryPanel.setVisible(true);
     }
 
     private void refreshPois() {
@@ -383,6 +426,7 @@ public final class MapPanel extends JPanel {
                 .toList();
         mapViewer.setDisplayedPois(pois);
         poiList.setListData(pois.toArray(POI[]::new));
+        updateFavouritePOIs(database);
     }
 
     private boolean isPoiVisible(POI poi) {
@@ -417,22 +461,27 @@ public final class MapPanel extends JPanel {
         backListeners.add(listener);
     }
 
-    private class POIFavouriteCellRenderer extends DefaultListCellRenderer {
+    // Used to render small grey text beside search and favourites list
+    private static class POICellRenderer extends DefaultListCellRenderer {
+        private final SubtitleProvider subtitleProvider;
+
+        public POICellRenderer(SubtitleProvider subtitleProvider) {
+            this.subtitleProvider = subtitleProvider;
+        }
+
         @Override
         public Component getListCellRendererComponent(
                 JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             POI poi = (POI) value;
 
-            var poiBuilding = database.getCurrentState().buildings().stream()
-                    .filter(b -> b.floors().contains(poi.floor()))
-                    .findFirst();
-
             var textBuilder = new StringBuilder();
             textBuilder.append("<html>");
             textBuilder.append(poi.name());
 
-            if (poiBuilding.isPresent() && poiBuilding.get() != building) {
+            var subtitle = subtitleProvider.getSubtitle(poi);
+
+            if (subtitle != null) {
                 textBuilder.append(" <font size=\"-2\" color=\"");
 
                 Color color = UIManager.getColor("TextField.placeholderForeground");
@@ -440,13 +489,28 @@ public final class MapPanel extends JPanel {
                 textBuilder.append(hexColor);
                 textBuilder.append("\">");
 
-                textBuilder.append(poiBuilding.get().name());
+                textBuilder.append(subtitle);
                 textBuilder.append("</font>");
             }
             textBuilder.append("</html>");
 
             setText(textBuilder.toString());
             return this;
+        }
+
+        public interface SubtitleProvider {
+            @Nullable String getSubtitle(POI poi);
+        }
+    }
+
+    private class JumpToPoiAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            var list = (JList<?>) e.getSource();
+            var poi = (POI) list.getSelectedValue();
+            if (poi != null) {
+                jumpToPoi(poi);
+            }
         }
     }
 }

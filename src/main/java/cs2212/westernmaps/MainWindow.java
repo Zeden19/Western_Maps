@@ -93,14 +93,11 @@ public final class MainWindow extends JFrame {
 
             Container glassPane = (Container) getGlassPane();
             var mapPanel = new MapPanel(database, building, loggedInAccount, glassPane);
-<<<<<<< HEAD
             mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
-=======
             mapPanel.addBackListener(() -> {
                 glassPane.setVisible(false);
                 changeTo(buildingSelectPanel);
             });
->>>>>>> e75e16a (Fix visual bug with search)
             changeTo(mapPanel);
         });
 

@@ -3,7 +3,7 @@
 import json
 
 
-with open("data/database.json", "r") as database_file:
+with open("/Users/arjun/IdeaProjects/group44/data/database.json", "r") as database_file:
     database = json.load(database_file)
 
 next_account_id = 1
@@ -16,6 +16,6 @@ for poi in database["pois"]:
     poi["favoriteOf"] = all_account_ids if poi["favorite"] else []
     del poi["favorite"]
 
-with open("data/database.json", "w") as database_file:
+with open("/Users/arjun/IdeaProjects/group44/data/database.json", "w") as database_file:
     json.dump(database, database_file, indent=2, sort_keys=True)
     database_file.write("\n")
