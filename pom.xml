@@ -30,6 +30,9 @@
              application into an executable JAR file. -->
         <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <!-- Maven Assembly Plugin: Used to combine the executable JAR file,
+             built-in database, and other files into a ZIP file. -->
+        <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
 
         <!-- FlatLaf: Custom theme for Java Swing, used to make the UI
              consistent across operating systems. -->
@@ -200,6 +203,24 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>dist/</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
