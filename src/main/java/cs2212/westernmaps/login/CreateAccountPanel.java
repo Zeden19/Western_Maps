@@ -26,6 +26,10 @@ public final class CreateAccountPanel extends JPanel {
     private final List<Runnable> backButtonListeners = new ArrayList<>();
     private final JLabel userNameTakenError;
 
+    /**
+     * Creates the create account panel
+     * @param database is the database used for the application
+     */
     public CreateAccountPanel(Database database) {
         // This determines what MainWindow will use as its title.
         setName("Create Account");
