@@ -10,6 +10,8 @@
         <!-- Update this with the project's root Java package. This is used to
              configure automated null checking later. -->
         <project.package-name>cs2212.westernmaps</project.package-name>
+        <!-- Update this with the IntelliJ run configuration. -->
+        <exec.mainClass>cs2212.westernmaps.Main</exec.mainClass>
 
         <!-- Error Prone and NullAway: Used to find bugs and null-safety issues
              during code compilation. -->
