@@ -1,12 +1,9 @@
 package cs2212.westernmaps.select;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import cs2212.westernmaps.Main;
 import cs2212.westernmaps.core.Building;
 import cs2212.westernmaps.help.HelpWindow;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,13 +15,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /*
- * TODO: - Implement the Panel for displaying the current weather.
- *       - Add Javadoc comments.
+ * TODO: - Add Javadoc comments.
  */
 
 public class BuildingSelectPanel extends JPanel {
     private static final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
-
     private final JList<Building> buildingList;
     private final JLabel noBuildingSelectedError;
 
@@ -59,7 +54,7 @@ public class BuildingSelectPanel extends JPanel {
         helpButton.addActionListener(new HelpWindow.ShowAction());
 
         JButton aboutButton = new JButton("About");
-        aboutButton.addActionListener(new AboutAction());
+        aboutButton.addActionListener(new AboutAction(BuildingSelectPanel.this));
 
         JPanel helpBox = new JPanel();
         helpBox.setLayout(new BoxLayout(helpBox, BoxLayout.PAGE_AXIS));
@@ -159,22 +154,6 @@ public class BuildingSelectPanel extends JPanel {
         } else {
             noBuildingSelectedError.setVisible(true);
             buildingList.clearSelection();
-        }
-    }
-
-    private class AboutAction extends AbstractAction {
-        public AboutAction() {
-            super("About " + Main.APPLICATION_NAME);
-            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            JOptionPane.showMessageDialog(
-                    BuildingSelectPanel.this,
-                    "Information about the application should go here.",
-                    getName(),
-                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
