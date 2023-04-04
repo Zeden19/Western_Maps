@@ -1,8 +1,8 @@
 package cs2212.westernmaps.maps;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatButtonBorder;
+import cs2212.westernmaps.MiscIcons;
 import cs2212.westernmaps.core.Layer;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -20,8 +20,6 @@ import javax.swing.*;
  * {@linkplain Layer POI layers} on the map.
  */
 public final class LayerVisibilityPanel extends JPanel {
-    private static final Icon CLOSE_ICON = new FlatSVGIcon("cs2212/westernmaps/misc-icons/x-small.svg");
-
     private final List<BiConsumer<Layer, Boolean>> layerToggleListeners = new ArrayList<>();
 
     /**
@@ -66,7 +64,7 @@ public final class LayerVisibilityPanel extends JPanel {
             constraints.gridy++;
         }
 
-        var collapseButton = new JButton(CLOSE_ICON);
+        var collapseButton = new JButton(MiscIcons.CLOSE_ICON);
         collapseButton.putClientProperty(FlatClientProperties.BUTTON_TYPE, "borderless");
         collapseButton.addActionListener(e -> cardLayout.show(this, "Collapsed"));
 

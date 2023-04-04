@@ -3,6 +3,7 @@ package cs2212.westernmaps.maps;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
+import cs2212.westernmaps.pois.POISummaryPanel;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public final class MapPanel extends JPanel {
     private Floor currentFloor;
 
     private final MapViewerPanel mapViewer;
+    private final POISummaryPanel poiSummaryPanel;
 
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
@@ -34,18 +36,59 @@ public final class MapPanel extends JPanel {
         currentFloor = building.floors().get(0);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
+        poiSummaryPanel = new POISummaryPanel(loggedInAccount.developer());
+        poiSummaryPanel.setVisible(false);
+
+        poiSummaryPanel.addPoiChangeListener((oldPoi, newPoi) -> {
+            var state = database.getCurrentState().modifyPOIs(pois -> pois.stream()
+                    .map(poi -> poi.equals(oldPoi) ? newPoi : poi)
+                    .toList());
+            database.getHistory().pushState(state);
+            try {
+                database.save();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            refreshPois();
+        });
+
+        poiSummaryPanel.addPoiDeleteListener(oldPoi -> {
+            var state = database.getCurrentState()
+                    .modifyPOIs(pois ->
+                            pois.stream().filter(poi -> !poi.equals(oldPoi)).toList());
+            database.getHistory().pushState(state);
+            try {
+                database.save();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            poiSummaryPanel.setVisible(false);
+            refreshPois();
+        });
+
         mapViewer = new MapViewerPanel(initialMapUri, List.of());
-        mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
-        mapViewer.addPoiMoveListener((movedPoi, location) -> {
+        mapViewer.addPoiClickListener(poi -> {
+            poiSummaryPanel.setCurrentPoi(poi);
+            poiSummaryPanel.setVisible(true);
+        });
+
+        mapViewer.addPoiMoveListener((oldPoi, location) -> {
+            var newPoi = oldPoi.withLocation(location.x, location.y);
             var newState = database.getCurrentState().modifyPOIs(pois -> pois.stream()
-                    .map(poi -> poi == movedPoi ? poi.withLocation(location.x, location.y) : poi)
+                    .map(poi -> poi == oldPoi ? newPoi : poi)
                     .toList());
             database.getHistory().pushState(newState);
+
             // Save changes to disk.
             try {
                 database.save();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            }
+
+            // If the summary panel is open, make sure it's up to date.
+            if (poiSummaryPanel.isVisible()) {
+                poiSummaryPanel.setCurrentPoi(newPoi);
             }
             refreshPois();
         });
@@ -89,6 +132,26 @@ public final class MapPanel extends JPanel {
         searchBar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSearchIcon());
 
         var createPOIButton = new JButton("Create POI");
+        createPOIButton.addActionListener(e -> {
+            // Determine the location in the center of the map view right now,
+            // and use that as the location of the new POI.
+            var mapViewerBounds = mapViewer.getBounds();
+            var location = new Point(mapViewerBounds.width / 2, mapViewerBounds.height / 2);
+            mapViewer.componentToMapPosition(location, location);
+
+            var poi = new POI("New POI", "", location.x, location.y, false, currentFloor, Layer.CUSTOM);
+            poiSummaryPanel.setCurrentPoi(poi);
+            poiSummaryPanel.setVisible(true);
+
+            var state = database.getCurrentState().modifyPOIs(pois -> Lists.append(pois, poi));
+            database.getHistory().pushState(state);
+            try {
+                database.save();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            refreshPois();
+        });
 
         var toolbar = new JPanel();
         toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.LINE_AXIS));
@@ -168,6 +231,11 @@ public final class MapPanel extends JPanel {
         constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.LAST_LINE_START;
         floatingControls.add(floorSwitcher, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        floatingControls.add(poiSummaryPanel, constraints);
 
         return floatingControls;
     }

@@ -195,6 +195,42 @@ public final class MapViewerPanel extends JPanel {
     }
 
     /**
+     * Converts a position from map-space to component-space.
+     *
+     * <p><i>Map-space</i> is the coordinate space used for POIs on the map and
+     * <i>component-space</i> is the coordinate space used by this Swing
+     * component (for example, the position in mouse events).</p>
+     *
+     * @param mapPos       The position to convert.
+     * @param componentPos The point to set to the converted position.
+     * @return             A copy of {@code componentPos} for convenience.
+     */
+    public Point mapToComponentPosition(Point mapPos, Point componentPos) {
+        transform.transform(mapPos, componentPos);
+        return componentPos;
+    }
+
+    /**
+     * Converts a position from component-space to map-space.
+     *
+     * <p><i>Map-space</i> is the coordinate space used for POIs on the map and
+     * <i>component-space</i> is the coordinate space used by this Swing
+     * component (for example, the position in mouse events).</p>
+     *
+     * @param componentPos The position to convert.
+     * @param mapPos       The point to set to the converted position.
+     * @return             A copy of {@code mapPos} for convenience.
+     */
+    public Point componentToMapPosition(Point componentPos, Point mapPos) {
+        try {
+            transform.inverseTransform(componentPos, mapPos);
+        } catch (NoninvertibleTransformException ex) {
+            throw new RuntimeException(ex);
+        }
+        return componentPos;
+    }
+
+    /**
      * Sets the component that receives cursor changes from this panel.
      *
      * <p>This is needed because, when using a {@link JLayeredPane}, only the
