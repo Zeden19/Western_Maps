@@ -57,7 +57,7 @@ public final class LayerVisibilityPanel extends JPanel {
             constraints.weightx = 0.0;
             innerPanel.add(checkbox, constraints);
 
-            var label = new JLabel(layer.name(), layer.getIcon(), SwingConstants.LEADING);
+            var label = new JLabel(layer.getDisplayName(), layer.getIcon(), SwingConstants.LEADING);
             constraints.gridx = 1;
             constraints.weightx = 1.0;
             innerPanel.add(label, constraints);
