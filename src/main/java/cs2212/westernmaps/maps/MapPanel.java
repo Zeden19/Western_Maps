@@ -25,9 +25,6 @@ public final class MapPanel extends JPanel {
         this.database = database;
         this.building = building;
 
-        // temporary code, just printing out if user is a developer
-        System.out.println(loggedInAccount.developer());
-
         // This determines what MainWindow will use as its title.
         setName(building.name());
         setLayout(new BorderLayout());
