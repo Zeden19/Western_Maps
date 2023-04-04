@@ -3,10 +3,8 @@ package cs2212.westernmaps.maps;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
-import cs2212.westernmaps.pois.POISummaryPanel;
 import java.awt.*;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -37,6 +35,7 @@ public final class MapPanel extends JPanel {
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
         mapViewer = new MapViewerPanel(initialMapUri, List.of());
+        mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
         mapViewer.addPoiMoveListener((movedPoi, location) -> {
             var newState = database.getCurrentState().modifyPOIs(pois -> pois.stream()
                     .map(poi -> poi == movedPoi ? poi.withLocation(location.x, location.y) : poi)
@@ -59,26 +58,6 @@ public final class MapPanel extends JPanel {
         layeredPane.setLayout(new OverlayLayout(layeredPane));
         layeredPane.add(mapViewer, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(floatingControls, JLayeredPane.PALETTE_LAYER);
-
-        mapViewer.addPoiClickListener(poi -> {
-            var poiSummary = new POISummaryPanel(poi, database, true);
-            poiSummary.addPoiChangeListener((currentPoi, newPoi) -> {
-                var pois = database.getCurrentState().pois();
-                List<POI> newPois =
-                        Lists.replaceIndex(pois, pois.indexOf(currentPoi), newPoi);
-                database.getHistory().pushState(database.getCurrentState().modifyPOIs(currentPois -> newPois));
-            });
-            poiSummary.addPoiDeleteListener(poiToDelete -> {
-                var pois = database.getCurrentState().pois();
-                List<POI> newPois = Lists.removeIndex(pois, pois.indexOf(poiToDelete));
-                database.getHistory().pushState(database.getCurrentState().modifyPOIs(currentPois -> newPois));
-
-                // Delete this panel
-            });
-
-            poiSummary.setBounds(800, 100, 200, 250);
-            layeredPane.add(poiSummary, 1, 0);
-        });
 
         // Make sure the mouse cursor can still change.
         mapViewer.setCursorComponent(layeredPane);
