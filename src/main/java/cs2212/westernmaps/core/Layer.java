@@ -9,20 +9,31 @@ import javax.swing.Icon;
  * @see POI
  */
 public enum Layer {
-    ACCESSIBILITY("accessibility"),
-    CLASSROOMS("classroom"),
-    CUSTOM("custom"),
-    EATERIES("eatery"),
-    FITNESS("fitness"),
-    LOUNGES("lounge"),
-    MISCELLANEOUS("miscellaneous"),
-    UTILITIES("utility"),
-    WASHROOMS("washroom");
+    ACCESSIBILITY("Accessibility", "accessibility"),
+    CLASSROOMS("Classrooms", "classroom"),
+    CUSTOM("Custom", "custom"),
+    EATERIES("Eateries", "eatery"),
+    FITNESS("Fitness", "fitness"),
+    LOUNGES("Lounges", "lounge"),
+    MISCELLANEOUS("Miscellaneous", "miscellaneous"),
+    UTILITIES("Utilities", "utility"),
+    WASHROOMS("Washrooms", "washroom");
 
+    private final String displayName;
     private final FlatSVGIcon icon;
 
-    Layer(String iconName) {
+    Layer(String displayName, String iconName) {
+        this.displayName = displayName;
         this.icon = new FlatSVGIcon("cs2212/westernmaps/poi-icons/" + iconName + ".svg", Layer.class.getClassLoader());
+    }
+
+    /**
+     * Gets the name of this layer as it should be displayed to the user.
+     *
+     * @return The display name of this layer.
+     */
+    public String getDisplayName() {
+        return displayName;
     }
 
     public Icon getIcon() {
