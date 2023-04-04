@@ -182,6 +182,7 @@
                         <phase>prepare-package</phase>
                         <configuration>
                             <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                            <includeScope>runtime</includeScope>
                         </configuration>
                     </execution>
                 </executions>
