@@ -28,6 +28,7 @@ public class HelpWindow extends JFrame {
     // Creating the help page for the actual application
 
     /**
+     * This constructor creates the help window of the application
      * @param index represents the window of the current help page
      */
     public HelpWindow(HelpPageIndex index) {
@@ -159,7 +160,7 @@ public class HelpWindow extends JFrame {
         private static @Nullable HelpPageIndex index = null;
 
         /**
-         * The creater for the ShowAction classed
+         * The constructor for the ShowAction class
          */
         public ShowAction() {
             super("Help");
@@ -168,6 +169,7 @@ public class HelpWindow extends JFrame {
         }
 
         /**
+         * This method makes a new window or focuses it when the action is performed
          * @param actionEvent the event to be processed by the program
          */
         @Override
