@@ -153,17 +153,23 @@ public class HelpWindow extends JFrame {
     }
 
     /**
-     * This class is used for when certain actions are
+     * This class is used for when certain actions are done by the user
      */
     public static class ShowAction extends AbstractAction {
         private static @Nullable HelpPageIndex index = null;
 
+        /**
+         * The creater for the ShowAction classed
+         */
         public ShowAction() {
             super("Help");
             putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);
             putValue(Action.SHORT_DESCRIPTION, "Show the help browser.");
         }
 
+        /**
+         * @param actionEvent the event to be processed by the program
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             // Load the help index and cache the result.
