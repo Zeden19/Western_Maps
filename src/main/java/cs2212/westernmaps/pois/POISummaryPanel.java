@@ -2,7 +2,8 @@ package cs2212.westernmaps.pois;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatButtonBorder;
-import cs2212.westernmaps.core.*;
+import cs2212.westernmaps.core.Layer;
+import cs2212.westernmaps.core.POI;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,17 +20,26 @@ import javax.swing.text.Document;
 
 public class POISummaryPanel extends JPanel {
     private static final int MAX_COLUMNS = 10;
+
     private POI poi;
+
+    private final JTextField titleField;
+    private final @Nullable JComboBox<Layer> layerComboBox;
+    private final @Nullable JLabel layerLabel;
+    private final JCheckBox favoriteCheckbox;
+    private final JLabel locationLabel;
+    private final JTextArea descriptionField;
+
     private final List<BiConsumer<POI, POI>> poiChangeListeners = new ArrayList<>();
     private final List<Consumer<POI>> poiDeleteListeners = new ArrayList<>();
+
     /**
      * Summary window of a POI that displays its metadata.
      *
      * @param poiToSummarize POI to summarize
-     * @param database Database
      * @param developer If the logged-in user is a developer
      */
-    public POISummaryPanel(POI poiToSummarize, Database database, boolean developer) {
+    public POISummaryPanel(POI poiToSummarize, boolean developer) {
 
         poi = poiToSummarize;
 
@@ -37,11 +48,11 @@ public class POISummaryPanel extends JPanel {
         summaryBox.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Title
-        JTextField title = new JTextField(poi.name());
-        title.putClientProperty(FlatClientProperties.STYLE_CLASS, "h3");
-        title.setEditable(developer);
+        titleField = new JTextField(poi.name());
+        titleField.putClientProperty(FlatClientProperties.STYLE_CLASS, "h3");
+        titleField.setEditable(developer);
 
-        title.getDocument().addDocumentListener(new DocumentListener() {
+        titleField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 this.changedUpdate(e);
@@ -71,7 +82,7 @@ public class POISummaryPanel extends JPanel {
             }
         });
 
-        addToBox(summaryBox, title);
+        addToBox(summaryBox, titleField);
 
         // Layer
         JPanel layerBox = new JPanel();
@@ -81,11 +92,11 @@ public class POISummaryPanel extends JPanel {
         layerBox.add(layerIcon);
 
         if (developer) {
-            JComboBox<Layer> layerCombo = new JComboBox<>(Layer.values());
-            layerCombo.addActionListener(new AbstractAction() {
+            layerComboBox = new JComboBox<>(Layer.values());
+            layerComboBox.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Layer newLayer = (Layer) layerCombo.getSelectedItem();
+                    Layer newLayer = (Layer) layerComboBox.getSelectedItem();
 
                     POI newPoi = new POI(
                             poi.name(), poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), newLayer);
@@ -96,42 +107,44 @@ public class POISummaryPanel extends JPanel {
                     layerIcon.setIcon(poi.layer().getIcon());
                 }
             });
-            layerCombo.setSelectedItem(poi.layer());
+            layerComboBox.setSelectedItem(poi.layer());
 
-            layerBox.add(layerCombo);
+            layerLabel = null;
+            layerBox.add(layerComboBox);
         } else {
-            JLabel layerLabel = new JLabel(poi.layer().name());
+            layerComboBox = null;
+            layerLabel = new JLabel(poi.layer().name());
             layerBox.add(layerLabel);
         }
 
         addToBox(summaryBox, layerBox);
 
         // Favorite
-        JCheckBox favoriteCheck = new JCheckBox("Favourite");
-        favoriteCheck.setSelected(poi.favorite());
+        favoriteCheckbox = new JCheckBox("Favourite");
+        favoriteCheckbox.setSelected(poi.favorite());
         // TODO: Add icon here
-        favoriteCheck.addItemListener(e -> {
+        favoriteCheckbox.addItemListener(e -> {
             POI newPoi =
                     new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
             poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
             poi = newPoi;
         });
-        addToBox(summaryBox, favoriteCheck);
+        addToBox(summaryBox, favoriteCheckbox);
 
         // Position
-        JLabel pos = new JLabel("Location: " + poi.x() + ", " + poi.y());
+        locationLabel = new JLabel("Location: " + poi.x() + ", " + poi.y());
         // TODO: Add icon here
-        addToBox(summaryBox, pos);
+        addToBox(summaryBox, locationLabel);
 
         final boolean isCustom = poi.layer() == Layer.CUSTOM;
 
         // Description
-        JTextArea desc = new JTextArea(poi.description(), 3, MAX_COLUMNS);
-        desc.setEditable(isCustom || developer);
-        desc.setLineWrap(true);
-        desc.setWrapStyleWord(true);
-        desc.getDocument().addDocumentListener(new DocumentListener() {
+        descriptionField = new JTextArea(poi.description(), 3, MAX_COLUMNS);
+        descriptionField.setEditable(isCustom || developer);
+        descriptionField.setLineWrap(true);
+        descriptionField.setWrapStyleWord(true);
+        descriptionField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 this.changedUpdate(e);
@@ -158,7 +171,7 @@ public class POISummaryPanel extends JPanel {
                 }
             }
         });
-        JScrollPane descScroll = new JScrollPane(desc);
+        JScrollPane descScroll = new JScrollPane(descriptionField);
         addToBox(summaryBox, descScroll);
 
         summaryBox.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -182,14 +195,11 @@ public class POISummaryPanel extends JPanel {
             addToBox(summaryBox, deleteButton);
         }
 
-        JPanel contentBox = new JPanel();
-        contentBox.setLayout(new BoxLayout(contentBox, BoxLayout.LINE_AXIS));
-        contentBox.add(Box.createRigidArea(new Dimension(10, 0)));
-        contentBox.add(summaryBox);
-        contentBox.add(Box.createRigidArea(new Dimension(10, 0)));
-        contentBox.setBorder(new FlatButtonBorder());
-
-        add(contentBox);
+        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        add(Box.createRigidArea(new Dimension(10, 0)));
+        add(summaryBox);
+        add(Box.createRigidArea(new Dimension(10, 0)));
+        setBorder(new FlatButtonBorder());
     }
 
     /**
