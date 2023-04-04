@@ -24,7 +24,7 @@ public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
-    private JList<String> searchResults = new JList<>();
+    private JList<POI> searchResults = new JList<>();
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
@@ -161,6 +161,8 @@ public final class MapPanel extends JPanel {
             var query = searchBar.getText();
             glassPane.add(searchResults);
             glassPane.setVisible(true);
+            var results = getSearchResults(searchBar.getText().split(" "), database, building);
+            searchResults.setListData(results.toArray(POI[]::new));
         });
 
         // removing list when focus is lost
@@ -283,6 +285,30 @@ public final class MapPanel extends JPanel {
         return floatingControls;
     }
 
+    // getting the search results
+    private List<POI> getSearchResults(String[] query, Database database, Building building) {
+        List<POI> pois = database.getCurrentState().pois();
+
+        // Going through the list of words
+        for (int i = 0; i < query.length; i++) {
+            int finalI = i;
+
+            // Basically looking through all the words and removing POIs in the list that don't match
+            pois = pois.stream()
+                    .filter(poi -> building.floors().contains(poi.floor()) && (poiMatches(query[finalI], poi)))
+                    .toList();
+        }
+        return pois;
+    }
+
+    // Getting if the POI in the search matches
+    private boolean poiMatches(String word, POI poi) {
+        String wordLowerCase = word.toLowerCase();
+        return poi.name().toLowerCase().contains(wordLowerCase)
+                || poi.description().toLowerCase().contains(wordLowerCase)
+                || poi.layer().name().toLowerCase().contains(wordLowerCase)
+                || poi.floor().longName().toLowerCase().contains(wordLowerCase);
+    }
     // Does not update the selection of the floor switcher.
     private void changeToFloor(Floor floor) {
         currentFloor = floor;
