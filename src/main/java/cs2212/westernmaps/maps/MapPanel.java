@@ -1,5 +1,7 @@
 package cs2212.westernmaps.maps;
 
+import static javax.swing.SwingUtilities.convertPoint;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
@@ -173,7 +175,6 @@ public final class MapPanel extends JPanel {
                 searchResults.setListData(results.toArray(POI[]::new));
             }
         });
-
         // removing list when focus is lost
         searchResults.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -209,6 +210,28 @@ public final class MapPanel extends JPanel {
         var toolbar = new JPanel();
         toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.LINE_AXIS));
         toolbar.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+
+        var poiListScroller = new JScrollPane(searchResults);
+        searchBar.addActionListener(e -> {
+            var bounds = searchBar.getBounds();
+            var position = convertPoint(toolbar, bounds.x, bounds.y, glassPane);
+            bounds.x = position.x;
+            bounds.y = position.y + bounds.height;
+            bounds.height = 200;
+            poiListScroller.setBounds(bounds);
+            glassPane.setVisible(true);
+            var results = getSearchResults(searchBar.getText().split(" "), database, building);
+
+            if (results.isEmpty()) {
+                // making a "blank" POI as search results can only contain a list of POIS
+                POI emptyPOI =
+                        new POI("No results found", "", 0, 0, false, new Floor("", "", Path.of("")), Layer.CUSTOM);
+                searchResults.setListData(new POI[] {emptyPOI});
+            } else {
+                searchResults.setListData(results.toArray(POI[]::new));
+            }
+        });
+        glassPane.add(poiListScroller);
 
         toolbar.add(backButton);
         toolbar.add(Box.createHorizontalStrut(8));
