@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
+/**
+ * This class creates Help page Indexes
+ */
 public final class HelpPageIndex {
     private static final String PAGES_JSON_RESOURCE = HelpPage.HELP_ROOT + "/pages.json";
 
@@ -41,7 +44,7 @@ public final class HelpPageIndex {
     }
 
     /**
-     *
+     * Gets the root page
      * @return the very first page of the help page
      */
     public HelpPage getRootPage() {
@@ -49,7 +52,7 @@ public final class HelpPageIndex {
     }
 
     /**
-     *
+     * gets the page specified by the URL
      * @param contentURL is the URL that is associated with the page
      * @return the page in the help window
      */
