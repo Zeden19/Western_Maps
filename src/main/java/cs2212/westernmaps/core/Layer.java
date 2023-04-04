@@ -39,4 +39,14 @@ public enum Layer {
     public Icon getIcon() {
         return icon;
     }
+
+    /**
+     * Alias of {@link #getDisplayName()} used by Java Swing components.
+     *
+     * @return The display name of this layer.
+     */
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 }
