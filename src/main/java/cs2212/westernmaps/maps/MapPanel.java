@@ -71,16 +71,24 @@ public final class MapPanel extends JPanel {
             poiSummaryPanel.setCurrentPoi(poi);
             poiSummaryPanel.setVisible(true);
         });
-        mapViewer.addPoiMoveListener((movedPoi, location) -> {
+
+        mapViewer.addPoiMoveListener((oldPoi, location) -> {
+            var newPoi = oldPoi.withLocation(location.x, location.y);
             var newState = database.getCurrentState().modifyPOIs(pois -> pois.stream()
-                    .map(poi -> poi == movedPoi ? poi.withLocation(location.x, location.y) : poi)
+                    .map(poi -> poi == oldPoi ? newPoi : poi)
                     .toList());
             database.getHistory().pushState(newState);
+
             // Save changes to disk.
             try {
                 database.save();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            }
+
+            // If the summary panel is open, make sure it's up to date.
+            if (poiSummaryPanel.isVisible()) {
+                poiSummaryPanel.setCurrentPoi(newPoi);
             }
             refreshPois();
         });
@@ -124,6 +132,26 @@ public final class MapPanel extends JPanel {
         searchBar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSearchIcon());
 
         var createPOIButton = new JButton("Create POI");
+        createPOIButton.addActionListener(e -> {
+            // Determine the location in the center of the map view right now,
+            // and use that as the location of the new POI.
+            var mapViewerBounds = mapViewer.getBounds();
+            var location = new Point(mapViewerBounds.width / 2, mapViewerBounds.height / 2);
+            mapViewer.componentToMapPosition(location, location);
+
+            var poi = new POI("New POI", "", location.x, location.y, false, currentFloor, Layer.CUSTOM);
+            poiSummaryPanel.setCurrentPoi(poi);
+            poiSummaryPanel.setVisible(true);
+
+            var state = database.getCurrentState().modifyPOIs(pois -> Lists.append(pois, poi));
+            database.getHistory().pushState(state);
+            try {
+                database.save();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            refreshPois();
+        });
 
         var toolbar = new JPanel();
         toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.LINE_AXIS));

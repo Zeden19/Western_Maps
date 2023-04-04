@@ -282,8 +282,8 @@ public class POISummaryPanel extends JPanel {
 
         boolean editEverything = developer || poi.layer() == Layer.CUSTOM;
         titleField.setEditable(editEverything);
-        layerComboBox.setVisible(editEverything);
-        layerLabel.setVisible(!editEverything);
+        layerComboBox.setVisible(developer);
+        layerLabel.setVisible(!developer);
         descriptionField.setEditable(editEverything);
         deleteButton.setVisible(editEverything);
     }
