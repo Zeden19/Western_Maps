@@ -81,15 +81,13 @@ public final class CreateAccountPanel extends JPanel {
             if (!checkPasswordFields() | isUsernameTaken(database, usernameField.getText())) {
                 return;
             }
-
-            System.out.println("uwu");
             PasswordAuthenticator auth = new PasswordAuthenticator();
             String hash = auth.hash(passwordField.getPassword());
 
             DatabaseState currentState = database.getCurrentState();
             List<Account> accounts = new ArrayList<>(currentState.accounts());
 
-            var newAccount = new Account(usernameField.getText(), hash.getBytes(), false);
+            var newAccount = new Account(usernameField.getText(), hash, false);
             accounts.add(newAccount);
             database.getHistory().pushState(new DatabaseState(accounts, currentState.buildings(), currentState.pois()));
             try {

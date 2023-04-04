@@ -2,18 +2,13 @@
   "accounts": [
     {
       "developer": false,
-      "passwordHash": "",
-      "username": "regularUser"
+      "passwordHash": "$31$16$SXYa2l_RwvP8ONMhjNQM384bYThlWYJ_elJWA5TKCu8",
+      "username": "regularUser1"
     },
     {
       "developer": true,
-      "passwordHash": "",
+      "passwordHash": "$31$16$VZlldtuzEOL5FlD9gvxLvhwaKBkUW34BS0bfnvUHQjc",
       "username": "developerUser"
-    },
-    {
-      "developer": false,
-      "passwordHash": "JDMxJDE2JEJVeU9PbF8teHZ6bDVDbDBDZ3BzeUpxRTkwVzYwdnJYQ3FPeUppUHB5dVk=",
-      "username": "developer"
     }
   ],
   "buildings": [

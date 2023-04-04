@@ -1,5 +1,6 @@
 package cs2212.westernmaps.core;
 
+import cs2212.westernmaps.auth.PasswordAuthenticator;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import java.util.Objects;
  *                     reasons, the actual password is never saved.
  * @param developer    Whether this account is a developer account.
  */
-public record Account(String username, byte[] passwordHash, boolean developer) {
+public record Account(String username, String passwordHash, boolean developer) {
     /**
      * Changes the password this account uses to log in.
      *
@@ -42,7 +43,10 @@ public record Account(String username, byte[] passwordHash, boolean developer) {
      * @return         Whether the password was correct.
      */
     public boolean isPasswordCorrect(char[] password) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        PasswordAuthenticator passwordAuthenticator = new PasswordAuthenticator();
+        boolean isEqual = passwordAuthenticator.authenticate(password, passwordHash);
+        Arrays.fill(password, ' ');
+        return isEqual;
     }
 
     /**
@@ -67,7 +71,7 @@ public record Account(String username, byte[] passwordHash, boolean developer) {
         Account account = (Account) o;
         return developer == account.developer
                 && username.equals(account.username)
-                && Arrays.equals(passwordHash, account.passwordHash);
+                && Arrays.equals(passwordHash.toCharArray(), account.passwordHash.toCharArray());
     }
 
     /**
@@ -87,7 +91,7 @@ public record Account(String username, byte[] passwordHash, boolean developer) {
     @Override
     public int hashCode() {
         int result = Objects.hash(username, developer);
-        result = 31 * result + Arrays.hashCode(passwordHash);
+        result = 31 * result + Arrays.hashCode(passwordHash.toCharArray());
         return result;
     }
 }
