@@ -75,7 +75,7 @@ public final class MapPanel extends JPanel {
 
 
     /**
-     * The constructor for the MapPanel
+     * Creates the map panel
      *
      * @param database is the database that is for the application
      * @param building is the building that is selected
@@ -574,6 +574,7 @@ public final class MapPanel extends JPanel {
     }
 
     /**
+     * adds listeners to the backListeners
      * @param listener is the listener that will be added to backListeners
      */
     public void addBackListener(Runnable listener) {
