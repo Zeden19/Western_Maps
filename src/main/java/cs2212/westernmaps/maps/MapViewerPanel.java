@@ -26,6 +26,9 @@ public final class MapViewerPanel extends JPanel {
     private static final int POI_HOVER_CIRCLE_RADIUS = 18;
     private static final Color POI_HOVER_CIRCLE_COLOR = new Color(0x00, 0x00, 0x00, 0x1F);
 
+    private static final Color POI_TOOLTIP_BACKGROUND_COLOR = new Color(0x00, 0x00, 0x00, 0xBF);
+    private static final Color POI_TOOLTIP_FOREGROUND_COLOR = Color.WHITE;
+
     private static final double ZOOM_OUT_LIMIT = 0.1;
     private static final double ZOOM_IN_LIMIT = 10.0;
 
@@ -310,9 +313,11 @@ public final class MapViewerPanel extends JPanel {
         // Render the hovered and dragged POIs.
         if (hoveredPoi != null) {
             renderPoiIcon(gfx, hoveredPoi, true);
+            renderPoiTooltip(gfx, hoveredPoi);
         }
         if (draggedPoi != null) {
-            renderPoiIcon(gfx, draggedPoi.layer(), draggedPoiLocation.x, draggedPoiLocation.y, false);
+            renderPoiIcon(gfx, draggedPoi.layer(), draggedPoiLocation.x, draggedPoiLocation.y, true);
+            renderPoiTooltip(gfx, draggedPoi.name(), draggedPoiLocation.x, draggedPoiLocation.y);
         }
     }
 
@@ -337,6 +342,27 @@ public final class MapViewerPanel extends JPanel {
         location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
         // Draw the POI icon.
         icon.paintIcon(this, gfx, location.x, location.y);
+    }
+
+    private void renderPoiTooltip(Graphics2D gfx, POI poi) {
+        renderPoiTooltip(gfx, poi.name(), poi.x(), poi.y());
+    }
+
+    private void renderPoiTooltip(Graphics2D gfx, String text, int poiX, int poiY) {
+        // POI icons are rendered at the same size regardless of the map's
+        // scale, so we need to transform their locations manually.
+        var location = new Point(poiX, poiY);
+        transform.transform(location, location);
+
+        int textWidth = gfx.getFontMetrics().stringWidth(text);
+
+        var x = location.x - textWidth / 2 - 8;
+        var y = location.y + 22;
+
+        gfx.setPaint(POI_TOOLTIP_BACKGROUND_COLOR);
+        gfx.fillRoundRect(x, y, textWidth + 16, 20, 6, 6);
+        gfx.setPaint(POI_TOOLTIP_FOREGROUND_COLOR);
+        gfx.drawString(text, x + 8, y + 2 + 13);
     }
 
     private void refreshHoveredPoi(int mouseX, int mouseY) {
