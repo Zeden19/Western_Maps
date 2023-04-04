@@ -9,6 +9,7 @@ import java.util.List;
  * @param floors The floors contained in this building.
  */
 public record Building(String name, List<Floor> floors) {
+    // constructor for the Building Class
     public Building {
         floors = List.copyOf(floors);
     }

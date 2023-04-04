@@ -17,12 +17,19 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+/**
+ * this class creates the actual Help window of the application
+ */
 public class HelpWindow extends JFrame {
     private static @Nullable HelpWindow openedWindow = null;
 
     private final JTree tree;
     private final JEditorPane viewer;
+    // Creating the help page for the actual application
 
+    /**
+     * @param index represents the window of the current help page
+     */
     public HelpWindow(HelpPageIndex index) {
         super(Main.APPLICATION_NAME + " Help");
 
@@ -34,6 +41,10 @@ public class HelpWindow extends JFrame {
         rootPageTitle.setFocusable(true);
         rootPageTitle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         rootPageTitle.addMouseListener(new MouseAdapter() {
+            /**
+             * This method helps for when a mouse click occurs
+             * @param e the event to be processed
+             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 tree.clearSelection();
@@ -141,6 +152,9 @@ public class HelpWindow extends JFrame {
         }
     }
 
+    /**
+     * This class is used for when certain actions are
+     */
     public static class ShowAction extends AbstractAction {
         private static @Nullable HelpPageIndex index = null;
 

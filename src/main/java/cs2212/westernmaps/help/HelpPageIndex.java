@@ -40,10 +40,19 @@ public final class HelpPageIndex {
         }
     }
 
+    /**
+     *
+     * @return the very first page of the help page
+     */
     public HelpPage getRootPage() {
         return rootPage;
     }
 
+    /**
+     *
+     * @param contentURL is the URL that is associated with the page
+     * @return the page in the help window
+     */
     public @Nullable HelpPage getPageByContentURL(URL contentURL) {
         return reverseIndex.get(contentURL.toString());
     }
