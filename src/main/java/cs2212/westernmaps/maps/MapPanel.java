@@ -9,7 +9,6 @@ import cs2212.westernmaps.core.*;
 import cs2212.westernmaps.pois.POISummaryPanel;
 import java.awt.*;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -158,6 +157,7 @@ public final class MapPanel extends JPanel {
         searchBar.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search");
         searchBar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSearchIcon());
 
+
         searchResults = new JList<>();
         searchResults.setBounds(88, 30, 374, 200);
         searchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -243,12 +243,20 @@ public final class MapPanel extends JPanel {
         });
         glassPane.add(cardPanel);
 
+        // closing the search results when the user clicks off the search EXCEPT when the user clicks on the list
         searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 var focused = evt.getOppositeComponent();
-                if (focused != null && (focused.equals(poiList) || Objects.equals(focused, poiListScroller))) {
+                if (focused != null && !(focused.equals(searchResults))) {
                     glassPane.setVisible(false);
                 }
+            }
+        });
+
+        // closing the search results when the user clicks from the list and clicks off
+        searchResults.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                glassPane.setVisible(false);
             }
         });
 

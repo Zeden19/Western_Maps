@@ -115,13 +115,8 @@
       "floor": 1,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator A",
-<<<<<<< HEAD
       "x": 948,
       "y": 466
-=======
-      "x": 394,
-      "y": 412
->>>>>>> ad879a7 (Seaching for all POI meta-data)
     },
     {
       "description": "Elevator that can take you up to the Fourth Floor",
@@ -174,8 +169,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Kitchen",
-      "x": 574,
-      "y": 409
+      "x": 572,
+      "y": 411
     },
     {
       "description": "Non-Accessible Men's Washroom.",
