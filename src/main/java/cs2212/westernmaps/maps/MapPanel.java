@@ -4,14 +4,17 @@ import static javax.swing.SwingUtilities.convertPoint;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
+import com.formdev.flatlaf.ui.FlatBorder;
 import cs2212.westernmaps.core.*;
 import cs2212.westernmaps.pois.POISummaryPanel;
 import java.awt.*;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
@@ -142,6 +145,8 @@ public final class MapPanel extends JPanel {
     }
 
     private JPanel createToolbar(Container glassPane, Building building, Database database) {
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
 
         // back button
         var backButton = new JButton("Back");
@@ -166,11 +171,6 @@ public final class MapPanel extends JPanel {
             var results = getSearchResults(searchBar.getText().split(" "), database, building);
 
             if (results.isEmpty()) {
-
-                // making a "blank" POI as search results can only contain a list of POIS
-                POI emptyPOI =
-                        new POI("No results found", "", 0, 0, false, new Floor("", "", Path.of("")), Layer.CUSTOM);
-                searchResults.setListData(new POI[] {emptyPOI});
             } else {
                 searchResults.setListData(results.toArray(POI[]::new));
             }
@@ -211,27 +211,46 @@ public final class MapPanel extends JPanel {
         toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.LINE_AXIS));
         toolbar.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
+        // Label if no search results are found
+        JLabel noResultsFound = new JLabel("No results found");
+        noResultsFound.setHorizontalAlignment(SwingConstants.CENTER);
+        noResultsFound.setBorder(new FlatBorder());
+        cardPanel.setBackground(UIManager.getColor("List.background"));
+
+        // the search
         var poiListScroller = new JScrollPane(searchResults);
+
+        cardPanel.add(noResultsFound, "no results");
+        cardPanel.add(poiListScroller, "results");
         searchBar.addActionListener(e -> {
             var bounds = searchBar.getBounds();
             var position = convertPoint(toolbar, bounds.x, bounds.y, glassPane);
             bounds.x = position.x;
             bounds.y = position.y + bounds.height;
             bounds.height = 200;
-            poiListScroller.setBounds(bounds);
+            cardPanel.setBounds(bounds);
             glassPane.setVisible(true);
-            var results = getSearchResults(searchBar.getText().split(" "), database, building);
 
+            var results = getSearchResults(searchBar.getText().split(" "), database, building);
             if (results.isEmpty()) {
                 // making a "blank" POI as search results can only contain a list of POIS
-                POI emptyPOI =
-                        new POI("No results found", "", 0, 0, false, new Floor("", "", Path.of("")), Layer.CUSTOM);
-                searchResults.setListData(new POI[] {emptyPOI});
+                searchResults.setListData(new POI[] {});
+                cardLayout.show(cardPanel, "no results");
             } else {
                 searchResults.setListData(results.toArray(POI[]::new));
+                cardLayout.show(cardPanel, "results");
             }
         });
-        glassPane.add(poiListScroller);
+        glassPane.add(cardPanel);
+
+        searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                var focused = evt.getOppositeComponent();
+                if (focused != null && (focused.equals(poiList) || Objects.equals(focused, poiListScroller))) {
+                    glassPane.setVisible(false);
+                }
+            }
+        });
 
         toolbar.add(backButton);
         toolbar.add(Box.createHorizontalStrut(8));
