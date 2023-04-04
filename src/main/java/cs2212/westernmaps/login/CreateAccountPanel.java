@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * creating the account panel for the application
+ */
 public final class CreateAccountPanel extends JPanel {
     private final JPasswordField passwordField;
     private final JPasswordField confirmPassword;

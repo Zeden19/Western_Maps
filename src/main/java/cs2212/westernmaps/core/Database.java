@@ -61,7 +61,6 @@ public final class Database {
         return getHistory().getCurrentState();
     }
 
-
     public URI resolveFloorMapUri(Floor floor) {
         var mapPath = directory.resolve(floor.mapPath());
         return mapPath.toUri();
