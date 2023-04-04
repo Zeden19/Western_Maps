@@ -8,30 +8,64 @@ import org.junit.jupiter.api.Test;
 
 class AccountTest {
 
+    private Account account;
     @BeforeEach
-    void setUp() {}
+    void setUp() {
+        byte[] passwordHash = "password".getBytes();
+        account = new Account("username", passwordHash, false);
+    }
 
     @AfterEach
     void tearDown() {}
 
     @Test
-    void withPassword() {}
+    void withPassword() {
+        char[] newPassword = "newPassword".toCharArray();
+        Account newAccount = account.withPassword(newPassword);
+
+        assertNotSame(account, newAccount);
+        assertTrue(newAccount.isPasswordCorrect(newPassword));
+    }
 
     @Test
-    void isPasswordCorrect() {}
+    void isPasswordCorrect() {
+        char[] correctPassword = "password".toCharArray();
+        char[] incorrectPassword = "wrong".toCharArray();
+
+        assertTrue(account.isPasswordCorrect(correctPassword));
+        assertFalse(account.isPasswordCorrect(incorrectPassword));
+    }
 
     @Test
-    void testEquals() {}
+    void testEquals() {
+        byte[] passwordHash = "password".getBytes();
+        Account equalAccount = new Account("username", passwordHash, false);
+        Account differentAccount = new Account("differentUsername", passwordHash, false);
+
+        assertTrue(account.equals(equalAccount));
+        assertFalse(account.equals(differentAccount));
+    }
 
     @Test
-    void testHashCode() {}
+    void testHashCode() {
+        byte[] passwordHash = "password".getBytes();
+        Account equalAccount = new Account("username", passwordHash, false);
+
+        assertEquals(account.hashCode(), equalAccount.hashCode());
+    }
 
     @Test
-    void username() {}
+    void username() {
+        assertEquals("username", account.username());
+    }
 
     @Test
-    void passwordHash() {}
+    void passwordHash() {
+        assertArrayEquals("password".getBytes(), account.passwordHash());
+    }
 
     @Test
-    void developer() {}
+    void developer() {
+        assertFalse(account.developer());
+    }
 }
