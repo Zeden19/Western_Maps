@@ -5,12 +5,14 @@ import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Database;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
     private final JTextField usernameField;
+    private final JPasswordField passwordField;
     private final JLabel invalidUserError;
 
     private final List<Consumer<Account>> loginListeners = new ArrayList<>();
@@ -39,7 +41,7 @@ public final class LoginPanel extends JPanel {
         usernameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Username");
 
         // Password field
-        var passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setColumns(20);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
@@ -47,7 +49,7 @@ public final class LoginPanel extends JPanel {
         // Sign in button
         var signInButton = new JButton("Sign In");
         signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        signInButton.addActionListener(e -> validateAndSubmit(database, passwordField.getPassword()));
+        signInButton.addActionListener(e -> validateAndSubmit(database));
 
         // Create account link
         var createAccountLink = new LinkButton("Create an Account");
@@ -95,7 +97,7 @@ public final class LoginPanel extends JPanel {
     }
 
     // validating if the user exists and if the password is correct
-    private void validateAndSubmit(Database database, char[] password) {
+    private void validateAndSubmit(Database database) {
         invalidUserError.setVisible(false);
         invalidPasswordError.setVisible(false);
         List<Account> accounts = database.getCurrentState().accounts();
@@ -105,14 +107,15 @@ public final class LoginPanel extends JPanel {
                 accounts.stream().filter(a -> a.username().equals(username)).findFirst();
 
         if (account.isPresent()) {
-            // getting the account from the database
             invalidUserError.setVisible(false);
 
-            if (account.get().isPasswordCorrect(password)) {
+            if (account.get().isPasswordCorrect(passwordField.getPassword())) {
                 invalidPasswordError.setVisible(false);
                 loginListeners.forEach(listener -> listener.accept(account.get()));
 
             } else invalidPasswordError.setVisible(true);
+
+            Arrays.fill(passwordField.getPassword(), ' ');
 
         } else invalidUserError.setVisible(true);
     }

@@ -75,7 +75,7 @@ public final class CreateAccountPanel extends JPanel {
         createAccountButton.addActionListener(e -> {
 
             // checking if user can create account with given username and password
-            if (!checkPasswordFields() | isUsernameTaken(database, usernameField.getText())) {
+            if (!checkPasswordFields() || isUsernameTaken(database, usernameField.getText())) {
                 return;
             }
             PasswordAuthenticator auth = new PasswordAuthenticator();
@@ -164,7 +164,7 @@ public final class CreateAccountPanel extends JPanel {
         if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword())) {
             passwordMatchError.setVisible(true); // passwords not matching
             return false;
-        } else if (isPasswordValid(passwordField.getPassword())) {
+        } else if (isPasswordInvalid(passwordField.getPassword())) {
             passwordInvalidError.setVisible(true); // password not valid
             return false;
         } else {
@@ -187,7 +187,7 @@ public final class CreateAccountPanel extends JPanel {
     }
 
     // checking if the password was valid
-    private boolean isPasswordValid(char[] password) {
+    private boolean isPasswordInvalid(char[] password) {
         Pattern letter = Pattern.compile("[a-zA-Z]");
         Pattern digit = Pattern.compile("[0-9]");
         Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");

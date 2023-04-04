@@ -41,6 +41,9 @@ public final class PasswordAuthenticator {
 
     private final int cost;
 
+    /**
+     * Create a password manager with a default cost
+     */
     public PasswordAuthenticator() {
         this(DEFAULT_COST);
     }
@@ -104,30 +107,5 @@ public final class PasswordAuthenticator {
         } catch (InvalidKeySpecException ex) {
             throw new IllegalStateException("Invalid SecretKeyFactory", ex);
         }
-    }
-
-    /**
-     * Hash a password in an immutable {@code String}.
-     *
-     * <p>Passwords should be stored in a {@code char[]} so that it can be filled
-     * with zeros after use instead of lingering on the heap and elsewhere.
-     *
-     * @deprecated Use {@link #hash(char[])} instead
-     */
-    @Deprecated
-    public String hash(String password) {
-        return hash(password.toCharArray());
-    }
-
-    /**
-     * Authenticate with a password in an immutable {@code String} and a stored
-     * password token.
-     *
-     * @deprecated Use {@link #authenticate(char[],String)} instead.
-     * @see #hash(String)
-     */
-    @Deprecated
-    public boolean authenticate(String password, String token) {
-        return authenticate(password.toCharArray(), token);
     }
 }
