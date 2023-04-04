@@ -13,6 +13,9 @@ import java.util.concurrent.Future;
 import javax.annotation.Nullable;
 import javax.swing.JComponent;
 
+/**
+ * This class is for the Maps rendering and cache
+ */
 public final class MapRenderCache {
     private static final double MAX_CACHED_SCALE = 5.0;
     private static final double MIN_CACHED_SCALE = 0.0;
@@ -33,20 +36,33 @@ public final class MapRenderCache {
 
     private @Nullable Future<BufferedImage> cachedImageFuture;
 
+    /**
+     * @param diagram is the diagram of the map that is being rendered
+     * @param scale is the scale of the map being used
+     */
     public MapRenderCache(SVGDiagram diagram, double scale) {
         this.diagram = diagram;
         this.scale = scale;
     }
 
+    /**
+     * @return the diagram that is being used
+     */
     public SVGDiagram getDiagram() {
         return diagram;
     }
 
+    /**
+     * @param diagram is the new diagram that will be used in place of the previous one
+     */
     public void setDiagram(SVGDiagram diagram) {
         this.diagram = diagram;
         invalidateCache();
     }
 
+    /**
+     * @param scale is the new scale that would be set for previous one
+     */
     public void setScale(double scale) {
         if (this.scale != scale) {
             invalidateCache();
@@ -54,6 +70,12 @@ public final class MapRenderCache {
         this.scale = scale;
     }
 
+    /**
+     * @param gfx the gfx that is used for map
+     * @param x the positioning of the map in x-axis
+     * @param y the position of map in y-axis
+     * @param component
+     */
     public void render(Graphics2D gfx, int x, int y, @Nullable JComponent component) {
         deviceScale = gfx.getDeviceConfiguration().getDefaultTransform().getScaleX();
         var cachedImage = getCachedImageIfReady();
