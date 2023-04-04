@@ -73,15 +73,18 @@ public final class CreateAccountPanel extends JPanel {
         createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         createAccountButton.addActionListener(e -> {
-
             // checking if user can create account with given username and password
             if (!checkPasswordFields() || isUsernameTaken(database, usernameField.getText())) {
+                Arrays.fill(passwordField.getPassword(), ' ');
+                Arrays.fill(confirmPassword.getPassword(), ' ');
                 return;
             }
             PasswordAuthenticator auth = new PasswordAuthenticator();
             String hash = auth.hash(passwordField.getPassword());
 
             var newAccount = new Account(usernameField.getText(), hash, false);
+            Arrays.fill(passwordField.getPassword(), ' ');
+            Arrays.fill(confirmPassword.getPassword(), ' ');
 
             accountCreateListeners.forEach(listener -> listener.accept(newAccount));
         });

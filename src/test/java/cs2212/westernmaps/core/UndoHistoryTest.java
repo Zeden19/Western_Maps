@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class UndoHistoryTest {
-    private static final byte[] EMPTY_PASSWORD_HASH = new byte[0];
 
     @Test
     public void testInitialState() {
