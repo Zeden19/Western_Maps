@@ -1,15 +1,17 @@
 package cs2212.westernmaps.maps;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatButtonBorder;
 import cs2212.westernmaps.core.Layer;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.BiConsumer;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
@@ -17,6 +19,8 @@ import javax.swing.*;
  * {@linkplain Layer POI layers} on the map.
  */
 public final class LayerVisibilityPanel extends JPanel {
+    private static final Icon CLOSE_ICON = new FlatSVGIcon("cs2212/westernmaps/misc-icons/x-small.svg");
+
     private final List<BiConsumer<Layer, Boolean>> layerToggleListeners = new ArrayList<>();
 
     /**
@@ -26,10 +30,16 @@ public final class LayerVisibilityPanel extends JPanel {
      *                             when the panel is created.
      */
     public LayerVisibilityPanel(EnumSet<Layer> initialVisibleLayers) {
-        setLayout(new GridBagLayout());
-        // FlatButtonBorder has rounded corners; FlatBorder doesn't.
-        setBorder(BorderFactory.createCompoundBorder(
-                new FlatButtonBorder(), BorderFactory.createEmptyBorder(4, 4, 3, 12)));
+        var cardLayout = new ResizableCardLayout();
+        setLayout(cardLayout);
+
+        var innerPanel = new JPanel();
+        innerPanel.setLayout(new GridBagLayout());
+        innerPanel.setBorder(BorderFactory.createCompoundBorder(
+                new FlatButtonBorder(), BorderFactory.createEmptyBorder(4, 4, 3, 4)));
+        // Block mouse events so that the map doesn't get panned when the layer
+        // visibility panel is clicked on.
+        innerPanel.addMouseListener(new MouseAdapter() {});
 
         var constraints = new GridBagConstraints();
         constraints.gridy = 0;
@@ -45,19 +55,31 @@ public final class LayerVisibilityPanel extends JPanel {
             });
             constraints.gridx = 0;
             constraints.weightx = 0.0;
-            add(checkbox, constraints);
+            innerPanel.add(checkbox, constraints);
 
             var label = new JLabel(layer.name(), layer.getIcon(), SwingConstants.LEADING);
             constraints.gridx = 1;
             constraints.weightx = 1.0;
-            add(label, constraints);
+            innerPanel.add(label, constraints);
 
             constraints.gridy++;
         }
 
-        // Block mouse events so that the map doesn't get panned when the layer
-        // visibility panel is clicked on.
-        addMouseListener(new MouseAdapter() {});
+        var collapseButton = new JButton(CLOSE_ICON);
+        collapseButton.putClientProperty(FlatClientProperties.BUTTON_TYPE, "borderless");
+        collapseButton.addActionListener(e -> cardLayout.show(this, "Collapsed"));
+
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.weightx = 0.0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        innerPanel.add(collapseButton, constraints);
+
+        var expandButton = new JButton("Show/Hide Layers");
+        expandButton.addActionListener(e -> cardLayout.show(this, "Expanded"));
+
+        add(expandButton, "Collapsed");
+        add(innerPanel, "Expanded");
     }
 
     /**
@@ -69,5 +91,30 @@ public final class LayerVisibilityPanel extends JPanel {
      */
     public void addLayerToggleListener(BiConsumer<Layer, Boolean> listener) {
         this.layerToggleListeners.add(listener);
+    }
+
+    // https://stackoverflow.com/a/23881790
+    private static final class ResizableCardLayout extends CardLayout {
+        @Override
+        public Dimension preferredLayoutSize(Container parent) {
+            Component current = findCurrentComponent(parent);
+            if (current != null) {
+                Insets insets = parent.getInsets();
+                Dimension pref = current.getPreferredSize();
+                pref.width += insets.left + insets.right;
+                pref.height += insets.top + insets.bottom;
+                return pref;
+            }
+            return super.preferredLayoutSize(parent);
+        }
+
+        private static @Nullable Component findCurrentComponent(Container parent) {
+            for (Component comp : parent.getComponents()) {
+                if (comp.isVisible()) {
+                    return comp;
+                }
+            }
+            return null;
+        }
     }
 }
