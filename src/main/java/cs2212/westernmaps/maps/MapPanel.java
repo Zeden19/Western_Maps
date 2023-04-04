@@ -17,6 +17,7 @@ public final class MapPanel extends JPanel {
     private Floor currentFloor;
 
     private final MapViewerPanel mapViewer;
+    private final POISummaryPanel poiSummaryPanel;
 
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
@@ -35,8 +36,10 @@ public final class MapPanel extends JPanel {
         currentFloor = building.floors().get(0);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
+        poiSummaryPanel = new POISummaryPanel(loggedInAccount.developer());
+
         mapViewer = new MapViewerPanel(initialMapUri, List.of());
-        mapViewer.addPoiClickListener(poi -> System.out.println(poi.name() + " clicked!"));
+        mapViewer.addPoiClickListener(poiSummaryPanel::setCurrentPoi);
         mapViewer.addPoiMoveListener((movedPoi, location) -> {
             var newState = database.getCurrentState().modifyPOIs(pois -> pois.stream()
                     .map(poi -> poi == movedPoi ? poi.withLocation(location.x, location.y) : poi)
@@ -53,7 +56,7 @@ public final class MapPanel extends JPanel {
         mapViewer.setPoiMoveCondition(poi -> loggedInAccount.developer() || poi.layer() == Layer.CUSTOM);
         refreshPois();
 
-        var floatingControls = createFloatingControls(building, loggedInAccount.developer());
+        var floatingControls = createFloatingControls(building);
 
         var layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
@@ -145,14 +148,12 @@ public final class MapPanel extends JPanel {
         return sidebar;
     }
 
-    private JPanel createFloatingControls(Building building, boolean developer) {
+    private JPanel createFloatingControls(Building building) {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
         layerVisibilityPanel.addLayerToggleListener(mapViewer::setLayerVisible);
 
         var floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
-
-        var poiSummaryPanel = new POISummaryPanel(developer);
 
         var floatingControls = new JPanel();
         floatingControls.setOpaque(false);
