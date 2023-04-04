@@ -13,10 +13,6 @@ import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-/*
- * TODO: - Add Javadoc comments.
- */
-
 /**
  * Panel for the Building Selection screen.
  */
