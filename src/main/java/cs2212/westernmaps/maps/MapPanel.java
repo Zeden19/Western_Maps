@@ -3,6 +3,7 @@ package cs2212.westernmaps.maps;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import cs2212.westernmaps.core.*;
+import cs2212.westernmaps.pois.POISummaryPanel;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public final class MapPanel extends JPanel {
         mapViewer.setPoiMoveCondition(poi -> loggedInAccount.developer() || poi.layer() == Layer.CUSTOM);
         refreshPois();
 
-        var floatingControls = createFloatingControls(building);
+        var floatingControls = createFloatingControls(building, loggedInAccount.developer());
 
         var layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
@@ -144,12 +145,14 @@ public final class MapPanel extends JPanel {
         return sidebar;
     }
 
-    private JPanel createFloatingControls(Building building) {
+    private JPanel createFloatingControls(Building building, boolean developer) {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
         layerVisibilityPanel.addLayerToggleListener(mapViewer::setLayerVisible);
 
         var floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
+
+        var poiSummaryPanel = new POISummaryPanel(developer);
 
         var floatingControls = new JPanel();
         floatingControls.setOpaque(false);
@@ -168,6 +171,11 @@ public final class MapPanel extends JPanel {
         constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.LAST_LINE_START;
         floatingControls.add(floorSwitcher, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        floatingControls.add(poiSummaryPanel, constraints);
 
         return floatingControls;
     }

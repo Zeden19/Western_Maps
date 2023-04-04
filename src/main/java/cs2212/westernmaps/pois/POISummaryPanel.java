@@ -21,14 +21,18 @@ import javax.swing.text.Document;
 public class POISummaryPanel extends JPanel {
     private static final int MAX_COLUMNS = 10;
 
-    private POI poi;
+    private @Nullable POI poi;
+    private final boolean developer;
 
     private final JTextField titleField;
-    private final @Nullable JComboBox<Layer> layerComboBox;
-    private final @Nullable JLabel layerLabel;
+    private final JLabel layerIcon;
+    private final JComboBox<Layer> layerComboBox;
+    private final JLabel layerLabel;
     private final JCheckBox favoriteCheckbox;
     private final JLabel locationLabel;
     private final JTextArea descriptionField;
+
+    private final JButton deleteButton;
 
     private final List<BiConsumer<POI, POI>> poiChangeListeners = new ArrayList<>();
     private final List<Consumer<POI>> poiDeleteListeners = new ArrayList<>();
@@ -36,22 +40,18 @@ public class POISummaryPanel extends JPanel {
     /**
      * Summary window of a POI that displays its metadata.
      *
-     * @param poiToSummarize POI to summarize
      * @param developer If the logged-in user is a developer
      */
-    public POISummaryPanel(POI poiToSummarize, boolean developer) {
-
-        poi = poiToSummarize;
+    public POISummaryPanel(boolean developer) {
+        this.developer = developer;
 
         JPanel summaryBox = new JPanel();
         summaryBox.setLayout(new BoxLayout(summaryBox, BoxLayout.PAGE_AXIS));
         summaryBox.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Title
-        titleField = new JTextField(poi.name());
+        titleField = new JTextField();
         titleField.putClientProperty(FlatClientProperties.STYLE_CLASS, "h3");
-        titleField.setEditable(developer);
-
         titleField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -65,6 +65,10 @@ public class POISummaryPanel extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                if (poi == null) {
+                    return;
+                }
+
                 Document doc = e.getDocument();
                 String newTitle;
                 try {
@@ -88,42 +92,43 @@ public class POISummaryPanel extends JPanel {
         JPanel layerBox = new JPanel();
         layerBox.setLayout(new BoxLayout(layerBox, BoxLayout.LINE_AXIS));
 
-        JLabel layerIcon = new JLabel(poi.layer().getIcon());
+        layerIcon = new JLabel();
         layerBox.add(layerIcon);
 
-        if (developer) {
-            layerComboBox = new JComboBox<>(Layer.values());
-            layerComboBox.addActionListener(new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Layer newLayer = (Layer) layerComboBox.getSelectedItem();
-
-                    POI newPoi = new POI(
-                            poi.name(), poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), newLayer);
-
-                    poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
-
-                    poi = newPoi;
-                    layerIcon.setIcon(poi.layer().getIcon());
+        layerComboBox = new JComboBox<>(Layer.values());
+        layerComboBox.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (poi == null) {
+                    return;
                 }
-            });
-            layerComboBox.setSelectedItem(poi.layer());
 
-            layerLabel = null;
-            layerBox.add(layerComboBox);
-        } else {
-            layerComboBox = null;
-            layerLabel = new JLabel(poi.layer().name());
-            layerBox.add(layerLabel);
-        }
+                Layer newLayer = (Layer) layerComboBox.getSelectedItem();
+
+                POI newPoi =
+                        new POI(poi.name(), poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), newLayer);
+
+                poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
+
+                poi = newPoi;
+                layerIcon.setIcon(poi.layer().getIcon());
+            }
+        });
+        layerBox.add(layerComboBox);
+
+        layerLabel = new JLabel();
+        layerBox.add(layerLabel);
 
         addToBox(summaryBox, layerBox);
 
         // Favorite
         favoriteCheckbox = new JCheckBox("Favourite");
-        favoriteCheckbox.setSelected(poi.favorite());
         // TODO: Add icon here
         favoriteCheckbox.addItemListener(e -> {
+            if (poi == null) {
+                return;
+            }
+
             POI newPoi =
                     new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
             poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
@@ -133,15 +138,12 @@ public class POISummaryPanel extends JPanel {
         addToBox(summaryBox, favoriteCheckbox);
 
         // Position
-        locationLabel = new JLabel("Location: " + poi.x() + ", " + poi.y());
+        locationLabel = new JLabel();
         // TODO: Add icon here
         addToBox(summaryBox, locationLabel);
 
-        final boolean isCustom = poi.layer() == Layer.CUSTOM;
-
         // Description
-        descriptionField = new JTextArea(poi.description(), 3, MAX_COLUMNS);
-        descriptionField.setEditable(isCustom || developer);
+        descriptionField = new JTextArea("", 3, MAX_COLUMNS);
         descriptionField.setLineWrap(true);
         descriptionField.setWrapStyleWord(true);
         descriptionField.getDocument().addDocumentListener(new DocumentListener() {
@@ -157,6 +159,10 @@ public class POISummaryPanel extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                if (poi == null) {
+                    return;
+                }
+
                 Document doc = e.getDocument();
                 try {
                     String newDesc = doc.getText(0, doc.getLength());
@@ -177,29 +183,41 @@ public class POISummaryPanel extends JPanel {
         summaryBox.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Delete POI button
-        if (isCustom || developer) {
-            JButton deleteButton = new JButton("Delete POI");
-            deleteButton.addActionListener(new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    int confirmDelete = JOptionPane.showConfirmDialog(
-                            (Component) e.getSource(),
-                            "Are you sure you want to delete " + poi.name() + "?",
-                            "Delete POI",
-                            JOptionPane.YES_NO_OPTION);
-                    if (confirmDelete == JOptionPane.YES_OPTION) {
-                        poiDeleteListeners.forEach(listener -> listener.accept(poi));
-                    }
+        deleteButton = new JButton("Delete POI");
+        deleteButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (poi == null) {
+                    return;
                 }
-            });
-            addToBox(summaryBox, deleteButton);
-        }
+
+                int confirmDelete = JOptionPane.showConfirmDialog(
+                        (Component) e.getSource(),
+                        "Are you sure you want to delete " + poi.name() + "?",
+                        "Delete POI",
+                        JOptionPane.YES_NO_OPTION);
+                if (confirmDelete == JOptionPane.YES_OPTION) {
+                    poiDeleteListeners.forEach(listener -> listener.accept(poi));
+                }
+            }
+        });
+        addToBox(summaryBox, deleteButton);
 
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         add(Box.createRigidArea(new Dimension(10, 0)));
         add(summaryBox);
         add(Box.createRigidArea(new Dimension(10, 0)));
         setBorder(new FlatButtonBorder());
+    }
+
+    /**
+     * Sets the POI that is currently being viewed/edited.
+     *
+     * @param poi The new POI to view/edit.
+     */
+    public void setCurrentPoi(POI poi) {
+        this.poi = poi;
+        refreshFields();
     }
 
     /**
@@ -216,6 +234,27 @@ public class POISummaryPanel extends JPanel {
      */
     public void addPoiDeleteListener(Consumer<POI> listener) {
         poiDeleteListeners.add(listener);
+    }
+
+    private void refreshFields() {
+        if (poi == null) {
+            return;
+        }
+
+        titleField.setText(poi.name());
+        layerIcon.setIcon(poi.layer().getIcon());
+        layerComboBox.setSelectedItem(poi.layer());
+        layerLabel.setText(poi.layer().toString());
+        favoriteCheckbox.setSelected(poi.favorite());
+        locationLabel.setText("Location: " + poi.x() + ", " + poi.y());
+        descriptionField.setText(poi.description());
+
+        boolean editEverything = developer || poi.layer() == Layer.CUSTOM;
+        titleField.setEditable(editEverything);
+        layerComboBox.setVisible(editEverything);
+        layerLabel.setVisible(!editEverything);
+        descriptionField.setEditable(editEverything);
+        deleteButton.setVisible(editEverything);
     }
 
     private static void addToBox(JPanel box, JComponent component) {
