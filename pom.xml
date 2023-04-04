@@ -5,11 +5,14 @@
     <groupId>cs2212.group44.westernmaps</groupId>
     <artifactId>westernmaps</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <!-- Update this with the project's root Java package. This is used to
              configure automated null checking later. -->
         <project.package-name>cs2212.westernmaps</project.package-name>
+        <!-- Update this with the IntelliJ run configuration. -->
+        <exec.mainClass>cs2212.westernmaps.Main</exec.mainClass>
 
         <!-- Error Prone and NullAway: Used to find bugs and null-safety issues
              during code compilation. -->
@@ -23,6 +26,13 @@
              Java code, as well as this POM file. -->
         <spotless.version>2.30.0</spotless.version>
         <palantir-java-format.version>2.28.0</palantir-java-format.version>
+        <!-- Maven Dependency Plugin and Maven JAR Plugin: Used to package the
+             application into an executable JAR file. -->
+        <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <!-- Maven Assembly Plugin: Used to combine the executable JAR file,
+             built-in database, and other files into a ZIP file. -->
+        <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
 
         <!-- FlatLaf: Custom theme for Java Swing, used to make the UI
              consistent across operating systems. -->
@@ -37,9 +47,8 @@
 
         <!-- JUnit and Maven Surefire Plugin: Used for writing and running
              automated unit tests. -->
-        <junit.version>5.8.2</junit.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <junit-platform-surefire-provider.version>1.1.0</junit-platform-surefire-provider.version>
+        <junit.version>5.9.2</junit.version>
+        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
         <!-- JSONassert: Used to write unit tests involving JSON data. -->
         <jsonassert.version>1.5.1</jsonassert.version>
 
@@ -162,13 +171,56 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>${junit-platform-surefire-provider.version}</version>
-                    </dependency>
-                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>libs/</classpathPrefix>
+                            <mainClass>${exec.mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>dist/</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
