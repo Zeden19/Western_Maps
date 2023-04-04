@@ -1,4 +1,4 @@
-package cs2212.westernmaps.auth;
+package cs2212.westernmaps.login;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

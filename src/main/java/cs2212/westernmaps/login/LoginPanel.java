@@ -94,7 +94,10 @@ public final class LoginPanel extends JPanel {
         createAccountClickListeners.add(listener);
     }
 
+    // validating if the user exists and if the password is correct
     private void validateAndSubmit(Database database, char[] password) {
+        invalidUserError.setVisible(false);
+        invalidPasswordError.setVisible(false);
         List<Account> accounts = database.getCurrentState().accounts();
 
         var username = usernameField.getText();

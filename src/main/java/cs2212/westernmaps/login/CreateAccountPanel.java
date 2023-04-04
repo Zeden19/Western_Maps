@@ -1,14 +1,11 @@
 package cs2212.westernmaps.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import cs2212.westernmaps.auth.PasswordAuthenticator;
 import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Database;
-import cs2212.westernmaps.core.DatabaseState;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagLayout;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,17 +81,8 @@ public final class CreateAccountPanel extends JPanel {
             PasswordAuthenticator auth = new PasswordAuthenticator();
             String hash = auth.hash(passwordField.getPassword());
 
-            DatabaseState currentState = database.getCurrentState();
-            List<Account> accounts = new ArrayList<>(currentState.accounts());
-
             var newAccount = new Account(usernameField.getText(), hash, false);
-            accounts.add(newAccount);
-            database.getHistory().pushState(new DatabaseState(accounts, currentState.buildings(), currentState.pois()));
-            try {
-                database.save();
-            } catch (IOException ex) {
-                System.out.println("Error: Couldn't save new account to the database.");
-            }
+
             accountCreateListeners.forEach(listener -> listener.accept(newAccount));
         });
 

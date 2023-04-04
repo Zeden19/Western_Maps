@@ -1,6 +1,6 @@
 package cs2212.westernmaps.core;
 
-import cs2212.westernmaps.auth.PasswordAuthenticator;
+import cs2212.westernmaps.login.PasswordAuthenticator;
 import java.util.Arrays;
 import java.util.Objects;
 
