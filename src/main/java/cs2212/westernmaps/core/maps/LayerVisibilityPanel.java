@@ -1,4 +1,4 @@
-package cs2212.westernmaps.maps;
+package cs2212.westernmaps.core.maps;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatButtonBorder;

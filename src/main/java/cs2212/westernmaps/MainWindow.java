@@ -5,9 +5,9 @@ import cs2212.westernmaps.core.Database;
 import cs2212.westernmaps.core.DatabaseState;
 import cs2212.westernmaps.help.AboutAction;
 import cs2212.westernmaps.help.HelpWindow;
+import cs2212.westernmaps.core.maps.MapPanel;
 import cs2212.westernmaps.login.CreateAccountPanel;
 import cs2212.westernmaps.login.LoginPanel;
-import cs2212.westernmaps.maps.MapPanel;
 import cs2212.westernmaps.select.BuildingSelectPanel;
 import java.awt.*;
 import java.io.IOException;
@@ -16,6 +16,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
+/**
+ * This class creates the main window for the application
+ */
 public final class MainWindow extends JFrame {
     private final LoginPanel loginPanel;
     private final CreateAccountPanel createAccountPanel;
@@ -25,6 +28,9 @@ public final class MainWindow extends JFrame {
 
     private @Nullable Account loggedInAccount = null;
 
+    /**
+     * @param database is the database being used for the application
+     */
     public MainWindow(Database database) {
         super("Sign in");
 
