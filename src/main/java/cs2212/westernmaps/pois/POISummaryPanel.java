@@ -2,10 +2,10 @@ package cs2212.westernmaps.pois;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatButtonBorder;
+import cs2212.westernmaps.MiscIcons;
 import cs2212.westernmaps.core.Layer;
 import cs2212.westernmaps.core.POI;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class POISummaryPanel extends JPanel {
             }
         });
 
-        addToBox(summaryBox, titleField);
+        //        addToBox(summaryBox, titleField);
 
         // Layer
         JPanel layerBox = new JPanel();
@@ -94,6 +94,8 @@ public class POISummaryPanel extends JPanel {
 
         layerIcon = new JLabel();
         layerBox.add(layerIcon);
+
+        layerBox.add(Box.createHorizontalStrut(6));
 
         layerComboBox = new JComboBox<>(Layer.values());
         layerComboBox.addActionListener(new AbstractAction() {
@@ -139,7 +141,7 @@ public class POISummaryPanel extends JPanel {
 
         // Position
         locationLabel = new JLabel();
-        // TODO: Add icon here
+
         addToBox(summaryBox, locationLabel);
 
         // Description
@@ -203,14 +205,40 @@ public class POISummaryPanel extends JPanel {
         });
         addToBox(summaryBox, deleteButton);
 
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        add(Box.createRigidArea(new Dimension(10, 0)));
-        add(summaryBox);
-        add(Box.createRigidArea(new Dimension(10, 0)));
-        setBorder(new FlatButtonBorder());
-
+        setBorder(BorderFactory.createCompoundBorder(
+                new FlatButtonBorder(), BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         // Set preferred and maximum sizes.
         setMaximumSize(new Dimension(getPreferredSize().width, Short.MAX_VALUE));
+
+        var closeButton = new JButton(MiscIcons.CLOSE_ICON);
+        closeButton.putClientProperty(FlatClientProperties.BUTTON_TYPE, "borderless");
+        closeButton.addActionListener(e -> setVisible(false));
+
+        setLayout(new GridBagLayout());
+        var constraints = new GridBagConstraints();
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(0, 0, 0, 8);
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        add(titleField, constraints);
+
+        constraints.gridx = 1;
+        constraints.weightx = 0.0;
+        constraints.weighty = 0.0;
+        constraints.insets = new Insets(0, 0, 0, 0);
+        add(closeButton, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        add(summaryBox, constraints);
     }
 
     /**

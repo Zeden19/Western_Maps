@@ -37,9 +37,40 @@ public final class MapPanel extends JPanel {
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
         poiSummaryPanel = new POISummaryPanel(loggedInAccount.developer());
+        poiSummaryPanel.setVisible(false);
+
+        poiSummaryPanel.addPoiChangeListener((oldPoi, newPoi) -> {
+            var state = database.getCurrentState().modifyPOIs(pois -> pois.stream()
+                    .map(poi -> poi.equals(oldPoi) ? newPoi : poi)
+                    .toList());
+            database.getHistory().pushState(state);
+            try {
+                database.save();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            refreshPois();
+        });
+
+        poiSummaryPanel.addPoiDeleteListener(oldPoi -> {
+            var state = database.getCurrentState()
+                    .modifyPOIs(pois ->
+                            pois.stream().filter(poi -> !poi.equals(oldPoi)).toList());
+            database.getHistory().pushState(state);
+            try {
+                database.save();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            poiSummaryPanel.setVisible(false);
+            refreshPois();
+        });
 
         mapViewer = new MapViewerPanel(initialMapUri, List.of());
-        mapViewer.addPoiClickListener(poiSummaryPanel::setCurrentPoi);
+        mapViewer.addPoiClickListener(poi -> {
+            poiSummaryPanel.setCurrentPoi(poi);
+            poiSummaryPanel.setVisible(true);
+        });
         mapViewer.addPoiMoveListener((movedPoi, location) -> {
             var newState = database.getCurrentState().modifyPOIs(pois -> pois.stream()
                     .map(poi -> poi == movedPoi ? poi.withLocation(location.x, location.y) : poi)
