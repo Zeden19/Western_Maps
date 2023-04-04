@@ -256,7 +256,8 @@ public final class MapPanel extends JPanel {
         // closing the search results when the user clicks from the list and clicks off
         searchResults.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                glassPane.setVisible(false);
+                var focused = evt.getOppositeComponent();
+                if (focused != null && !(focused.equals(searchBar))) glassPane.setVisible(false);
             }
         });
 
