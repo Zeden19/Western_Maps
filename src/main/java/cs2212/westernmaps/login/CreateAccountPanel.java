@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 /**
- * creating the account panel for the application
+ * This class creates the account panel for the application
  */
 public final class CreateAccountPanel extends JPanel {
     private final JPasswordField passwordField;
@@ -151,10 +151,17 @@ public final class CreateAccountPanel extends JPanel {
         add(mainPanel);
     }
 
+    /**
+     * This method adds listeners to the accountCreateListeners
+     * @param listener is the listener being added
+     */
     public void addAccountCreateListener(Consumer<Account> listener) {
         accountCreateListeners.add(listener);
     }
-
+    /**
+     * This method adds listeners to the backButtonListeners
+     * @param listener is the listener being added
+     */
     public void addBackListener(Runnable listener) {
         backButtonListeners.add(listener);
     }
