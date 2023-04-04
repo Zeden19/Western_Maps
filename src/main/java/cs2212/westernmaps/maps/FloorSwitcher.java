@@ -45,6 +45,7 @@ public final class FloorSwitcher extends JPanel {
     }
 
     /**
+<<<<<<< HEAD
      * Sets which floor button is currently displayed as selected.
      *
      * @param floor The floor whose button should be selected.
@@ -58,6 +59,9 @@ public final class FloorSwitcher extends JPanel {
         }));
     }
 
+    /**
+     * @param listener is the listener being added to the floor switcher
+     */
     public void addFloorSwitchListener(Consumer<Floor> listener) {
         floorSwitchListeners.add(listener);
     }
@@ -67,6 +71,9 @@ public final class FloorSwitcher extends JPanel {
 
         private final Floor floor;
 
+        /**
+         * @param floor is the floor of the button being made
+         */
         public FloorButton(Floor floor) {
             super(floor.shortName());
             this.floor = floor;

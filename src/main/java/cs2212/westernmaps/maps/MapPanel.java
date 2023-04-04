@@ -18,6 +18,9 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
+/**
+ * This class creates the panel for the maps
+ */
 public final class MapPanel extends JPanel {
 
     // the database, used for all sorts of data setting
@@ -70,6 +73,15 @@ public final class MapPanel extends JPanel {
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
+
+    /**
+     * The constructor for the MapPanel
+     *
+     * @param database is the database that is for the application
+     * @param building is the building that is selected
+     * @param loggedInAccount is the account that logged in the application
+     * @param glassPane is the glass pane that is used to display the search results
+     */
     // the main map panel
     public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
         this.database = database;
@@ -561,6 +573,9 @@ public final class MapPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * @param listener is the listener that will be added to backListeners
+     */
     public void addBackListener(Runnable listener) {
         backListeners.add(listener);
     }
