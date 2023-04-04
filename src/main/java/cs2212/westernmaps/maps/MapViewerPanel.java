@@ -13,7 +13,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -22,6 +25,9 @@ public final class MapViewerPanel extends JPanel {
     private static final int POI_CLICK_TARGET_SIZE = 16;
     private static final int POI_HOVER_CIRCLE_RADIUS = 18;
     private static final Color POI_HOVER_CIRCLE_COLOR = new Color(0x00, 0x00, 0x00, 0x1F);
+
+    private static final Color POI_TOOLTIP_BACKGROUND_COLOR = new Color(0x00, 0x00, 0x00, 0xBF);
+    private static final Color POI_TOOLTIP_FOREGROUND_COLOR = Color.WHITE;
 
     private static final double ZOOM_OUT_LIMIT = 0.1;
     private static final double ZOOM_IN_LIMIT = 10.0;
@@ -32,12 +38,18 @@ public final class MapViewerPanel extends JPanel {
     private final MapRenderCache renderCache;
 
     private final List<Consumer<POI>> poiClickListeners = new ArrayList<>();
+    private final List<BiConsumer<POI, Point>> poiMoveListeners = new ArrayList<>();
+    private Predicate<POI> poiMoveCondition = poi -> true;
+
     private Component cursorComponent;
     private URI currentMapUri;
     private List<POI> displayedPois;
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
     private @Nullable POI hoveredPoi = null;
+
+    private @Nullable POI draggedPoi = null;
+    private final Point draggedPoiLocation = new Point();
 
     public MapViewerPanel(URI initialMapUri, List<POI> displayedPois) {
         cursorComponent = this;
@@ -48,17 +60,15 @@ public final class MapViewerPanel extends JPanel {
 
         var mouseAdapter = new MouseAdapter() {
             private final Point lastMousePosition = new Point();
-            private boolean dragging = false;
+            private DragState dragState = DragState.NONE;
 
             @Override
             public void mousePressed(MouseEvent e) {
-                // Only pan the map with left click (button 1) or middle click
-                // (button 2).
-                if (hoveredPoi != null) {
-                    poiClickListeners.forEach(listener -> listener.accept(hoveredPoi));
+                if (e.getButton() == MouseEvent.BUTTON1 && hoveredPoi != null) {
+                    dragState = DragState.HOLDING_POI;
                 } else if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON2) {
                     lastMousePosition.setLocation(e.getX(), e.getY());
-                    dragging = true;
+                    dragState = DragState.PANNING_MAP;
                     cursorComponent.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                 }
                 requestFocusInWindow();
@@ -66,38 +76,75 @@ public final class MapViewerPanel extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (dragging) {
-                    dragging = false;
-                    cursorComponent.setCursor(null);
+                switch (dragState) {
+                    case NONE -> {
+                        return;
+                    }
+                    case HOLDING_POI -> {
+                        var poi = Objects.requireNonNull(hoveredPoi);
+                        poiClickListeners.forEach(listener -> listener.accept(poi));
+                    }
+                    case DRAGGING_POI -> {
+                        var poi = Objects.requireNonNull(draggedPoi);
+                        poiMoveListeners.forEach(listener -> listener.accept(poi, draggedPoiLocation));
+                        draggedPoi = null;
+                        repaint();
+                    }
                 }
+                dragState = DragState.NONE;
+                cursorComponent.setCursor(null);
+                refreshHoveredPoi(e.getX(), e.getY());
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                var hoveredPoi = getHoveredPoiByChebyshevDistance(e.getX(), e.getY());
-                if (hoveredPoi != MapViewerPanel.this.hoveredPoi) {
-                    repaint();
-                    MapViewerPanel.this.hoveredPoi = hoveredPoi;
-                }
-
-                if (hoveredPoi != null) {
-                    cursorComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                } else {
-                    cursorComponent.setCursor(null);
-                }
+                refreshHoveredPoi(e.getX(), e.getY());
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (dragging) {
-                    var deltaX = e.getX() - lastMousePosition.x;
-                    var deltaY = e.getY() - lastMousePosition.y;
-                    lastMousePosition.setLocation(e.getX(), e.getY());
+                switch (dragState) {
+                    case PANNING_MAP -> {
+                        var deltaX = e.getX() - lastMousePosition.x;
+                        var deltaY = e.getY() - lastMousePosition.y;
+                        lastMousePosition.setLocation(e.getX(), e.getY());
+                        var scaleFactor = 1.0 / transform.getScaleX();
+                        transform.translate(deltaX * scaleFactor, deltaY * scaleFactor);
+                        repaint();
+                    }
+                    case HOLDING_POI -> {
+                        var poi = Objects.requireNonNull(hoveredPoi);
+                        var distanceToPoi = chebyshevDistanceToPoi(poi, e.getX(), e.getY());
+                        if (distanceToPoi > POI_CLICK_TARGET_SIZE) {
+                            if (!poiMoveCondition.test(poi)) {
+                                // The user is not allowed to move this POI.
+                                dragState = DragState.NONE;
+                                cursorComponent.setCursor(null);
+                                return;
+                            }
 
-                    var scaleFactor = 1.0 / transform.getScaleX();
+                            dragState = DragState.DRAGGING_POI;
+                            draggedPoi = poi;
+                            hoveredPoi = null;
 
-                    transform.translate(deltaX * scaleFactor, deltaY * scaleFactor);
-                    repaint();
+                            var location = new Point(e.getX(), e.getY());
+                            try {
+                                transform.inverseTransform(location, draggedPoiLocation);
+                            } catch (NoninvertibleTransformException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            repaint();
+                        }
+                    }
+                    case DRAGGING_POI -> {
+                        var location = new Point(e.getX(), e.getY());
+                        try {
+                            transform.inverseTransform(location, draggedPoiLocation);
+                        } catch (NoninvertibleTransformException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        repaint();
+                    }
                 }
             }
 
@@ -175,6 +222,7 @@ public final class MapViewerPanel extends JPanel {
 
     public void setDisplayedPois(List<POI> pois) {
         displayedPois = pois;
+        // TODO: Refresh the hovered POI here.
         repaint();
     }
 
@@ -206,6 +254,31 @@ public final class MapViewerPanel extends JPanel {
         poiClickListeners.add(listener);
     }
 
+    /**
+     * Registers an event listener that is called when a POI is moved.
+     *
+     * <p>For the POI to be successfully moved, at least one POI move listener
+     * should call {@link #setDisplayedPois} with an updated list containing
+     * the moved POI. If this is not done, the POI will snap back to its
+     * previous location.</p>
+     *
+     * @param listener A function taking two arguments: the POI that moved and
+     *                 the location it moved to.
+     */
+    public void addPoiMoveListener(BiConsumer<POI, Point> listener) {
+        poiMoveListeners.add(listener);
+    }
+
+    /**
+     * Sets the predicate that determines what POIs can be moved the user.
+     *
+     * @param condition A function taking a {@link POI} and returning whether
+     *                  that POI should be able to be moved by the user.
+     */
+    public void setPoiMoveCondition(@Nullable Predicate<POI> condition) {
+        poiMoveCondition = Objects.requireNonNullElse(condition, poi -> true);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -218,11 +291,15 @@ public final class MapViewerPanel extends JPanel {
         transform.transform(mapPosition, mapPosition);
         renderCache.render(gfx, mapPosition.x, mapPosition.y, this);
 
-        // Render icons for each displayed POI.
-        for (var poi : displayedPois) {
-            // If the POI is hovered, skip it since it will be rendered on top
-            // of everything else later. Comparison by reference is intentional.
-            if (poi == hoveredPoi) {
+        // Render icons for each displayed POI. POIs are rendered in reverse
+        // order so that the first POI in the list gets displayed on top.
+        for (int index = displayedPois.size() - 1; index >= 0; index--) {
+            var poi = displayedPois.get(index);
+
+            // If the POI is being hovered or dragged, skip it since it will be
+            // rendered on top of everything else later. Comparison by reference
+            // is intentional.
+            if (poi == hoveredPoi || poi == draggedPoi) {
                 continue;
             }
             // If the POI's layer is not visible, skip it.
@@ -230,36 +307,75 @@ public final class MapViewerPanel extends JPanel {
                 continue;
             }
 
-            // POI icons are rendered at the same size regardless of the map's
-            // scale, so we need to transform their locations manually.
-            var location = new Point(poi.x(), poi.y());
-            transform.transform(location, location);
-
-            // Offset the location so that the icon is centered on the POI.
-            var icon = poi.layer().getIcon();
-            location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
-            // Draw the POI icon.
-            icon.paintIcon(this, gfx, location.x, location.y);
+            renderPoiIcon(gfx, poi, false);
         }
 
-        // Render the hovered POI.
+        // Render the hovered and dragged POIs.
         if (hoveredPoi != null) {
-            var poi = hoveredPoi;
+            renderPoiIcon(gfx, hoveredPoi, true);
+            renderPoiTooltip(gfx, hoveredPoi);
+        }
+        if (draggedPoi != null) {
+            renderPoiIcon(gfx, draggedPoi.layer(), draggedPoiLocation.x, draggedPoiLocation.y, true);
+            renderPoiTooltip(gfx, draggedPoi.name(), draggedPoiLocation.x, draggedPoiLocation.y);
+        }
+    }
 
-            // POI icons are rendered at the same size regardless of the map's
-            // scale, so we need to transform their locations manually.
-            var location = new Point(poi.x(), poi.y());
-            transform.transform(location, location);
+    private void renderPoiIcon(Graphics2D gfx, POI poi, boolean hoverCircle) {
+        renderPoiIcon(gfx, poi.layer(), poi.x(), poi.y(), hoverCircle);
+    }
 
+    private void renderPoiIcon(Graphics2D gfx, Layer layer, int x, int y, boolean hoverCircle) {
+        // POI icons are rendered at the same size regardless of the map's
+        // scale, so we need to transform their locations manually.
+        var location = new Point(x, y);
+        transform.transform(location, location);
+
+        if (hoverCircle) {
             var radius = POI_HOVER_CIRCLE_RADIUS;
             gfx.setPaint(POI_HOVER_CIRCLE_COLOR);
             gfx.fillOval(location.x - radius, location.y - radius, radius * 2, radius * 2);
+        }
 
-            // Offset the location so that the icon is centered on the POI.
-            var icon = poi.layer().getIcon();
-            location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
-            // Draw the POI icon.
-            icon.paintIcon(this, gfx, location.x, location.y);
+        // Offset the location so that the icon is centered on the POI.
+        var icon = layer.getIcon();
+        location.translate(-icon.getIconWidth() / 2, -icon.getIconHeight() / 2);
+        // Draw the POI icon.
+        icon.paintIcon(this, gfx, location.x, location.y);
+    }
+
+    private void renderPoiTooltip(Graphics2D gfx, POI poi) {
+        renderPoiTooltip(gfx, poi.name(), poi.x(), poi.y());
+    }
+
+    private void renderPoiTooltip(Graphics2D gfx, String text, int poiX, int poiY) {
+        // POI icons are rendered at the same size regardless of the map's
+        // scale, so we need to transform their locations manually.
+        var location = new Point(poiX, poiY);
+        transform.transform(location, location);
+
+        int textWidth = gfx.getFontMetrics().stringWidth(text);
+
+        var x = location.x - textWidth / 2 - 8;
+        var y = location.y + 22;
+
+        gfx.setPaint(POI_TOOLTIP_BACKGROUND_COLOR);
+        gfx.fillRoundRect(x, y, textWidth + 16, 20, 6, 6);
+        gfx.setPaint(POI_TOOLTIP_FOREGROUND_COLOR);
+        gfx.drawString(text, x + 8, y + 2 + 13);
+    }
+
+    private void refreshHoveredPoi(int mouseX, int mouseY) {
+        var hoveredPoi = getHoveredPoiByChebyshevDistance(mouseX, mouseY);
+        if (hoveredPoi != this.hoveredPoi) {
+            repaint();
+            this.hoveredPoi = hoveredPoi;
+        }
+
+        if (hoveredPoi != null) {
+            cursorComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        } else {
+            cursorComponent.setCursor(null);
         }
     }
 
@@ -277,7 +393,7 @@ public final class MapViewerPanel extends JPanel {
             var location = new Point(poi.x(), poi.y());
             transform.transform(location, location);
 
-            var distance = chebyshevDistance(location.x, location.y, mouseX, mouseY);
+            var distance = chebyshevDistanceToPoi(poi, mouseX, mouseY);
             if (distance <= POI_CLICK_TARGET_SIZE && distance < hoveredPoiDistance) {
                 hoveredPoi = poi;
                 hoveredPoiDistance = distance;
@@ -286,8 +402,24 @@ public final class MapViewerPanel extends JPanel {
         return hoveredPoi;
     }
 
+    private int chebyshevDistanceToPoi(POI poi, int mouseX, int mouseY) {
+        // POI icons are rendered at the same size regardless of the map's
+        // scale, so we need to transform their locations manually.
+        var location = new Point(poi.x(), poi.y());
+        transform.transform(location, location);
+
+        return chebyshevDistance(location.x, location.y, mouseX, mouseY);
+    }
+
     // https://en.wikipedia.org/wiki/Chebyshev_distance
     private static int chebyshevDistance(int x1, int y1, int x2, int y2) {
         return Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+    }
+
+    private enum DragState {
+        NONE,
+        PANNING_MAP,
+        HOLDING_POI,
+        DRAGGING_POI,
     }
 }

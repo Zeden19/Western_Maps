@@ -2,7 +2,13 @@ package cs2212.westernmaps.core;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.core.util.Separators;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -91,8 +97,67 @@ public record DatabaseState(List<Account> accounts, List<Building> buildings, Li
      * @return A new properly-configured {@code ObjectMapper}.
      */
     private static ObjectMapper createObjectMapper() {
-        return new ObjectMapper()
+        return JsonMapper.builder()
                 .configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false)
-                .configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+                .configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false)
+                .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+                .configure(SerializationFeature.INDENT_OUTPUT, true)
+                .defaultPrettyPrinter(new JsonPrettyPrinter())
+                .build();
+    }
+
+    // https://stackoverflow.com/a/64670800
+    // https://stackoverflow.com/a/33043697
+    public static final class JsonPrettyPrinter extends DefaultPrettyPrinter {
+        public JsonPrettyPrinter() {
+            _arrayIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE;
+            _objectIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE;
+        }
+
+        public JsonPrettyPrinter(DefaultPrettyPrinter base) {
+            super(base);
+        }
+
+        @Override
+        public JsonPrettyPrinter createInstance() {
+            return new JsonPrettyPrinter(this);
+        }
+
+        @Override
+        public JsonPrettyPrinter withSeparators(Separators separators) {
+            this._separators = separators;
+            this._objectFieldValueSeparatorWithSpaces = separators.getObjectFieldValueSeparator() + " ";
+            return this;
+        }
+
+        @Override
+        public void writeEndArray(JsonGenerator g, int nrOfValues) throws IOException {
+            if (!_arrayIndenter.isInline()) {
+                --_nesting;
+            }
+            if (nrOfValues > 0) {
+                _arrayIndenter.writeIndentation(g, _nesting);
+            }
+            g.writeRaw(']');
+            // Add newline at end of file.
+            if (_nesting == 0) {
+                g.writeRaw('\n');
+            }
+        }
+
+        @Override
+        public void writeEndObject(JsonGenerator g, int nrOfEntries) throws IOException {
+            if (!_objectIndenter.isInline()) {
+                --_nesting;
+            }
+            if (nrOfEntries > 0) {
+                _objectIndenter.writeIndentation(g, _nesting);
+            }
+            g.writeRaw('}');
+            // Add newline at end of file.
+            if (_nesting == 0) {
+                g.writeRaw('\n');
+            }
+        }
     }
 }
