@@ -162,7 +162,16 @@ public final class MapPanel extends JPanel {
             glassPane.add(searchResults);
             glassPane.setVisible(true);
             var results = getSearchResults(searchBar.getText().split(" "), database, building);
-            searchResults.setListData(results.toArray(POI[]::new));
+
+            if (results.isEmpty()) {
+
+                // making a "blank" POI as search results can only contain a list of POIS
+                POI emptyPOI =
+                        new POI("No results found", "", 0, 0, false, new Floor("", "", Path.of("")), Layer.CUSTOM);
+                searchResults.setListData(new POI[] {emptyPOI});
+            } else {
+                searchResults.setListData(results.toArray(POI[]::new));
+            }
         });
 
         // removing list when focus is lost
