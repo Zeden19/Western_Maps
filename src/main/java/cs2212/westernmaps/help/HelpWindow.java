@@ -115,7 +115,7 @@ public class HelpWindow extends JFrame {
 
         setContentPane(contentPane);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(1200, 800));
         pack();
     }
 

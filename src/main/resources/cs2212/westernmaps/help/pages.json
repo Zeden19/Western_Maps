@@ -2,13 +2,19 @@
   "name": "Western Maps Help",
   "subpages": [
     {
-      "name": "Example Page 1"
+      "name": "Choosing a Map"
     },
     {
-      "name": "Example Page 2",
+      "name": "Points of Interest",
       "subpages": [
         {
-          "name": "Example Subpage"
+          "name": "Creating Points of Interest"
+        },
+        {
+          "name": "Favorite Points of Interest"
+        },
+        {
+          "name": "Finding Points of Interest"
         }
       ]
     }
