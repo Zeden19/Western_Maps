@@ -12,6 +12,9 @@ import javax.swing.UIManager;
  * A Java Swing button with custom styles to make it look like a link.
  */
 public final class LinkButton extends JButton {
+    /**
+     * @param text the text that is being added to the link button
+     */
     public LinkButton(String text) {
         super(text);
 

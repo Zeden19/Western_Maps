@@ -30,6 +30,7 @@ public class BuildingSelectPanel extends JPanel {
 
     /**
      * Construct a new BuildingSelectPanel and initialize all of its fields.
+     *
      * @param buildings List of all buildings.
      */
     public BuildingSelectPanel(List<Building> buildings) {
@@ -119,7 +120,8 @@ public class BuildingSelectPanel extends JPanel {
 
     /**
      * Add a listener for the "Log Out" button.
-     * @param listener Listener to add.
+     *
+     * @param listener is the listener that will be added to the logOutListeners
      */
     public void addLogOutListener(Runnable listener) {
         logOutListeners.add(listener);
@@ -127,7 +129,8 @@ public class BuildingSelectPanel extends JPanel {
 
     /**
      * Add a listener for the "Select Building" button.
-     * @param listener Listener to add.
+     *
+     * @param listener is the listener that will be added to the buildingSelectListeners
      */
     public void addBuildingSelectListener(Consumer<Building> listener) {
         buildingSelectListeners.add(listener);
