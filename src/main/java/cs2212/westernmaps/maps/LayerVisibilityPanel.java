@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -76,6 +77,8 @@ public final class LayerVisibilityPanel extends JPanel {
         innerPanel.add(collapseButton, constraints);
 
         var expandButton = new JButton("Show/Hide Layers");
+        expandButton.putClientProperty(
+                FlatClientProperties.STYLE, Map.of("background", UIManager.getColor("Panel.background")));
         expandButton.addActionListener(e -> cardLayout.show(this, "Expanded"));
 
         add(expandButton, "Collapsed");
