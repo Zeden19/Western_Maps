@@ -13,6 +13,7 @@ import javax.swing.UIManager;
  */
 public final class LinkButton extends JButton {
     /**
+     * This constructor creates the link Button for the application
      * @param text the text that is being added to the link button
      */
     public LinkButton(String text) {
