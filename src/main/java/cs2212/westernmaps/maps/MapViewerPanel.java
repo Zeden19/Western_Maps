@@ -20,6 +20,9 @@ import javax.annotation.Nullable;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+/**
+ * creates the map viewer panel for the application
+ */
 public final class MapViewerPanel extends JPanel {
     private static final int POI_CLICK_TARGET_SIZE = 16;
     private static final int POI_HOVER_CIRCLE_RADIUS = 18;
@@ -50,6 +53,11 @@ public final class MapViewerPanel extends JPanel {
     private @Nullable POI draggedPoi = null;
     private final Point draggedPoiLocation = new Point();
 
+    /**
+     * creates the map viewer panel
+     * @param initialMapUri is the first map URI
+     * @param displayedPois are the displayed POIs
+     */
     public MapViewerPanel(URI initialMapUri, List<POI> displayedPois) {
         cursorComponent = this;
         currentMapUri = initialMapUri;
@@ -61,6 +69,10 @@ public final class MapViewerPanel extends JPanel {
             private final Point lastMousePosition = new Point();
             private DragState dragState = DragState.NONE;
 
+            /**
+             * allows user to drag map across screen
+             * @param e the event to be processed. The process is of left-clicking on the map screen
+             */
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1 && hoveredPoi != null) {
@@ -73,6 +85,10 @@ public final class MapViewerPanel extends JPanel {
                 requestFocusInWindow();
             }
 
+            /**
+             * allows user to stop dragging map across screen
+             * @param e the event to be processed. The process is of releasing the left-click
+             */
             @Override
             public void mouseReleased(MouseEvent e) {
                 switch (dragState) {
@@ -95,11 +111,19 @@ public final class MapViewerPanel extends JPanel {
                 refreshHoveredPoi(e.getX(), e.getY());
             }
 
+            /**
+             * Moving the mouse across screen
+             * @param e the event to be processed. This is when the mouse is moved
+             */
             @Override
             public void mouseMoved(MouseEvent e) {
                 refreshHoveredPoi(e.getX(), e.getY());
             }
 
+            /**
+             * Dragging the mouse across the screen and allowing the map to move across screen
+             * @param e the event to be processed
+             */
             @Override
             public void mouseDragged(MouseEvent e) {
                 switch (dragState) {
@@ -147,6 +171,10 @@ public final class MapViewerPanel extends JPanel {
                 }
             }
 
+            /**
+             * This allows the map to be zoomed in or out on the screen
+             * @param e the event to be processed. This process is of the mouse wheel being moved
+             */
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 var scaleFactor = Math.pow(1.5, -e.getPreciseWheelRotation());
@@ -181,11 +209,19 @@ public final class MapViewerPanel extends JPanel {
         setBorder(new FlatBorder());
         setFocusable(true);
         addFocusListener(new FocusListener() {
+            /**
+             * when focus is gained than the panel is repainted
+             * @param e the event to be processed
+             */
             @Override
             public void focusGained(FocusEvent e) {
                 repaint();
             }
 
+            /**
+             * When focus is lost than the panel is repainted
+             * @param e the event to be processed
+             */
             @Override
             public void focusLost(FocusEvent e) {
                 repaint();
