@@ -19,7 +19,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 public class POISummaryPanel extends JPanel {
-    private static final int MAX_COLUMNS = 10;
+    private static final int MAX_COLUMNS = 20;
 
     private @Nullable POI poi;
     private final boolean developer;
@@ -143,7 +143,7 @@ public class POISummaryPanel extends JPanel {
         addToBox(summaryBox, locationLabel);
 
         // Description
-        descriptionField = new JTextArea("", 3, MAX_COLUMNS);
+        descriptionField = new JTextArea("", 5, MAX_COLUMNS);
         descriptionField.setLineWrap(true);
         descriptionField.setWrapStyleWord(true);
         descriptionField.getDocument().addDocumentListener(new DocumentListener() {
@@ -208,6 +208,9 @@ public class POISummaryPanel extends JPanel {
         add(summaryBox);
         add(Box.createRigidArea(new Dimension(10, 0)));
         setBorder(new FlatButtonBorder());
+
+        // Set preferred and maximum sizes.
+        setMaximumSize(new Dimension(getPreferredSize().width, Short.MAX_VALUE));
     }
 
     /**
