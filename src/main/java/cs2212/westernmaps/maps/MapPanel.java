@@ -28,7 +28,7 @@ public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
-    private JList<POI> searchResults = new JList<>();
+    private final JList<POI> searchResults = new JList<>();
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
