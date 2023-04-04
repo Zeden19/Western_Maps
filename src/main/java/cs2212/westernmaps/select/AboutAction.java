@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
+/**
+ * About action for use with the "About" message dialog.
+ */
 public class AboutAction extends AbstractAction {
     private static final String VERSION = "v1.0";
     private static final String RELEASE_DATE = "April 9th, 2023";
@@ -15,6 +18,10 @@ public class AboutAction extends AbstractAction {
     private static final String[] USERNAMES = {"ashar562", "ccummi26", "chosang3", "rbhall3", "rcheun52"};
     private final Component parent;
 
+    /**
+     * Construct a new AboutAction.
+     * @param parent Component creating this action.
+     */
     public AboutAction(Component parent) {
         super("About " + Main.APPLICATION_NAME);
         this.parent = parent;
@@ -28,16 +35,16 @@ public class AboutAction extends AbstractAction {
     }
 
     private static String aboutMessage() {
-        String message =
+        StringBuilder message = new StringBuilder(
                 "Western Maps is a geographic information application for browsing maps of Western's buildings.\n\n"
                         + VERSION
                         + "\n" + "Released on "
-                        + RELEASE_DATE + "\n" + "Created by: ";
+                        + RELEASE_DATE + "\n" + "Created by: ");
 
         for (int i = 0; i < AUTHORS.length; i++) {
-            message += AUTHORS[i] + " | " + USERNAMES[i] + "@uwo.ca\n";
+            message.append(AUTHORS[i]).append(" | ").append(USERNAMES[i]).append("@uwo.ca\n");
         }
 
-        return message;
+        return message.toString();
     }
 }

@@ -18,6 +18,9 @@ import javax.swing.*;
  * TODO: - Add Javadoc comments.
  */
 
+/**
+ * Panel for the Building Selection screen.
+ */
 public class BuildingSelectPanel extends JPanel {
     private static final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
     private final JList<Building> buildingList;
@@ -26,6 +29,10 @@ public class BuildingSelectPanel extends JPanel {
     private final List<Runnable> logOutListeners = new ArrayList<>();
     private final List<Consumer<Building>> buildingSelectListeners = new ArrayList<>();
 
+    /**
+     * Construct a new BuildingSelectPanel and initialize all of its fields.
+     * @param buildings List of all buildings.
+     */
     public BuildingSelectPanel(List<Building> buildings) {
         // This determines what MainWindow will use as its title.
         setName("Building Select");
@@ -137,10 +144,18 @@ public class BuildingSelectPanel extends JPanel {
         add(contentPane);
     }
 
+    /**
+     * Add a listener for the "Log Out" button.
+     * @param listener Listener to add.
+     */
     public void addLogOutListener(Runnable listener) {
         logOutListeners.add(listener);
     }
 
+    /**
+     * Add a listener for the "Select Building" button.
+     * @param listener Listener to add.
+     */
     public void addBuildingSelectListener(Consumer<Building> listener) {
         buildingSelectListeners.add(listener);
     }
