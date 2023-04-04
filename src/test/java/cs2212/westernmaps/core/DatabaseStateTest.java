@@ -39,9 +39,7 @@ public final class DatabaseStateTest {
     @Test
     public void testSampleDatabaseAccounts() throws IOException, JSONException {
         var database = new DatabaseState(
-                List.of(
-                        new Account("user", new byte[] {0x11, 0x22, 0x33, 0x44}, false),
-                        new Account("developer", new byte[] {0x55, 0x66, 0x77, (byte) 0x88}, true)),
+                List.of(new Account("user", "ESIzRA==", false), new Account("developer", "VWZ3iA==", true)),
                 List.of(),
                 List.of());
         var databaseJson =
@@ -80,9 +78,7 @@ public final class DatabaseStateTest {
         var floor = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
 
         var database = new DatabaseState(
-                List.of(
-                        new Account("user", new byte[] {0x11, 0x22, 0x33, 0x44}, false),
-                        new Account("developer", new byte[] {0x55, 0x66, 0x77, (byte) 0x88}, true)),
+                List.of(new Account("user", "ESIzRA==", false), new Account("developer", "VWZ3iA==", true)),
                 List.of(new Building("Example Building", List.of(floor))),
                 List.of(new POI(
                         "Example Restaurant",

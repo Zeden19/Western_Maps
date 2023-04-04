@@ -2,11 +2,15 @@ package cs2212.westernmaps;
 
 import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Database;
+import cs2212.westernmaps.core.DatabaseState;
 import cs2212.westernmaps.login.CreateAccountPanel;
 import cs2212.westernmaps.login.LoginPanel;
 import cs2212.westernmaps.maps.MapPanel;
 import cs2212.westernmaps.select.BuildingSelectPanel;
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
@@ -28,7 +32,7 @@ public final class MainWindow extends JFrame {
 
         // creating all the panels
         loginPanel = new LoginPanel(database);
-        createAccountPanel = new CreateAccountPanel();
+        createAccountPanel = new CreateAccountPanel(database);
         buildingSelectPanel = new BuildingSelectPanel(database.getCurrentState().buildings());
 
         // navigation between panels
@@ -44,7 +48,18 @@ public final class MainWindow extends JFrame {
 
         // create account to log in, once account has been made
         createAccountPanel.addAccountCreateListener(account -> {
-            // TODO: Add the created account to the database.
+            List<Account> accounts = new ArrayList<>(database.getCurrentState().accounts());
+            accounts.add(account);
+            database.getHistory()
+                    .pushState(new DatabaseState(
+                            accounts,
+                            database.getCurrentState().buildings(),
+                            database.getCurrentState().pois()));
+            try {
+                database.save();
+            } catch (IOException ex) {
+                System.out.println("Error: Couldn't save new account to the database.");
+            }
             changeTo(loginPanel);
         });
 

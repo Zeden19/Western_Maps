@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class UndoHistoryTest {
-    private static final byte[] EMPTY_PASSWORD_HASH = new byte[0];
 
     @Test
     public void testInitialState() {
@@ -18,12 +17,12 @@ public final class UndoHistoryTest {
         var history = new UndoHistory(state0);
         Assertions.assertEquals(state0, history.getCurrentState());
 
-        var asdfAccount = new Account("asdf", EMPTY_PASSWORD_HASH, false);
+        var asdfAccount = new Account("asdf", "", false);
         var state1 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, asdfAccount));
         history.pushState(state1);
         Assertions.assertEquals(state1, history.getCurrentState());
 
-        var hjklAccount = new Account("hjkl", EMPTY_PASSWORD_HASH, true);
+        var hjklAccount = new Account("hjkl", "", true);
         var state2 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, hjklAccount));
         history.pushState(state2);
         Assertions.assertEquals(state2, history.getCurrentState());
@@ -46,12 +45,12 @@ public final class UndoHistoryTest {
         Assertions.assertEquals(state0, history.getCurrentState());
 
         // Start by populating the history with some states.
-        var asdfAccount = new Account("asdf", EMPTY_PASSWORD_HASH, false);
+        var asdfAccount = new Account("asdf", "", false);
         var state1 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, asdfAccount));
         history.pushState(state1);
         Assertions.assertEquals(state1, history.getCurrentState());
 
-        var hjklAccount = new Account("hjkl", EMPTY_PASSWORD_HASH, true);
+        var hjklAccount = new Account("hjkl", "", true);
         var state2 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, hjklAccount));
         history.pushState(state2);
         Assertions.assertEquals(state2, history.getCurrentState());
@@ -61,7 +60,7 @@ public final class UndoHistoryTest {
         Assertions.assertEquals(state1, history.getCurrentState());
 
         // ...and push a state while we're in the past.
-        var qwerAccount = new Account("qwer", EMPTY_PASSWORD_HASH, true);
+        var qwerAccount = new Account("qwer", "", true);
         var state3 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, qwerAccount));
         history.pushState(state3);
         Assertions.assertEquals(state3, history.getCurrentState());
@@ -85,12 +84,12 @@ public final class UndoHistoryTest {
         Assertions.assertEquals(state0, history.getCurrentState());
 
         // Start by populating the history with some states.
-        var asdfAccount = new Account("asdf", EMPTY_PASSWORD_HASH, false);
+        var asdfAccount = new Account("asdf", "", false);
         var state1 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, asdfAccount));
         history.pushState(state1);
         Assertions.assertEquals(state1, history.getCurrentState());
 
-        var hjklAccount = new Account("hjkl", EMPTY_PASSWORD_HASH, true);
+        var hjklAccount = new Account("hjkl", "", true);
         var state2 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, hjklAccount));
         history.pushState(state2);
         Assertions.assertEquals(state2, history.getCurrentState());
@@ -127,12 +126,12 @@ public final class UndoHistoryTest {
         Assertions.assertEquals(state0, history.getCurrentState());
 
         // Start by populating the history with some states.
-        var asdfAccount = new Account("asdf", EMPTY_PASSWORD_HASH, false);
+        var asdfAccount = new Account("asdf", "", false);
         var state1 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, asdfAccount));
         history.pushState(state1);
         Assertions.assertEquals(state1, history.getCurrentState());
 
-        var hjklAccount = new Account("hjkl", EMPTY_PASSWORD_HASH, true);
+        var hjklAccount = new Account("hjkl", "", true);
         var state2 = history.getCurrentState().modifyAccounts(accounts -> Lists.append(accounts, hjklAccount));
         history.pushState(state2);
         Assertions.assertEquals(state2, history.getCurrentState());

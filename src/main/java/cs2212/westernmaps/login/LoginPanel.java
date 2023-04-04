@@ -5,16 +5,19 @@ import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Database;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.*;
 
 public final class LoginPanel extends JPanel {
     private final JTextField usernameField;
+    private final JPasswordField passwordField;
     private final JLabel invalidUserError;
 
     private final List<Consumer<Account>> loginListeners = new ArrayList<>();
     private final List<Runnable> createAccountClickListeners = new ArrayList<>();
+    private final JLabel invalidPasswordError;
 
     public LoginPanel(Database database) {
         // This determines what MainWindow will use as its title.
@@ -38,7 +41,7 @@ public final class LoginPanel extends JPanel {
         usernameField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Username");
 
         // Password field
-        var passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
         passwordField.setColumns(20);
         passwordField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
@@ -59,6 +62,12 @@ public final class LoginPanel extends JPanel {
         invalidUserError.setForeground(UIManager.getColor("Actions.Red"));
         invalidUserError.setVisible(false);
 
+        // Error message for invalid password for account
+        invalidPasswordError = new JLabel("Password is incorrect");
+        invalidPasswordError.setAlignmentX(Component.CENTER_ALIGNMENT);
+        invalidPasswordError.setForeground(UIManager.getColor("Actions.Red"));
+        invalidPasswordError.setVisible(false);
+
         // Panel to hold all the components
         var panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -71,6 +80,7 @@ public final class LoginPanel extends JPanel {
         panel.add(signInButton);
         panel.add(Box.createVerticalStrut(8));
         panel.add(invalidUserError);
+        panel.add(invalidPasswordError);
         panel.add(Box.createVerticalStrut(8));
         panel.add(createAccountLink);
 
@@ -86,7 +96,10 @@ public final class LoginPanel extends JPanel {
         createAccountClickListeners.add(listener);
     }
 
+    // validating if the user exists and if the password is correct
     private void validateAndSubmit(Database database) {
+        invalidUserError.setVisible(false);
+        invalidPasswordError.setVisible(false);
         List<Account> accounts = database.getCurrentState().accounts();
 
         var username = usernameField.getText();
@@ -95,9 +108,15 @@ public final class LoginPanel extends JPanel {
 
         if (account.isPresent()) {
             invalidUserError.setVisible(false);
-            loginListeners.forEach(listener -> listener.accept(account.get()));
-        } else {
-            invalidUserError.setVisible(true);
-        }
+
+            char[] passwordChar = passwordField.getPassword();
+            if (account.get().isPasswordCorrect(passwordChar)) {
+                invalidPasswordError.setVisible(false);
+                loginListeners.forEach(listener -> listener.accept(account.get()));
+
+            } else invalidPasswordError.setVisible(true);
+            Arrays.fill(passwordChar, ' ');
+
+        } else invalidUserError.setVisible(true);
     }
 }

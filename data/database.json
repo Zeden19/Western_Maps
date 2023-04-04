@@ -2,12 +2,12 @@
   "accounts": [
     {
       "developer": false,
-      "passwordHash": "",
+      "passwordHash": "$31$16$SXYa2l_RwvP8ONMhjNQM384bYThlWYJ_elJWA5TKCu8",
       "username": "regularUser"
     },
     {
       "developer": true,
-      "passwordHash": "",
+      "passwordHash": "$31$16$VZlldtuzEOL5FlD9gvxLvhwaKBkUW34BS0bfnvUHQjc",
       "username": "developerUser"
     }
   ],
