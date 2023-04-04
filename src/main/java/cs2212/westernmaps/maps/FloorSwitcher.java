@@ -1,5 +1,7 @@
 package cs2212.westernmaps.maps;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatButtonBorder;
 import cs2212.westernmaps.core.Floor;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -9,10 +11,10 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-public final class FloorSwitcher extends JComponent {
+public final class FloorSwitcher extends JPanel {
     private final List<Consumer<Floor>> floorSwitchListeners = new ArrayList<>();
 
     /**
@@ -37,6 +39,8 @@ public final class FloorSwitcher extends JComponent {
             add(floorButton, 0);
             buttonGroup.add(floorButton);
         }
+
+        setBorder(new FlatButtonBorder());
     }
 
     public void addFloorSwitchListener(Consumer<Floor> listener) {
@@ -55,6 +59,8 @@ public final class FloorSwitcher extends JComponent {
 
             // Prevent Java Swing from replacing the content with ...
             setMargin(new Insets(2, 2, 2, 2));
+
+            putClientProperty(FlatClientProperties.BUTTON_TYPE, "borderless");
 
             addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
