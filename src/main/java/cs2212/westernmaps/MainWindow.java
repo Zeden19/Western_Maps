@@ -29,6 +29,7 @@ public final class MainWindow extends JFrame {
     private @Nullable Account loggedInAccount = null;
 
     /**
+     * Creates the Main window
      * @param database is the database being used for the application
      */
     public MainWindow(Database database) {
