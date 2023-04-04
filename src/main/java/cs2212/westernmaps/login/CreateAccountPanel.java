@@ -75,17 +75,14 @@ public final class CreateAccountPanel extends JPanel {
         createAccountButton.addActionListener(e -> {
             // checking if user can create account with given username and password
             if (!checkPasswordFields() || isUsernameTaken(database, usernameField.getText())) {
-                Arrays.fill(passwordField.getPassword(), ' ');
-                Arrays.fill(confirmPassword.getPassword(), ' ');
                 return;
             }
             PasswordAuthenticator auth = new PasswordAuthenticator();
-            String hash = auth.hash(passwordField.getPassword());
+            char[] passwordChar = passwordField.getPassword();
+            String hash = auth.hash(passwordChar);
+            Arrays.fill(passwordChar, ' ');
 
             var newAccount = new Account(usernameField.getText(), hash, false);
-            Arrays.fill(passwordField.getPassword(), ' ');
-            Arrays.fill(confirmPassword.getPassword(), ' ');
-
             accountCreateListeners.forEach(listener -> listener.accept(newAccount));
         });
 
@@ -163,16 +160,23 @@ public final class CreateAccountPanel extends JPanel {
     private boolean checkPasswordFields() {
         passwordMatchError.setVisible(false);
         passwordInvalidError.setVisible(false);
-        // checking if the password was valid, if not displaying error
-        if (!Arrays.equals(passwordField.getPassword(), confirmPassword.getPassword())) {
+        boolean result;
+        char[] passwordChar = passwordField.getPassword();
+        char[] confirmPasswordChar = confirmPassword.getPassword();
+
+        if (!Arrays.equals(passwordChar, confirmPasswordChar)) {
             passwordMatchError.setVisible(true); // passwords not matching
-            return false;
-        } else if (isPasswordInvalid(passwordField.getPassword())) {
+            result = false;
+        } else if (isPasswordInvalid(passwordChar)) {
             passwordInvalidError.setVisible(true); // password not valid
-            return false;
+            result = false;
         } else {
-            return true;
+            result = true;
         }
+
+        Arrays.fill(confirmPasswordChar, ' ');
+        Arrays.fill(passwordChar, ' ');
+        return result;
     }
 
     // checking if the username was taken

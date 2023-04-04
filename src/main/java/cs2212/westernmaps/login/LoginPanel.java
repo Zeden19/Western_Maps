@@ -109,13 +109,13 @@ public final class LoginPanel extends JPanel {
         if (account.isPresent()) {
             invalidUserError.setVisible(false);
 
-            if (account.get().isPasswordCorrect(passwordField.getPassword())) {
+            char[] passwordChar = passwordField.getPassword();
+            if (account.get().isPasswordCorrect(passwordChar)) {
                 invalidPasswordError.setVisible(false);
                 loginListeners.forEach(listener -> listener.accept(account.get()));
 
             } else invalidPasswordError.setVisible(true);
-
-            Arrays.fill(passwordField.getPassword(), ' ');
+            Arrays.fill(passwordChar, ' ');
 
         } else invalidUserError.setVisible(true);
     }
