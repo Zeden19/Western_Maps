@@ -30,7 +30,7 @@ public final class LinkButton extends JButton {
         // Show the "pointing" mouse cursor when hovering over the button.
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-
+    // setting the underline for the text in the panel to add a nicer look to panel
     private void setUnderlined() {
         var font = getFont();
         var attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
