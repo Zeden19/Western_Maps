@@ -37,6 +37,7 @@ public final class MapRenderCache {
     private @Nullable Future<BufferedImage> cachedImageFuture;
 
     /**
+     * Creates the map render cache
      * @param diagram is the diagram of the map that is being rendered
      * @param scale is the scale of the map being used
      */
@@ -46,6 +47,7 @@ public final class MapRenderCache {
     }
 
     /**
+     * gets the diagram of the svg file
      * @return the diagram that is being used
      */
     public SVGDiagram getDiagram() {
@@ -53,6 +55,7 @@ public final class MapRenderCache {
     }
 
     /**
+     * sets the diagram of the svg file
      * @param diagram is the new diagram that will be used in place of the previous one
      */
     public void setDiagram(SVGDiagram diagram) {
@@ -61,6 +64,7 @@ public final class MapRenderCache {
     }
 
     /**
+     * sets the scale
      * @param scale is the new scale that would be set for previous one
      */
     public void setScale(double scale) {
@@ -71,6 +75,7 @@ public final class MapRenderCache {
     }
 
     /**
+     * renders the image
      * @param gfx the gfx that is used for map
      * @param x the positioning of the map in x-axis
      * @param y the position of map in y-axis

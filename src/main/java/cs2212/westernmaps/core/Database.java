@@ -54,7 +54,7 @@ public final class Database {
     }
 
     /**
-     *getter for the current state of database
+     * getter for the current state of database
      * @return the current state of the database
      */
     public DatabaseState getCurrentState() {
@@ -67,7 +67,7 @@ public final class Database {
     }
 
     /**
-     *This method saves the database
+     * This method saves the database
      * @throws IOException when the database file is not found
      */
     public void save() throws IOException {
