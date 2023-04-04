@@ -24,7 +24,6 @@ public final class MapPanel extends JPanel {
 
     private final MapViewerPanel mapViewer;
     private final POISummaryPanel poiSummaryPanel;
-
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
@@ -355,19 +354,21 @@ public final class MapPanel extends JPanel {
 
             // Basically looking through all the words and removing POIs in the list that don't match
             pois = pois.stream()
-                    .filter(poi -> building.floors().contains(poi.floor()) && (poiMatches(query[finalI], poi)))
+                    .filter(poi ->
+                            building.floors().contains(poi.floor()) && (poiMatches(query[finalI], poi, building)))
                     .toList();
         }
         return pois;
     }
 
     // Getting if the POI in the search matches
-    private boolean poiMatches(String word, POI poi) {
+    private boolean poiMatches(String word, POI poi, Building building) {
         String wordLowerCase = word.toLowerCase();
         return poi.name().toLowerCase().contains(wordLowerCase)
                 || poi.description().toLowerCase().contains(wordLowerCase)
                 || poi.layer().name().toLowerCase().contains(wordLowerCase)
-                || poi.floor().longName().toLowerCase().contains(wordLowerCase);
+                || poi.floor().longName().toLowerCase().contains(wordLowerCase)
+                || building.name().toLowerCase().contains(wordLowerCase);
     }
     // Does not update the selection of the floor switcher.
     private void changeToFloor(Floor floor) {
