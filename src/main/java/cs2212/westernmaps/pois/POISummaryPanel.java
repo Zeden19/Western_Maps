@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,7 +19,8 @@ import javax.swing.text.Document;
 public class POISummaryPanel extends JPanel {
     private static final int MAX_COLUMNS = 10;
     private POI poi;
-    private final List<BiConsumer<POI, POI>> poiSummaryListeners = new ArrayList<>();
+    private final List<BiConsumer<POI, POI>> poiChangeListeners = new ArrayList<>();
+    private final List<Consumer<POI>> poiDeleteListeners = new ArrayList<>();
     /**
      * Summary window of a POI that displays its metadata.
      *
@@ -52,19 +54,17 @@ public class POISummaryPanel extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                DatabaseState currentState = database.getCurrentState();
-                List<POI> pois = currentState.pois();
-                int poiIndex = pois.indexOf(poi);
                 Document doc = e.getDocument();
                 String newTitle;
                 try {
                     newTitle = doc.getText(0, doc.getLength());
 
-                    poi = new POI(
+                    POI newPoi = new POI(
                             newTitle, poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
 
-                    List<POI> newPois = Lists.replaceIndex(pois, poiIndex, poi);
-                    database.getHistory().pushState(currentState.modifyPOIs(currentPois -> newPois));
+                    poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
+
+                    poi = newPoi;
                 } catch (BadLocationException ex) {
                     System.out.println("Error reading Document: " + e);
                 }
@@ -85,16 +85,14 @@ public class POISummaryPanel extends JPanel {
             layerCombo.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    DatabaseState currentState = database.getCurrentState();
-                    List<POI> pois = currentState.pois();
-                    int poiIndex = pois.indexOf(poi);
                     Layer newLayer = (Layer) layerCombo.getSelectedItem();
-                    poi = new POI(
+
+                    POI newPoi = new POI(
                             poi.name(), poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), newLayer);
 
-                    List<POI> newPois = Lists.replaceIndex(pois, poiIndex, poi);
-                    database.getHistory().pushState(currentState.modifyPOIs(currentPois -> newPois));
+                    poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
+                    poi = newPoi;
                     layerIcon.setIcon(poi.layer().getIcon());
                 }
             });
@@ -113,12 +111,11 @@ public class POISummaryPanel extends JPanel {
         favoriteCheck.setSelected(poi.favorite());
         // TODO: Add icon here
         favoriteCheck.addItemListener(e -> {
-            DatabaseState currentState = database.getCurrentState();
-            List<POI> pois = currentState.pois();
-            int poiIndex = pois.indexOf(poi);
-            poi = new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
-            List<POI> newPois = Lists.replaceIndex(pois, poiIndex, poi);
-            database.getHistory().pushState(currentState.modifyPOIs(currentPois -> newPois));
+            POI newPoi =
+                    new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
+            poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
+
+            poi = newPoi;
         });
         addToBox(summaryBox, favoriteCheck);
 
@@ -147,16 +144,15 @@ public class POISummaryPanel extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                DatabaseState currentState = database.getCurrentState();
-                List<POI> pois = currentState.pois();
-                int poiIndex = pois.indexOf(poi);
                 Document doc = e.getDocument();
                 try {
                     String newDesc = doc.getText(0, doc.getLength());
 
-                    poi = new POI(poi.name(), newDesc, poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
-                    List<POI> newPois = Lists.replaceIndex(pois, poiIndex, poi);
-                    database.getHistory().pushState(currentState.modifyPOIs(currentPois -> newPois));
+                    POI newPoi =
+                            new POI(poi.name(), newDesc, poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
+                    poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
+
+                    poi = newPoi;
                 } catch (BadLocationException ex) {
                     System.out.println("Error reading Document: " + e);
                 }
@@ -179,11 +175,7 @@ public class POISummaryPanel extends JPanel {
                             "Delete POI",
                             JOptionPane.YES_NO_OPTION);
                     if (confirmDelete == JOptionPane.YES_OPTION) {
-                        DatabaseState currentState = database.getCurrentState();
-                        List<POI> pois = currentState.pois();
-                        int poiIndex = pois.indexOf(poi);
-                        List<POI> newPois = Lists.replaceIndex(pois, poiIndex, poi);
-                        database.getHistory().pushState(currentState.modifyPOIs(currentPois -> newPois));
+                        poiDeleteListeners.forEach(listener -> listener.accept(poi));
                     }
                 }
             });
@@ -204,8 +196,16 @@ public class POISummaryPanel extends JPanel {
      * Registers an event listener that is called when a field of the POI summary is edited.
      * @param listener Event listener, taking two arguments: the old POI and the modified POI.
      */
-    public void addPoiSummaryListener(BiConsumer<POI, POI> listener) {
-        poiSummaryListeners.add(listener);
+    public void addPoiChangeListener(BiConsumer<POI, POI> listener) {
+        poiChangeListeners.add(listener);
+    }
+
+    /**
+     * Registers an event listener that is called when a POI is deleted.
+     * @param listener Event listener, taking the POI to be deleted as an argument.
+     */
+    public void addPoiDeleteListener(Consumer<POI> listener) {
+        poiDeleteListeners.add(listener);
     }
 
     private static void addToBox(JPanel box, JComponent component) {
