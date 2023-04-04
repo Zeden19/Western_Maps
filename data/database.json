@@ -113,8 +113,8 @@
       "floor": 1,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 948,
+      "y": 466
     },
     {
       "description": "Elevator that can take you up to the Fourth Floor",
@@ -122,8 +122,8 @@
       "floor": 1,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1334,
+      "y": 650
     },
     {
       "description": "Room that houses electrical equipment for power distribution.",
@@ -131,8 +131,8 @@
       "floor": 1,
       "layer": "UTILITIES",
       "name": "Electrical Room",
-      "x": 0,
-      "y": 0
+      "x": 868,
+      "y": 533
     },
     {
       "description": "Graduate student pub and eatery.",
@@ -140,8 +140,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Grad Club",
-      "x": 0,
-      "y": 0
+      "x": 825,
+      "y": 319
     },
     {
       "description": "Patio for the graduate student pub and eatery.",
@@ -149,8 +149,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Grad Club Patio",
-      "x": 0,
-      "y": 0
+      "x": 824,
+      "y": 168
     },
     {
       "description": "A service hatch for the food.",
@@ -158,8 +158,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Servery",
-      "x": 0,
-      "y": 0
+      "x": 640,
+      "y": 376
     },
     {
       "description": "A room where food is being prepped.",
@@ -167,8 +167,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Kitchen",
-      "x": 0,
-      "y": 0
+      "x": 574,
+      "y": 409
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -176,8 +176,8 @@
       "floor": 1,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 1373,
+      "y": 686
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -185,8 +185,8 @@
       "floor": 1,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 759,
+      "y": 502
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -194,8 +194,8 @@
       "floor": 2,
       "layer": "UTILITIES",
       "name": "Mechanical Room",
-      "x": 0,
-      "y": 0
+      "x": 856,
+      "y": 453
     },
     {
       "description": "Elevator that can take you up to the Third Floor and down to Ground Floor.",
@@ -203,8 +203,8 @@
       "floor": 2,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 951,
+      "y": 466
     },
     {
       "description": "Elevator that can take you up to the Fourth Floor and down to Ground Floor.",
@@ -212,8 +212,8 @@
       "floor": 2,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1336,
+      "y": 650
     },
     {
       "description": "Accessibility ramp for handicap in classroom.",
@@ -221,8 +221,8 @@
       "floor": 2,
       "layer": "ACCESSIBILITY",
       "name": "Ramp 1",
-      "x": 0,
-      "y": 0
+      "x": 747,
+      "y": 401
     },
     {
       "description": "Accessibility ramp for handicap in classroom.",
@@ -230,8 +230,8 @@
       "floor": 2,
       "layer": "ACCESSIBILITY",
       "name": "Ramp 2",
-      "x": 0,
-      "y": 0
+      "x": 991,
+      "y": 400
     },
     {
       "description": "Vertical space that houses mechanical systems.",
@@ -239,8 +239,8 @@
       "floor": 2,
       "layer": "UTILITIES",
       "name": "Mechanical Shaft",
-      "x": 0,
-      "y": 0
+      "x": 683,
+      "y": 458
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -248,8 +248,8 @@
       "floor": 2,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 718,
+      "y": 521
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -257,8 +257,8 @@
       "floor": 2,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 1375,
+      "y": 688
     },
     {
       "description": "Elevator that can take you up to the Third Floor and down to Ground Floor.",
@@ -266,8 +266,8 @@
       "floor": 3,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 951,
+      "y": 464
     },
     {
       "description": "Elevator that can take you up to the Fourth Floor and down to Ground Floor.",
@@ -275,8 +275,8 @@
       "floor": 3,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1336,
+      "y": 650
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -284,8 +284,8 @@
       "floor": 3,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 713,
+      "y": 521
     },
     {
       "description": "Barrier Free Men's Washroom.",
@@ -293,8 +293,8 @@
       "floor": 3,
       "layer": "WASHROOMS",
       "name": "Barrier Free Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 1370,
+      "y": 683
     },
     {
       "description": "Climate-controlled space that houses servers and networking equipment.",
@@ -302,8 +302,8 @@
       "floor": 4,
       "layer": "UTILITIES",
       "name": "Server Room",
-      "x": 0,
-      "y": 0
+      "x": 864,
+      "y": 391
     },
     {
       "description": "Elevator that can take you down to Ground Floor.",
@@ -311,8 +311,8 @@
       "floor": 4,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 951,
+      "y": 464
     },
     {
       "description": "Elevator that can take you up to the Fourth Floor and down to Ground Floor.",
@@ -320,8 +320,8 @@
       "floor": 4,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1336,
+      "y": 650
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -329,8 +329,8 @@
       "floor": 4,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 1070,
+      "y": 528
     },
     {
       "description": "Vertical space that houses ductwork used for heating, ventilation, and air conditioning.",
@@ -338,8 +338,8 @@
       "floor": 4,
       "layer": "UTILITIES",
       "name": "Duct Shaft",
-      "x": 0,
-      "y": 0
+      "x": 682,
+      "y": 459
     },
     {
       "description": "Elevator that can take you down to Ground floor.",
@@ -347,8 +347,8 @@
       "floor": 5,
       "layer": "ACCESSIBILITY",
       "name": "MC Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1336,
+      "y": 650
     },
     {
       "description": "Stage for musical performances.",
@@ -356,8 +356,8 @@
       "floor": 6,
       "layer": "LOUNGES",
       "name": "Talbot College Stage",
-      "x": 0,
-      "y": 0
+      "x": 526,
+      "y": 692
     },
     {
       "description": "Seating area for all guests.",
@@ -365,8 +365,8 @@
       "floor": 6,
       "layer": "LOUNGES",
       "name": "Talbot College Theatre",
-      "x": 0,
-      "y": 0
+      "x": 525,
+      "y": 523
     },
     {
       "description": "Elevator that can take you up to the Fourth floor.",
@@ -374,8 +374,8 @@
       "floor": 6,
       "layer": "ACCESSIBILITY",
       "name": "TC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 398,
+      "y": 472
     },
     {
       "description": "Talbot College Cafe for food.",
@@ -383,8 +383,8 @@
       "floor": 6,
       "layer": "EATERIES",
       "name": "Talbot College Encore Cafe",
-      "x": 0,
-      "y": 0
+      "x": 595,
+      "y": 336
     },
     {
       "description": "Music Library collection for music sheets and pickup for music students.",
@@ -392,8 +392,8 @@
       "floor": 6,
       "layer": "LOUNGES",
       "name": "Talbot College Library Collection",
-      "x": 0,
-      "y": 0
+      "x": 822,
+      "y": 323
     },
     {
       "description": "All gender accessible washroom.",
@@ -401,8 +401,8 @@
       "floor": 6,
       "layer": "WASHROOMS",
       "name": "Accessible Unisex Washroom",
-      "x": 0,
-      "y": 0
+      "x": 782,
+      "y": 479
     },
     {
       "description": "Barrier Free Men's Washroom.",
@@ -410,8 +410,8 @@
       "floor": 6,
       "layer": "WASHROOMS",
       "name": "Barrier Free Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 827,
+      "y": 479
     },
     {
       "description": "Barrier Free Women's Washroom.",
@@ -419,8 +419,8 @@
       "floor": 6,
       "layer": "WASHROOMS",
       "name": "Barrier Free Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 830,
+      "y": 620
     },
     {
       "description": "Elevator that can take you up to the Fourth floor or down to the First floor.",
@@ -428,8 +428,8 @@
       "floor": 7,
       "layer": "ACCESSIBILITY",
       "name": "TC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 497,
+      "y": 521
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -437,8 +437,8 @@
       "floor": 7,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 516,
+      "y": 676
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -446,8 +446,8 @@
       "floor": 7,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 754,
+      "y": 561
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -455,8 +455,8 @@
       "floor": 7,
       "layer": "UTILITIES",
       "name": "Mechanical Room",
-      "x": 0,
-      "y": 0
+      "x": 755,
+      "y": 642
     },
     {
       "description": "Music Library accessible to any Western Students.",
@@ -464,8 +464,8 @@
       "floor": 7,
       "layer": "LOUNGES",
       "name": "Music Library",
-      "x": 0,
-      "y": 0
+      "x": 722,
+      "y": 346
     },
     {
       "description": "Elevator that can take you up to the Fourth floor or down to the First floor.",
@@ -473,8 +473,8 @@
       "floor": 8,
       "layer": "ACCESSIBILITY",
       "name": "TC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 397,
+      "y": 472
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -482,8 +482,8 @@
       "floor": 8,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 401,
+      "y": 328
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -491,8 +491,8 @@
       "floor": 8,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 645,
+      "y": 503
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -500,8 +500,8 @@
       "floor": 8,
       "layer": "UTILITIES",
       "name": "Mechanical Room",
-      "x": 0,
-      "y": 0
+      "x": 647,
+      "y": 603
     },
     {
       "description": "Dedicated space for examinations.",
@@ -509,8 +509,8 @@
       "floor": 8,
       "layer": "CLASSROOMS",
       "name": "Exam Room",
-      "x": 0,
-      "y": 0
+      "x": 522,
+      "y": 381
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -518,8 +518,8 @@
       "floor": 9,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 714,
+      "y": 509
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -527,8 +527,8 @@
       "floor": 9,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 748,
+      "y": 546
     },
     {
       "description": "Elevator that can take you up down to the First floor.",
@@ -536,8 +536,8 @@
       "floor": 9,
       "layer": "ACCESSIBILITY",
       "name": "TC Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 388,
+      "y": 471
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -545,8 +545,8 @@
       "floor": 9,
       "layer": "UTILITIES",
       "name": "Mechanical Room 1",
-      "x": 0,
-      "y": 0
+      "x": 462,
+      "y": 565
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -554,8 +554,8 @@
       "floor": 9,
       "layer": "UTILITIES",
       "name": "Mechanical Room 2",
-      "x": 0,
-      "y": 0
+      "x": 527,
+      "y": 565
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -563,8 +563,8 @@
       "floor": 9,
       "layer": "UTILITIES",
       "name": "Mechanical Room 3",
-      "x": 0,
-      "y": 0
+      "x": 610,
+      "y": 575
     },
     {
       "description": "Barrier Free Men's Washroom.",
@@ -572,8 +572,8 @@
       "floor": 10,
       "layer": "WASHROOMS",
       "name": "Barrier Free Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 1149,
+      "y": 242
     },
     {
       "description": "Barrier Free Women's Washroom.",
@@ -581,8 +581,8 @@
       "floor": 10,
       "layer": "WASHROOMS",
       "name": "Barrier Free Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 1117,
+      "y": 242
     },
     {
       "description": "Elevator that can take you up to to the Second floor.",
@@ -590,8 +590,8 @@
       "floor": 10,
       "layer": "ACCESSIBILITY",
       "name": "Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1196,
+      "y": 216
     },
     {
       "description": "Swimming pool accessible by all Western Students.",
@@ -599,8 +599,8 @@
       "floor": 10,
       "layer": "FITNESS",
       "name": "Pool",
-      "x": 0,
-      "y": 0
+      "x": 953,
+      "y": 442
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -608,8 +608,8 @@
       "floor": 10,
       "layer": "UTILITIES",
       "name": "Mechanical Room",
-      "x": 0,
-      "y": 0
+      "x": 1095,
+      "y": 378
     },
     {
       "description": "Dedicated space that houses electrical equipment.",
@@ -617,8 +617,8 @@
       "floor": 10,
       "layer": "UTILITIES",
       "name": "Electrical Room",
-      "x": 0,
-      "y": 0
+      "x": 991,
+      "y": 243
     },
     {
       "description": "Dedicated space that allows easy access for UTILITIES and repairs.",
@@ -626,8 +626,8 @@
       "floor": 10,
       "layer": "UTILITIES",
       "name": "Duct Areaway",
-      "x": 0,
-      "y": 0
+      "x": 1000,
+      "y": 196
     },
     {
       "description": "Dedicated space that houses electrical equipment for the distribution of electrical power.",
@@ -635,8 +635,8 @@
       "floor": 10,
       "layer": "UTILITIES",
       "name": "Sub-Station",
-      "x": 0,
-      "y": 0
+      "x": 1032,
+      "y": 196
     },
     {
       "description": "Facilities garbage room.",
@@ -644,8 +644,8 @@
       "floor": 11,
       "layer": "UTILITIES",
       "name": "Garbage",
-      "x": 0,
-      "y": 0
+      "x": 652,
+      "y": 185
     },
     {
       "description": "Elevator that can take you up to to the Second floor.",
@@ -653,8 +653,8 @@
       "floor": 11,
       "layer": "ACCESSIBILITY",
       "name": "Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 719,
+      "y": 637
     },
     {
       "description": "Elevator that can take you up to to the Second floor or Basement.",
@@ -662,8 +662,8 @@
       "floor": 11,
       "layer": "ACCESSIBILITY",
       "name": "Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1195,
+      "y": 216
     },
     {
       "description": "Seating area for all guests that overviews the Hockey Rink and Track.",
@@ -671,8 +671,8 @@
       "floor": 11,
       "layer": "MISCELLANEOUS",
       "name": "Stacked-bleachers",
-      "x": 0,
-      "y": 0
+      "x": 597,
+      "y": 433
     },
     {
       "description": "Seating area for all guests that overviews the Hockey Rink and Track.",
@@ -680,8 +680,8 @@
       "floor": 11,
       "layer": "MISCELLANEOUS",
       "name": "Bleachers",
-      "x": 0,
-      "y": 0
+      "x": 299,
+      "y": 678
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -689,8 +689,8 @@
       "floor": 11,
       "layer": "UTILITIES",
       "name": "Mechanical Room 1",
-      "x": 0,
-      "y": 0
+      "x": 682,
+      "y": 361
     },
     {
       "description": "Dedicated space for Men Locker Room.",
@@ -698,8 +698,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Men's Locker Room",
-      "x": 0,
-      "y": 0
+      "x": 762,
+      "y": 317
     },
     {
       "description": "Dedicated space for Women's Locker Room.",
@@ -707,8 +707,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Women's Locker Room",
-      "x": 0,
-      "y": 0
+      "x": 754,
+      "y": 546
     },
     {
       "description": "Dedicated space for Family Locker Room.",
@@ -716,8 +716,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Family Locker Room",
-      "x": 0,
-      "y": 0
+      "x": 757,
+      "y": 421
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -725,8 +725,8 @@
       "floor": 11,
       "layer": "UTILITIES",
       "name": "Mechanical Room 2",
-      "x": 0,
-      "y": 0
+      "x": 1362,
+      "y": 433
     },
     {
       "description": "Barrier Free Men's Washroom.",
@@ -734,8 +734,8 @@
       "floor": 11,
       "layer": "WASHROOMS",
       "name": "Barrier Free Men's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 835,
+      "y": 288
     },
     {
       "description": "Barrier Free Women's Washroom.",
@@ -743,8 +743,8 @@
       "floor": 11,
       "layer": "WASHROOMS",
       "name": "Barrier Free Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 834,
+      "y": 578
     },
     {
       "description": "Barrier Free Unisex Washroom.",
@@ -752,8 +752,8 @@
       "floor": 11,
       "layer": "WASHROOMS",
       "name": "Barrier Free Unisex Washroom",
-      "x": 0,
-      "y": 0
+      "x": 796,
+      "y": 413
     },
     {
       "description": "Swimming pool accessible by all Western Students.",
@@ -761,8 +761,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Pool",
-      "x": 0,
-      "y": 0
+      "x": 953,
+      "y": 446
     },
     {
       "description": "Laundry room for towels and clothes.",
@@ -770,8 +770,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Laundry Room",
-      "x": 0,
-      "y": 0
+      "x": 872,
+      "y": 190
     },
     {
       "description": "Dedicated space for squash court 1.",
@@ -779,8 +779,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Squash Court 1",
-      "x": 0,
-      "y": 0
+      "x": 1131,
+      "y": 233
     },
     {
       "description": "Dedicated space for squash court 2.",
@@ -788,8 +788,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Squash Court 2",
-      "x": 0,
-      "y": 0
+      "x": 1132,
+      "y": 276
     },
     {
       "description": "Dedicated space for squash court 3.",
@@ -797,8 +797,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Squash Court 3",
-      "x": 0,
-      "y": 0
+      "x": 1132,
+      "y": 327
     },
     {
       "description": "Dedicated space for squash court 4.",
@@ -806,8 +806,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Squash Court 4",
-      "x": 0,
-      "y": 0
+      "x": 1132,
+      "y": 369
     },
     {
       "description": "Dedicated space for squash court 5.",
@@ -815,8 +815,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Squash Court 5",
-      "x": 0,
-      "y": 0
+      "x": 1132,
+      "y": 415
     },
     {
       "description": "200 meter track accessible by all Western Students.",
@@ -824,8 +824,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "200m Track",
-      "x": 0,
-      "y": 0
+      "x": 311,
+      "y": 434
     },
     {
       "description": "Hockey Rink accessible by all Western Students.",
@@ -833,8 +833,8 @@
       "floor": 11,
       "layer": "FITNESS",
       "name": "Hockey Rink",
-      "x": 0,
-      "y": 0
+      "x": 459,
+      "y": 432
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -842,8 +842,8 @@
       "floor": 12,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 0,
-      "y": 0
+      "x": 643,
+      "y": 326
     },
     {
       "description": "Barrier Free Men's Washroom.",
@@ -851,8 +851,8 @@
       "floor": 12,
       "layer": "WASHROOMS",
       "name": "Barrier Free Men's Washroom Rink",
-      "x": 0,
-      "y": 0
+      "x": 643,
+      "y": 473
     },
     {
       "description": "Barrier Free Women's Washroom.",
@@ -860,8 +860,8 @@
       "floor": 12,
       "layer": "WASHROOMS",
       "name": "Barrier Free Women's Washroom Rink",
-      "x": 0,
-      "y": 0
+      "x": 643,
+      "y": 399
     },
     {
       "description": "Barrier Free Men's Washroom.",
@@ -869,8 +869,8 @@
       "floor": 12,
       "layer": "WASHROOMS",
       "name": "Barrier Free Men's Washroom Gym",
-      "x": 0,
-      "y": 0
+      "x": 1060,
+      "y": 301
     },
     {
       "description": "Barrier Free Women's Washroom.",
@@ -878,8 +878,8 @@
       "floor": 12,
       "layer": "WASHROOMS",
       "name": "Barrier Free Women's Washroom Gym",
-      "x": 0,
-      "y": 0
+      "x": 1060,
+      "y": 262
     },
     {
       "description": "Elevator that can take you up to to the Second floor or down to the Ground floor.",
@@ -887,8 +887,8 @@
       "floor": 12,
       "layer": "ACCESSIBILITY",
       "name": "Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 719,
+      "y": 637
     },
     {
       "description": "Elevator that can take you up to to the Second floor or down to the Basement floor.",
@@ -896,8 +896,8 @@
       "floor": 12,
       "layer": "ACCESSIBILITY",
       "name": "Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1195,
+      "y": 216
     },
     {
       "description": "Spectator area for the press.",
@@ -905,8 +905,8 @@
       "floor": 13,
       "layer": "MISCELLANEOUS",
       "name": "Press Box",
-      "x": 0,
-      "y": 0
+      "x": 599,
+      "y": 435
     },
     {
       "description": "Elevator that can take you up to to the Second floor or down to the Ground floor.",
@@ -914,8 +914,8 @@
       "floor": 13,
       "layer": "ACCESSIBILITY",
       "name": "Elevator A",
-      "x": 0,
-      "y": 0
+      "x": 719,
+      "y": 637
     },
     {
       "description": "Elevator that can take you up to to the Second floor or down to the Basement floor.",
@@ -923,8 +923,8 @@
       "floor": 13,
       "layer": "ACCESSIBILITY",
       "name": "Elevator C",
-      "x": 0,
-      "y": 0
+      "x": 1195,
+      "y": 216
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -932,8 +932,8 @@
       "floor": 13,
       "layer": "UTILITIES",
       "name": "Mechanical Room",
-      "x": 0,
-      "y": 0
+      "x": 780,
+      "y": 640
     }
   ]
 }
