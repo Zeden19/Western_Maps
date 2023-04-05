@@ -82,6 +82,7 @@ public final class MainWindow extends JFrame {
                 throw new IllegalStateException("No account is logged in.");
             }
 
+            // glass pane used for the search bar being overlayed on the map screen
             setGlassPane(new JComponent() {
                 @Override
                 public void paintComponent(Graphics g) {

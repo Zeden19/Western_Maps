@@ -134,7 +134,7 @@
       "layer": "UTILITIES",
       "name": "Electrical Room",
       "x": 868,
-      "y": 533
+      "y": 530
     },
     {
       "description": "Graduate student pub and eatery.",
@@ -561,7 +561,11 @@
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
+<<<<<<< HEAD
       "favoriteOf": [],
+=======
+      "favorite": true,
+>>>>>>> d65b4cc (Switch between buildings through favourites)
       "floor": 9,
       "layer": "UTILITIES",
       "name": "Mechanical Room 3",
@@ -903,7 +907,11 @@
     },
     {
       "description": "Spectator area for the press.",
+<<<<<<< HEAD
       "favoriteOf": [],
+=======
+      "favorite": true,
+>>>>>>> d65b4cc (Switch between buildings through favourites)
       "floor": 13,
       "layer": "MISCELLANEOUS",
       "name": "Press Box",

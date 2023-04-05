@@ -20,8 +20,10 @@ import javax.swing.*;
 
 public final class MapPanel extends JPanel {
     private final Database database;
-    private final Building building;
+
+    private Building building;
     private final Account loggedInAccount;
+
     private Floor currentFloor;
 
     private final MapViewerPanel mapViewer;
@@ -29,17 +31,22 @@ public final class MapPanel extends JPanel {
     private final List<Runnable> backListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
+
     private JList<POI> searchResults = new JList<>();
-    private final FloorSwitcher floorSwitcher;
+    private FloorSwitcher floorSwitcher;
+
+    private final Container glassPane;
+    private JPanel floatingControls = new JPanel();
+
 
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
     public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
-
         this.database = database;
         this.building = building;
         this.loggedInAccount = loggedInAccount;
+        this.glassPane = glassPane;
 
         glassPane.setLayout(new GridBagLayout());
 
@@ -52,14 +59,16 @@ public final class MapPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // for everything at the top of the map panel, like search, back, and create poi.
-        var toolbar = createToolbar(glassPane, building, database);
+        var toolbar = createToolbar(building, database);
 
         currentFloor = building.floors().get(0);
         floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
+        // for the summary panel
         poiSummaryPanel = new POISummaryPanel(loggedInAccount);
+
         poiSummaryPanel.setVisible(false);
 
         poiSummaryPanel.addPoiChangeListener((oldPoi, newPoi) -> {
@@ -119,7 +128,7 @@ public final class MapPanel extends JPanel {
         mapViewer.setPoiVisibleCondition(poi -> isLayerVisible(poi.layer()) && isPoiVisible(poi));
         refreshPois();
 
-        var floatingControls = createFloatingControls(building);
+        var floatingControls = createFloatingControls();
 
         var layeredPane = new JLayeredPane();
         layeredPane.setLayout(new OverlayLayout(layeredPane));
@@ -149,7 +158,7 @@ public final class MapPanel extends JPanel {
     }
 
     // toolbar for the top, the search create poi buttons
-    private JPanel createToolbar(Container glassPane, Building building, Database database) {
+    private JPanel createToolbar(Building building, Database database) {
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
 
@@ -339,13 +348,11 @@ public final class MapPanel extends JPanel {
     }
 
     // creating the floor switching controls
-    private JPanel createFloatingControls(Building building) {
+    private JPanel createFloatingControls() {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
         layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
 
-        floorSwitcher.addFloorSwitchListener(this::changeToFloor);
-
-        var floatingControls = new JPanel();
+        floatingControls = new JPanel();
         floatingControls.setOpaque(false);
         floatingControls.setLayout(new GridBagLayout());
 
@@ -408,17 +415,44 @@ public final class MapPanel extends JPanel {
     }
 
     // when the user selects a POI from favourite, search or POI list, this function will jump to the poi and
-    // open the summmary panel
+    // open the summary panel
     private void jumpToPoi(POI poi) {
+        // if the poi selected is not in the same building then change building
+        if (!building.floors().contains(poi.floor())) {
 
-        // Scroll map to put the POI in the center.
-        mapViewer.scrollPoiToCenter(poi);
+            // we have to remove the current floor switcher to replace it with another one
+            floatingControls.remove(floorSwitcher);
 
-        // Switch to the floor containing the selected POI.
-        // TODO: Jump to a different building if necessary.
+            database.getCurrentState().buildings().stream()
+                    .filter(b -> b.floors().contains(poi.floor()))
+                    .findFirst()
+                    .ifPresent(buildingToSwitch -> building = buildingToSwitch);
+
+            // now we make a new floor switcher so that the user can move to different floors between the new building
+            floorSwitcher = new FloorSwitcher(building.floors());
+            floorSwitcher.addFloorSwitchListener(this::changeToFloor);
+
+            // setting position of the floor switcher
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.insets = new Insets(16, 16, 16, 16);
+            constraints.weightx = 1.0;
+            constraints.weighty = 1.0;
+            constraints.gridy = 1;
+            constraints.gridx = 0;
+            constraints.anchor = GridBagConstraints.LAST_LINE_START;
+
+            // adding floor switcher
+            floatingControls.add(floorSwitcher, constraints);
+            updateFavouritePOIs(database);
+        }
+
+        // Switch to the floor containing the selected POI if POI is on a different floor
         if (!poi.floor().equals(currentFloor)) {
             changeToFloor(poi.floor());
         }
+
+        // Scroll map to put the POI in the center.
+        mapViewer.scrollPoiToCenter(poi);
 
         // opening the summary panel
         poiSummaryPanel.setCurrentPoi(poi);
