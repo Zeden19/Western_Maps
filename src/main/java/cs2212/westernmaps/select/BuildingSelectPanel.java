@@ -1,12 +1,8 @@
 package cs2212.westernmaps.select;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import cs2212.westernmaps.Main;
 import cs2212.westernmaps.core.Building;
-import cs2212.westernmaps.help.HelpWindow;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,19 +14,24 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /*
- * TODO: - Implement the Panel for displaying the current weather.
- *       - Add Javadoc comments.
+ * TODO: - Add Javadoc comments.
  */
 
+/**
+ * Panel for the Building Selection screen.
+ */
 public class BuildingSelectPanel extends JPanel {
     private static final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
-
     private final JList<Building> buildingList;
     private final JLabel noBuildingSelectedError;
 
     private final List<Runnable> logOutListeners = new ArrayList<>();
     private final List<Consumer<Building>> buildingSelectListeners = new ArrayList<>();
 
+    /**
+     * Construct a new BuildingSelectPanel and initialize all of its fields.
+     * @param buildings List of all buildings.
+     */
     public BuildingSelectPanel(List<Building> buildings) {
         // This determines what MainWindow will use as its title.
         setName("Building Select");
@@ -53,20 +54,6 @@ public class BuildingSelectPanel extends JPanel {
         JPanel weather = new JPanel();
         // Temporary
         weather.add(new JLabel("weather"));
-
-        // Create informative buttons
-        JButton helpButton = new JButton("Help");
-        helpButton.addActionListener(new HelpWindow.ShowAction());
-
-        JButton aboutButton = new JButton("About");
-        aboutButton.addActionListener(new AboutAction());
-
-        JPanel helpBox = new JPanel();
-        helpBox.setLayout(new BoxLayout(helpBox, BoxLayout.PAGE_AXIS));
-        helpBox.add(Box.createRigidArea(new Dimension(0, 10)));
-        helpBox.add(helpButton);
-        helpBox.add(Box.createRigidArea(new Dimension(0, 5)));
-        helpBox.add(aboutButton);
 
         // Create back button
         var logOutButton = new JButton("Log Out");
@@ -100,9 +87,6 @@ public class BuildingSelectPanel extends JPanel {
         c.gridx = 2;
         c.insets = new Insets(0, 0, 0, 10);
         selectPane.add(weather, c);
-
-        c.gridy = 0;
-        selectPane.add(helpBox, c);
 
         // Add building list
         c.gridx = 1;
@@ -142,10 +126,18 @@ public class BuildingSelectPanel extends JPanel {
         add(contentPane);
     }
 
+    /**
+     * Add a listener for the "Log Out" button.
+     * @param listener Listener to add.
+     */
     public void addLogOutListener(Runnable listener) {
         logOutListeners.add(listener);
     }
 
+    /**
+     * Add a listener for the "Select Building" button.
+     * @param listener Listener to add.
+     */
     public void addBuildingSelectListener(Consumer<Building> listener) {
         buildingSelectListeners.add(listener);
     }
@@ -159,22 +151,6 @@ public class BuildingSelectPanel extends JPanel {
         } else {
             noBuildingSelectedError.setVisible(true);
             buildingList.clearSelection();
-        }
-    }
-
-    private class AboutAction extends AbstractAction {
-        public AboutAction() {
-            super("About " + Main.APPLICATION_NAME);
-            putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            JOptionPane.showMessageDialog(
-                    BuildingSelectPanel.this,
-                    "Information about the application should go here.",
-                    getName(),
-                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

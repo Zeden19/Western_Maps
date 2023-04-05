@@ -107,7 +107,7 @@ public class HelpWindow extends JFrame {
         // Make sure the tree panel is given enough space. The split pane is
         // supposed to respond to the widget's preferred size, but it
         // doesn't for some reason.
-        splitPane.setDividerLocation(200);
+        splitPane.setDividerLocation(250);
 
         var contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
@@ -115,7 +115,7 @@ public class HelpWindow extends JFrame {
 
         setContentPane(contentPane);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(1200, 800));
         pack();
     }
 

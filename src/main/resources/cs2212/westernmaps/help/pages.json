@@ -2,13 +2,30 @@
   "name": "Western Maps Help",
   "subpages": [
     {
-      "name": "Example Page 1"
-    },
-    {
-      "name": "Example Page 2",
+      "name": "Accessing the App",
       "subpages": [
         {
-          "name": "Example Subpage"
+          "name": "Creating an Account"
+        },
+        {
+          "name": "Signing In"
+        }
+      ]
+    },
+    {
+      "name": "Choosing a Map"
+    },
+    {
+      "name": "Points of Interest",
+      "subpages": [
+        {
+          "name": "Finding Points of Interest"
+        },
+        {
+          "name": "Favorite Points of Interest"
+        },
+        {
+          "name": "Creating Points of Interest"
         }
       ]
     }
