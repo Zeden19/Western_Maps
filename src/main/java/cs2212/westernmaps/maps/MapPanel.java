@@ -45,6 +45,11 @@ public final class MapPanel extends JPanel {
     private JLabel databaseSaved = new JLabel();
     private JLabel saveFailed = new JLabel();
 
+    private int numPendingCalls =
+            0; // the number of pending calls, used to make sure the database saved message is displayed for the most
+    // recent save
+
+
     // the main map panel
     public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
         this.database = database;
@@ -547,8 +552,14 @@ public final class MapPanel extends JPanel {
 
     // Showing the database saved label
     private void showLabel(JLabel label) {
+        numPendingCalls++;
         label.setVisible(true);
-        Timer timer = new Timer(2000, e -> label.setVisible(false));
+        Timer timer = new Timer(2000, e -> {
+            numPendingCalls--;
+            if (numPendingCalls == 0) {
+                label.setVisible(false);
+            }
+        });
         timer.setRepeats(false);
         timer.start();
     }

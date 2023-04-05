@@ -937,14 +937,5 @@
       "x": 780,
       "y": 640
     },
-    {
-      "description": "",
-      "favoriteOf": [],
-      "floor": 1,
-      "layer": "CLASSROOMS",
-      "name": "dev poi",
-      "x": 561,
-      "y": 254
-    }
   ]
 }
