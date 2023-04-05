@@ -30,16 +30,27 @@ public class AboutAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        showAbout();
+    }
+
+    /**
+     * Show the About message dialog.
+     */
+    public void showAbout() {
         JOptionPane.showMessageDialog(
                 parent, aboutMessage(), "About " + Main.APPLICATION_NAME, JOptionPane.INFORMATION_MESSAGE);
     }
 
     private static String aboutMessage() {
-        StringBuilder message = new StringBuilder(
-                "Western Maps is a geographic information application for browsing maps of Western's buildings.\n\n"
-                        + VERSION
-                        + "\n" + "Released on "
-                        + RELEASE_DATE + "\n" + "Created by: ");
+        StringBuilder message = new StringBuilder();
+
+        message.append(
+                        "Western Maps is a geographic information application for browsing maps of Western's buildings.\n\n")
+                .append(VERSION)
+                .append("\n")
+                .append("Released on ")
+                .append(RELEASE_DATE)
+                .append("\n" + "Created by: ");
 
         for (int i = 0; i < AUTHORS.length; i++) {
             message.append(AUTHORS[i]).append(" | ").append(USERNAMES[i]).append("@uwo.ca\n");

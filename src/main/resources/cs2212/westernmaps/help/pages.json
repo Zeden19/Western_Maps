@@ -19,13 +19,13 @@
       "name": "Points of Interest",
       "subpages": [
         {
-          "name": "Creating Points of Interest"
+          "name": "Finding Points of Interest"
         },
         {
           "name": "Favorite Points of Interest"
         },
         {
-          "name": "Finding Points of Interest"
+          "name": "Creating Points of Interest"
         }
       ]
     }

@@ -114,14 +114,18 @@ public final class MainWindow extends JFrame {
 
     private JMenuBar createMenuBar() {
         JMenu helpMenu = new JMenu("Help");
+        AboutAction aboutAction = new AboutAction(this);
         helpMenu.add(new HelpWindow.ShowAction());
+        helpMenu.add(aboutAction);
 
-        JMenu aboutMenu = new JMenu("About");
-        aboutMenu.add(new AboutAction(this));
+        // Set about action for standard macOS about menu bar
+        Desktop desktop = Desktop.getDesktop();
+        if (desktop.isSupported(Desktop.Action.APP_ABOUT)) {
+            desktop.setAboutHandler(e -> aboutAction.showAbout());
+        }
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(helpMenu);
-        menuBar.add(aboutMenu);
 
         return menuBar;
     }
