@@ -15,6 +15,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Objects;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
@@ -29,6 +30,7 @@ public final class MapPanel extends JPanel {
     private final MapViewerPanel mapViewer;
     private final POISummaryPanel poiSummaryPanel;
     private final List<Runnable> backListeners = new ArrayList<>();
+    private final List<Consumer<Building>> changeTitleListeners = new ArrayList<>();
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
 
@@ -80,9 +82,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showDatabaseSavedLabel();
+                showLabel(databaseSaved);
             } catch (IOException ex) {
-                showDatabaseFailedLabel();
+                showLabel(saveFailed);
             }
             refreshPois();
         });
@@ -94,9 +96,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showDatabaseSavedLabel();
+                showLabel(databaseSaved);
             } catch (IOException ex) {
-                showDatabaseFailedLabel();
+                showLabel(saveFailed);
             }
             poiSummaryPanel.setVisible(false);
             refreshPois();
@@ -118,9 +120,9 @@ public final class MapPanel extends JPanel {
             // Save changes to disk.
             try {
                 database.save();
-                showDatabaseSavedLabel();
+                showLabel(databaseSaved);
             } catch (IOException ex) {
-                showDatabaseFailedLabel();
+                showLabel(saveFailed);
             }
 
             // If the summary panel is open, make sure it's up to date.
@@ -220,9 +222,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showDatabaseSavedLabel();
+                showLabel(databaseSaved);
             } catch (IOException ex) {
-                showDatabaseFailedLabel();
+                showLabel(saveFailed);
             }
             refreshPois();
         });
@@ -309,14 +311,6 @@ public final class MapPanel extends JPanel {
         toolbar.add(createPOIButton);
 
         return toolbar;
-    }
-
-    // updating the favourites POI list
-    private void updateFavouritePOIs(Database database) {
-        POI[] poisToAdd = database.getCurrentState().pois().stream()
-                .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount) && isPoiVisible(poi))
-                .toArray(POI[]::new);
-        favoritesList.setListData(poisToAdd);
     }
 
     // Sidebar for the favourite pois and pois on the map
@@ -427,6 +421,28 @@ public final class MapPanel extends JPanel {
                 || building.name().toLowerCase().contains(wordLowerCase);
     }
 
+
+    // updating the favourites POI list
+    private void updateFavouritePOIs(Database database) {
+        POI[] poisToAdd = database.getCurrentState().pois().stream()
+                .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount) && isPoiVisible(poi))
+                .toArray(POI[]::new);
+        favoritesList.setListData(poisToAdd);
+
+        // favourite POIS on the list
+        favoritesList.setCellRenderer(new POICellRenderer(poi -> {
+            // Check if the POI is on any floor in the current building. If so,
+            // don't show any subtitle.
+            if (building.floors().contains(poi.floor())) {
+                return null;
+            }
+            var poiBuilding = database.getCurrentState().buildings().stream()
+                    .filter(b -> b.floors().contains(poi.floor()))
+                    .findFirst();
+            return poiBuilding.map(Building::name).orElse(null);
+        }));
+    }
+
     // Updating the map to a new floor
     private void changeToFloor(Floor floor) {
         currentFloor = floor;
@@ -463,6 +479,8 @@ public final class MapPanel extends JPanel {
             constraints.gridx = 0;
             constraints.anchor = GridBagConstraints.LAST_LINE_START;
 
+            changeTitleListeners.forEach(listener -> listener.accept(building));
+
             // adding floor switcher
             floatingControls.add(floorSwitcher, constraints);
             updateFavouritePOIs(database);
@@ -480,6 +498,7 @@ public final class MapPanel extends JPanel {
         poiSummaryPanel.setCurrentPoi(poi);
         poiSummaryPanel.setVisible(true);
     }
+
 
     private void refreshPois() {
         var pois = database.getCurrentState().pois().stream()
@@ -522,18 +541,14 @@ public final class MapPanel extends JPanel {
         backListeners.add(listener);
     }
 
-    // Showing the database saved label
-    private void showDatabaseSavedLabel() {
-        databaseSaved.setVisible(true);
-        Timer timer = new Timer(2000, e -> databaseSaved.setVisible(false));
-        timer.setRepeats(false);
-        timer.start();
+    public void addChangeTitleListener(Consumer<Building> listener) {
+        changeTitleListeners.add(listener);
     }
 
-    // Showing the database failed label
-    private void showDatabaseFailedLabel() {
-        saveFailed.setVisible(true);
-        Timer timer = new Timer(2000, e -> saveFailed.setVisible(false));
+    // Showing the database saved label
+    private void showLabel(JLabel label) {
+        label.setVisible(true);
+        Timer timer = new Timer(2000, e -> label.setVisible(false));
         timer.setRepeats(false);
         timer.start();
     }

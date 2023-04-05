@@ -99,6 +99,17 @@ public final class MainWindow extends JFrame {
                 glassPane.setVisible(false);
                 changeTo(buildingSelectPanel);
             });
+
+            String isLoggedIn;
+            if (loggedInAccount.developer()) {
+                isLoggedIn = " (Developer Mode)";
+            } else {
+                isLoggedIn = "";
+            }
+
+            mapPanel.addChangeTitleListener(
+                    newBuilding -> setTitle(Main.APPLICATION_NAME + ": " + newBuilding.name() + isLoggedIn));
+
             changeTo(mapPanel);
         });
 

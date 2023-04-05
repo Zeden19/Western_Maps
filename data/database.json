@@ -151,8 +151,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Grad Club Patio",
-      "x": 799,
-      "y": 167
+      "x": 816,
+      "y": 149
     },
     {
       "description": "A service hatch for the food.",
@@ -936,6 +936,15 @@
       "name": "Mechanical Room",
       "x": 780,
       "y": 640
+    },
+    {
+      "description": "",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "dev poi",
+      "x": 561,
+      "y": 254
     }
   ]
 }
