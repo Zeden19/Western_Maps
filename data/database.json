@@ -134,7 +134,7 @@
       "layer": "UTILITIES",
       "name": "Electrical Room",
       "x": 868,
-      "y": 530
+      "y": 533
     },
     {
       "description": "Graduate student pub and eatery.",
@@ -151,8 +151,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Grad Club Patio",
-      "x": 816,
-      "y": 149
+      "x": 824,
+      "y": 168
     },
     {
       "description": "A service hatch for the food.",
@@ -169,8 +169,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Kitchen",
-      "x": 574,
-      "y": 414
+      "x": 572,
+      "y": 411
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -936,6 +936,6 @@
       "name": "Mechanical Room",
       "x": 780,
       "y": 640
-    },
+    }
   ]
 }
