@@ -2,6 +2,17 @@
   "name": "Western Maps Help",
   "subpages": [
     {
+      "name": "Accessing the App",
+      "subpages": [
+        {
+          "name": "Creating an Account"
+        },
+        {
+          "name": "Signing In"
+        }
+      ]
+    },
+    {
       "name": "Choosing a Map"
     },
     {
