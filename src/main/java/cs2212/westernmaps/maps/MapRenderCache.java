@@ -27,7 +27,9 @@ public final class MapRenderCache {
     });
 
     private SVGDiagram diagram;
+
     private double scale;
+    private double deviceScale = 1.0;
 
     private @Nullable Future<BufferedImage> cachedImageFuture;
 
@@ -57,11 +59,14 @@ public final class MapRenderCache {
     }
 
     public void render(Graphics2D gfx, int x, int y, @Nullable JComponent component) {
+        deviceScale = gfx.getDeviceConfiguration().getDefaultTransform().getScaleX();
         var cachedImage = getCachedImageIfReady();
+        var gfx2 = (Graphics2D) gfx.create();
         if (cachedImage != null) {
-            gfx.drawImage(cachedImage, x, y, component);
+            gfx2.translate(x, y);
+            gfx2.scale(1.0 / deviceScale, 1.0 / deviceScale);
+            gfx2.drawImage(cachedImage, 0, 0, component);
         } else {
-            var gfx2 = (Graphics2D) gfx.create();
             renderSvgToGraphicsDestructive(diagram, gfx2, x, y, scale, component);
         }
     }
@@ -71,7 +76,7 @@ public final class MapRenderCache {
             if (scale <= MAX_CACHED_SCALE && scale >= MIN_CACHED_SCALE) {
                 cachedImageFuture = executor.submit(() -> {
                     Thread.sleep(RENDER_DELAY_MS);
-                    return renderSvgToImage(diagram, scale);
+                    return renderSvgToImage(diagram, scale, deviceScale);
                 });
             }
             return null;
@@ -91,13 +96,14 @@ public final class MapRenderCache {
         System.gc();
     }
 
-    private static BufferedImage renderSvgToImage(SVGDiagram diagram, double scale) {
-        var width = (int) Math.ceil(diagram.getWidth() * scale);
-        var height = (int) Math.ceil(diagram.getHeight() * scale);
+    private static BufferedImage renderSvgToImage(SVGDiagram diagram, double scale, double deviceScale) {
+        var width = (int) Math.ceil(diagram.getWidth() * scale * deviceScale);
+        var height = (int) Math.ceil(diagram.getHeight() * scale * deviceScale);
 
         var image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         var gfx = (Graphics2D) image.createGraphics();
         gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        gfx.scale(deviceScale, deviceScale);
 
         gfx.setPaint(Color.WHITE);
         gfx.fillRect(0, 0, width, height);
