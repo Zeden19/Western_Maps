@@ -2,7 +2,6 @@ package cs2212.westernmaps.select;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import cs2212.westernmaps.core.Building;
-import cs2212.westernmaps.help.HelpWindow;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -56,20 +55,6 @@ public class BuildingSelectPanel extends JPanel {
         // Temporary
         weather.add(new JLabel("weather"));
 
-        // Create informative buttons
-        JButton helpButton = new JButton("Help");
-        helpButton.addActionListener(new HelpWindow.ShowAction());
-
-        JButton aboutButton = new JButton("About");
-        aboutButton.addActionListener(new AboutAction(BuildingSelectPanel.this));
-
-        JPanel helpBox = new JPanel();
-        helpBox.setLayout(new BoxLayout(helpBox, BoxLayout.PAGE_AXIS));
-        helpBox.add(Box.createRigidArea(new Dimension(0, 10)));
-        helpBox.add(helpButton);
-        helpBox.add(Box.createRigidArea(new Dimension(0, 5)));
-        helpBox.add(aboutButton);
-
         // Create back button
         var logOutButton = new JButton("Log Out");
         logOutButton.addActionListener(e -> logOutListeners.forEach(Runnable::run));
@@ -102,9 +87,6 @@ public class BuildingSelectPanel extends JPanel {
         c.gridx = 2;
         c.insets = new Insets(0, 0, 0, 10);
         selectPane.add(weather, c);
-
-        c.gridy = 0;
-        selectPane.add(helpBox, c);
 
         // Add building list
         c.gridx = 1;

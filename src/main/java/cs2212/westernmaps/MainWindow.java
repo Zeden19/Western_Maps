@@ -3,6 +3,8 @@ package cs2212.westernmaps;
 import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Database;
 import cs2212.westernmaps.core.DatabaseState;
+import cs2212.westernmaps.help.AboutAction;
+import cs2212.westernmaps.help.HelpWindow;
 import cs2212.westernmaps.login.CreateAccountPanel;
 import cs2212.westernmaps.login.LoginPanel;
 import cs2212.westernmaps.maps.MapPanel;
@@ -87,6 +89,7 @@ public final class MainWindow extends JFrame {
 
         // Start at the login screen.
         changeTo(loginPanel);
+        setJMenuBar(createMenuBar());
 
         // setting up the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -107,5 +110,19 @@ public final class MainWindow extends JFrame {
         setTitle(titleBuilder.toString());
         cardPanel.add(panel, "Current");
         cardLayout.show(cardPanel, "Current");
+    }
+
+    private JMenuBar createMenuBar() {
+        JMenu helpMenu = new JMenu("Help");
+        helpMenu.add(new HelpWindow.ShowAction());
+
+        JMenu aboutMenu = new JMenu("About");
+        aboutMenu.add(new AboutAction(this));
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(helpMenu);
+        menuBar.add(aboutMenu);
+
+        return menuBar;
     }
 }

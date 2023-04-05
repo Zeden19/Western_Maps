@@ -1,4 +1,4 @@
-package cs2212.westernmaps.select;
+package cs2212.westernmaps.help;
 
 import cs2212.westernmaps.Main;
 import java.awt.*;
