@@ -38,10 +38,12 @@ public final class MapPanel extends JPanel {
     private final Container glassPane;
     private JPanel floatingControls = new JPanel();
 
-
-
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
+    private JLabel databaseSaved = new JLabel();
+    private JLabel saveFailed = new JLabel();
+
+    // the main map panel
     public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
         this.database = database;
         this.building = building;
@@ -78,8 +80,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
+                showDatabaseSavedLabel();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                showDatabaseFailedLabel();
             }
             refreshPois();
         });
@@ -91,8 +94,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
+                showDatabaseSavedLabel();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                showDatabaseFailedLabel();
             }
             poiSummaryPanel.setVisible(false);
             refreshPois();
@@ -114,8 +118,9 @@ public final class MapPanel extends JPanel {
             // Save changes to disk.
             try {
                 database.save();
+                showDatabaseSavedLabel();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                showDatabaseFailedLabel();
             }
 
             // If the summary panel is open, make sure it's up to date.
@@ -157,7 +162,7 @@ public final class MapPanel extends JPanel {
         add(splitPane);
     }
 
-    // toolbar for the top, the search create poi buttons
+    // toolbar for the top, the search create poi buttons, and database saved text
     private JPanel createToolbar(Building building, Database database) {
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
@@ -215,8 +220,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
+                showDatabaseSavedLabel();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                showDatabaseFailedLabel();
             }
             refreshPois();
         });
@@ -277,6 +283,19 @@ public final class MapPanel extends JPanel {
             }
         });
 
+        // changes saved label
+        databaseSaved = new JLabel("Changes saved.");
+        databaseSaved.putClientProperty(FlatClientProperties.STYLE_CLASS, "regular");
+        databaseSaved.setForeground(UIManager.getColor("Actions.Green"));
+        databaseSaved.setVisible(false);
+
+        // failed to save changes label
+        saveFailed = new JLabel("Failed to save changes.");
+        saveFailed.putClientProperty(FlatClientProperties.STYLE_CLASS, "regular");
+        saveFailed.setForeground(UIManager.getColor("Actions.Red"));
+        saveFailed.setVisible(false);
+
+        // the search results
         ListAction.setListAction(searchResults, new JumpToPoiAction());
 
         toolbar.add(backButton);
@@ -284,6 +303,8 @@ public final class MapPanel extends JPanel {
         toolbar.add(searchBar);
         toolbar.add(Box.createHorizontalStrut(8));
         toolbar.add(Box.createHorizontalGlue());
+        toolbar.add(databaseSaved);
+        toolbar.add(saveFailed);
         toolbar.add(Box.createHorizontalStrut(8));
         toolbar.add(createPOIButton);
 
@@ -336,6 +357,7 @@ public final class MapPanel extends JPanel {
 
         var sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.PAGE_AXIS));
+        sidebar.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 8));
 
         sidebar.add(Box.createVerticalStrut(40)); // The height of the toolbar.
         sidebar.add(poiListHeader);
@@ -498,6 +520,22 @@ public final class MapPanel extends JPanel {
 
     public void addBackListener(Runnable listener) {
         backListeners.add(listener);
+    }
+
+    // Showing the database saved label
+    private void showDatabaseSavedLabel() {
+        databaseSaved.setVisible(true);
+        Timer timer = new Timer(2000, e -> databaseSaved.setVisible(false));
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    // Showing the database failed label
+    private void showDatabaseFailedLabel() {
+        saveFailed.setVisible(true);
+        Timer timer = new Timer(2000, e -> saveFailed.setVisible(false));
+        timer.setRepeats(false);
+        timer.start();
     }
 
     // Used to render small grey text beside search and favourites list

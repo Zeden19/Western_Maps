@@ -151,8 +151,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Grad Club Patio",
-      "x": 824,
-      "y": 168
+      "x": 799,
+      "y": 167
     },
     {
       "description": "A service hatch for the food.",
@@ -169,8 +169,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Kitchen",
-      "x": 572,
-      "y": 411
+      "x": 574,
+      "y": 414
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -561,11 +561,7 @@
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
-<<<<<<< HEAD
       "favoriteOf": [],
-=======
-      "favorite": true,
->>>>>>> d65b4cc (Switch between buildings through favourites)
       "floor": 9,
       "layer": "UTILITIES",
       "name": "Mechanical Room 3",
@@ -907,11 +903,7 @@
     },
     {
       "description": "Spectator area for the press.",
-<<<<<<< HEAD
       "favoriteOf": [],
-=======
-      "favorite": true,
->>>>>>> d65b4cc (Switch between buildings through favourites)
       "floor": 13,
       "layer": "MISCELLANEOUS",
       "name": "Press Box",
