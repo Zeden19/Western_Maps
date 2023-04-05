@@ -3,6 +3,7 @@ package cs2212.westernmaps.pois;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatButtonBorder;
 import cs2212.westernmaps.MiscIcons;
+import cs2212.westernmaps.core.Account;
 import cs2212.westernmaps.core.Layer;
 import cs2212.westernmaps.core.POI;
 import java.awt.*;
@@ -22,7 +23,7 @@ public class POISummaryPanel extends JPanel {
     private static final int MAX_COLUMNS = 20;
 
     private @Nullable POI poi;
-    private final boolean developer;
+    private final Account loggedInAccount;
 
     private final JTextField titleField;
     private final JLabel layerIcon;
@@ -40,10 +41,10 @@ public class POISummaryPanel extends JPanel {
     /**
      * Summary window of a POI that displays its metadata.
      *
-     * @param developer If the logged-in user is a developer
+     * @param loggedInAccount The account that is currently logged in.
      */
-    public POISummaryPanel(boolean developer) {
-        this.developer = developer;
+    public POISummaryPanel(Account loggedInAccount) {
+        this.loggedInAccount = loggedInAccount;
 
         JPanel summaryBox = new JPanel();
         summaryBox.setLayout(new BoxLayout(summaryBox, BoxLayout.PAGE_AXIS));
@@ -75,7 +76,7 @@ public class POISummaryPanel extends JPanel {
                     newTitle = doc.getText(0, doc.getLength());
 
                     POI newPoi = new POI(
-                            newTitle, poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
+                            newTitle, poi.description(), poi.x(), poi.y(), poi.favoriteOf(), poi.floor(), poi.layer());
 
                     poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
@@ -107,8 +108,8 @@ public class POISummaryPanel extends JPanel {
 
                 Layer newLayer = (Layer) layerComboBox.getSelectedItem();
 
-                POI newPoi =
-                        new POI(poi.name(), poi.description(), poi.x(), poi.y(), poi.favorite(), poi.floor(), newLayer);
+                POI newPoi = new POI(
+                        poi.name(), poi.description(), poi.x(), poi.y(), poi.favoriteOf(), poi.floor(), newLayer);
 
                 poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
@@ -131,8 +132,7 @@ public class POISummaryPanel extends JPanel {
                 return;
             }
 
-            POI newPoi =
-                    new POI(poi.name(), poi.description(), poi.x(), poi.y(), !poi.favorite(), poi.floor(), poi.layer());
+            POI newPoi = poi.withFavoriteOfAccount(loggedInAccount, true);
             poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
             poi = newPoi;
@@ -170,7 +170,7 @@ public class POISummaryPanel extends JPanel {
                     String newDesc = doc.getText(0, doc.getLength());
 
                     POI newPoi =
-                            new POI(poi.name(), newDesc, poi.x(), poi.y(), poi.favorite(), poi.floor(), poi.layer());
+                            new POI(poi.name(), newDesc, poi.x(), poi.y(), poi.favoriteOf(), poi.floor(), poi.layer());
                     poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
                     poi = newPoi;
@@ -276,10 +276,11 @@ public class POISummaryPanel extends JPanel {
         layerIcon.setIcon(poi.layer().getIcon());
         layerComboBox.setSelectedItem(poi.layer());
         layerLabel.setText(poi.layer().toString());
-        favoriteCheckbox.setSelected(poi.favorite());
+        favoriteCheckbox.setSelected(poi.isFavoriteOfAccount(loggedInAccount));
         locationLabel.setText("Location: " + poi.x() + ", " + poi.y());
         descriptionField.setText(poi.description());
 
+        boolean developer = loggedInAccount.developer();
         boolean editEverything = developer || poi.layer() == Layer.CUSTOM;
         titleField.setEditable(editEverything);
         layerComboBox.setVisible(developer);

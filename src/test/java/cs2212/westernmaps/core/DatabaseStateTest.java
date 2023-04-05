@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,11 +48,13 @@ public final class DatabaseStateTest {
                 {
                     "accounts": [
                         {
+                            "@id": 1,
                             "username": "user",
                             "passwordHash": "ESIzRA==",
                             "developer": false
                         },
                         {
+                            "@id": 2,
                             "username": "developer",
                             "passwordHash": "VWZ3iA==",
                             "developer": true
@@ -75,17 +78,20 @@ public final class DatabaseStateTest {
 
     @Test
     public void testSampleDatabaseFull() throws IOException, JSONException {
+        var userAccount = new Account("user", "ESIzRA==", false);
+        var developerAccount = new Account("developer", "VWZ3iA==", true);
+
         var floor = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
 
         var database = new DatabaseState(
-                List.of(new Account("user", "ESIzRA==", false), new Account("developer", "VWZ3iA==", true)),
+                List.of(userAccount, developerAccount),
                 List.of(new Building("Example Building", List.of(floor))),
                 List.of(new POI(
                         "Example Restaurant",
                         "A restaurant that has been fabricated for this example.",
                         50,
                         100,
-                        true,
+                        Set.of(userAccount),
                         floor,
                         Layer.EATERIES)));
         var databaseJson =
@@ -93,11 +99,13 @@ public final class DatabaseStateTest {
                 {
                     "accounts": [
                         {
+                            "@id": 1,
                             "username": "user",
                             "passwordHash": "ESIzRA==",
                             "developer": false
                         },
                         {
+                            "@id": 2,
                             "username": "developer",
                             "passwordHash": "VWZ3iA==",
                             "developer": true
@@ -122,7 +130,7 @@ public final class DatabaseStateTest {
                             "description": "A restaurant that has been fabricated for this example.",
                             "x": 50,
                             "y": 100,
-                            "favorite": true,
+                            "favoriteOf": [1],
                             "floor": 1,
                             "layer": "EATERIES"
                         }

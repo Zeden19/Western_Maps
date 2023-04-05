@@ -18,7 +18,7 @@ import java.nio.file.Path;
  *                  {@code "First Floor"} or {@code "Ground Floor"}).
  * @param mapPath   The path to the SVG map data for this floor.
  */
-@JsonIdentityInfo(generator = IntSequenceGenerator.class)
+@JsonIdentityInfo(generator = IntSequenceGenerator.class, scope = Floor.class)
 public record Floor(
         String shortName, String longName, @JsonSerialize(using = RelativePathSerializer.class) Path mapPath) {
     private static class RelativePathSerializer extends JsonSerializer<Path> {

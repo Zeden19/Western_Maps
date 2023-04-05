@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
     private final Database database;
     private final Building building;
+    private final Account loggedInAccount;
     private Floor currentFloor;
 
     private final MapViewerPanel mapViewer;
@@ -26,6 +28,7 @@ public final class MapPanel extends JPanel {
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
         this.building = building;
+        this.loggedInAccount = loggedInAccount;
 
         // This determines what MainWindow will use as its title.
         setName(building.name());
@@ -36,7 +39,7 @@ public final class MapPanel extends JPanel {
         currentFloor = building.floors().get(0);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
-        poiSummaryPanel = new POISummaryPanel(loggedInAccount.developer());
+        poiSummaryPanel = new POISummaryPanel(loggedInAccount);
         poiSummaryPanel.setVisible(false);
 
         poiSummaryPanel.addPoiChangeListener((oldPoi, newPoi) -> {
@@ -139,7 +142,7 @@ public final class MapPanel extends JPanel {
             var location = new Point(mapViewerBounds.width / 2, mapViewerBounds.height / 2);
             mapViewer.componentToMapPosition(location, location);
 
-            var poi = new POI("New POI", "", location.x, location.y, false, currentFloor, Layer.CUSTOM);
+            var poi = new POI("New POI", "", location.x, location.y, Set.of(), currentFloor, Layer.CUSTOM);
             poiSummaryPanel.setCurrentPoi(poi);
             poiSummaryPanel.setVisible(true);
 
@@ -170,8 +173,9 @@ public final class MapPanel extends JPanel {
 
     // updating the favourites POI list
     private void updateFavouritePOIs(Database database) {
-        POI[] poisToAdd =
-                database.getCurrentState().pois().stream().filter(POI::favorite).toArray(POI[]::new);
+        POI[] poisToAdd = database.getCurrentState().pois().stream()
+                .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount))
+                .toArray(POI[]::new);
         favoritesList.setListData(poisToAdd);
     }
 
