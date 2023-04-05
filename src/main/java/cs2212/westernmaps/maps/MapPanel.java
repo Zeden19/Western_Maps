@@ -32,6 +32,7 @@ public final class MapPanel extends JPanel {
     private JList<POI> searchResults = new JList<>();
     private final FloorSwitcher floorSwitcher;
 
+
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
     public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
@@ -55,6 +56,7 @@ public final class MapPanel extends JPanel {
 
         currentFloor = building.floors().get(0);
         floorSwitcher = new FloorSwitcher(building.floors());
+        floorSwitcher.addFloorSwitchListener(this::changeToFloor);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
         poiSummaryPanel = new POISummaryPanel(loggedInAccount);
@@ -146,6 +148,7 @@ public final class MapPanel extends JPanel {
         add(splitPane);
     }
 
+    // toolbar for the top, the search create poi buttons
     private JPanel createToolbar(Container glassPane, Building building, Database database) {
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
@@ -286,6 +289,7 @@ public final class MapPanel extends JPanel {
         favoritesList.setListData(poisToAdd);
     }
 
+    // Sidebar for the favourite pois and pois on the map
     private JPanel createSidebar(Database database, Building building) {
         var poiListHeader = new JLabel("POIs on this Floor");
         poiListHeader.putClientProperty(FlatClientProperties.STYLE_CLASS, "h4");
@@ -334,11 +338,11 @@ public final class MapPanel extends JPanel {
         return sidebar;
     }
 
+    // creating the floor switching controls
     private JPanel createFloatingControls(Building building) {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
         layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
 
-        var floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
 
         var floatingControls = new JPanel();
@@ -393,18 +397,19 @@ public final class MapPanel extends JPanel {
                 || poi.floor().longName().toLowerCase().contains(wordLowerCase)
                 || building.name().toLowerCase().contains(wordLowerCase);
     }
-    // Does not update the selection of the floor switcher.
+
+    // Updating the map to a new floor
     private void changeToFloor(Floor floor) {
         currentFloor = floor;
         mapViewer.setCurrentMapUri(database.resolveFloorMapUri(floor));
         floorSwitcher.setSelectedFloor(floor);
+        poiSummaryPanel.setVisible(false);
         refreshPois();
     }
 
     // when the user selects a POI from favourite, search or POI list, this function will jump to the poi and
     // open the summmary panel
     private void jumpToPoi(POI poi) {
-        System.out.println("Jumping to POI: " + poi.name());
 
         // Scroll map to put the POI in the center.
         mapViewer.scrollPoiToCenter(poi);
