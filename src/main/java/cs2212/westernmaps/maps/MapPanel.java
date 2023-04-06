@@ -370,7 +370,7 @@ public final class MapPanel extends JPanel {
         return sidebar;
     }
 
-    // creating the layer visibility panel
+    // creating the layer visibility panel and the floor switcher
     private JPanel createFloatingControls() {
         layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
 
