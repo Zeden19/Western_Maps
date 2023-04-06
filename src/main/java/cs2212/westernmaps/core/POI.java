@@ -45,7 +45,7 @@ public record POI(
     /**
      * Creates a copy of this POI with its name updated.
      *
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * @param name The name of the returned POI.
      * @return     A copy of this POI with the new name.
      */
@@ -61,7 +61,7 @@ public record POI(
      */
     public POI withDescription(String description) {
         return new POI(name(), description, x(), y(), favoriteOf(), floor(), layer(), onlyVisibleTo());
-        }
+    }
 
     /**
      * Creates a copy of this POI with its location updated.
@@ -75,6 +75,7 @@ public record POI(
     }
 
     /**
+     * <<<<<<< HEAD
      * Checks if this POI is a favorite of the given account.
      *
      * @param account The account to check.
