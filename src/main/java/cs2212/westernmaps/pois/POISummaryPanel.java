@@ -8,6 +8,7 @@ import cs2212.westernmaps.core.Layer;
 import cs2212.westernmaps.core.POI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -132,7 +133,8 @@ public class POISummaryPanel extends JPanel {
                 return;
             }
 
-            POI newPoi = poi.withFavoriteOfAccount(loggedInAccount, true);
+            boolean selected = e.getStateChange() == ItemEvent.SELECTED;
+            POI newPoi = poi.withFavoriteOfAccount(loggedInAccount, selected);
             poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
             poi = newPoi;
