@@ -94,6 +94,10 @@ public final class LayerVisibilityPanel extends JPanel {
         this.layerToggleListeners.add(listener);
     }
 
+    public void setCheckBoxOnLayer(Layer layer) {
+        layerToggleListeners.forEach(listener -> listener.accept(layer, true));
+    }
+
     // https://stackoverflow.com/a/23881790
     private static final class ResizableCardLayout extends CardLayout {
         @Override

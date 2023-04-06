@@ -48,6 +48,8 @@ public final class MapPanel extends JPanel {
     private int numPendingCalls =
             0; // the number of pending calls, used to make sure the database saved message is displayed for the most
     // recent save
+    private final LayerVisibilityPanel layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
+    // used to display the layer toggles
 
 
     // the main map panel
@@ -368,7 +370,7 @@ public final class MapPanel extends JPanel {
         return sidebar;
     }
 
-    // creating the floor switching controls
+    // creating the layer visibility panel
     private JPanel createFloatingControls() {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
         layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
@@ -500,6 +502,9 @@ public final class MapPanel extends JPanel {
 
         // Scroll map to put the POI in the center.
         mapViewer.scrollPoiToCenter(poi);
+
+        // forcing layer to be visible
+        layerVisibilityPanel.setCheckBoxOnLayer(poi.layer());
 
         // opening the summary panel
         poiSummaryPanel.setCurrentPoi(poi);
