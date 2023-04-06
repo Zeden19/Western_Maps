@@ -9,6 +9,7 @@ import cs2212.westernmaps.core.POI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -247,6 +248,10 @@ public class POISummaryPanel extends JPanel {
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;
         add(summaryBox, constraints);
+
+        // Block mouse events so that the map doesn't get panned when the
+        // background of this panel is clicked on.
+        addMouseListener(new MouseAdapter() {});
     }
 
     /**
