@@ -25,6 +25,8 @@ public final class MapPanel extends JPanel {
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
 
+    private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
+
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
         this.building = building;
@@ -96,6 +98,7 @@ public final class MapPanel extends JPanel {
             refreshPois();
         });
         mapViewer.setPoiMoveCondition(poi -> loggedInAccount.developer() || poi.layer() == Layer.CUSTOM);
+        mapViewer.setPoiVisibleCondition(this::isPoiVisible);
         refreshPois();
 
         var floatingControls = createFloatingControls(building);
@@ -142,7 +145,8 @@ public final class MapPanel extends JPanel {
             var location = new Point(mapViewerBounds.width / 2, mapViewerBounds.height / 2);
             mapViewer.componentToMapPosition(location, location);
 
-            var poi = new POI("New POI", "", location.x, location.y, Set.of(), currentFloor, Layer.CUSTOM);
+            var poi = new POI(
+                    "New POI", "", location.x, location.y, Set.of(), currentFloor, Layer.CUSTOM, loggedInAccount);
             poiSummaryPanel.setCurrentPoi(poi);
             poiSummaryPanel.setVisible(true);
 
@@ -213,7 +217,7 @@ public final class MapPanel extends JPanel {
 
     private JPanel createFloatingControls(Building building) {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
-        layerVisibilityPanel.addLayerToggleListener(mapViewer::setLayerVisible);
+        layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
 
         var floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
@@ -257,6 +261,41 @@ public final class MapPanel extends JPanel {
                 .toList();
         mapViewer.setDisplayedPois(pois);
         poiList.setListData(pois.toArray(POI[]::new));
+    }
+
+    private boolean isPoiVisible(POI poi) {
+        // If the POI's layer is invisible, the POI should never be shown.
+        if (!isLayerVisible(poi.layer())) {
+            return false;
+        }
+
+        // Otherwise, the POI should only be shown if it is visible to the
+        // logged in account or to everyone.
+        return poi.onlyVisibleTo() == null || poi.onlyVisibleTo().equals(loggedInAccount);
+    }
+
+    /**
+     * Determines if the given {@linkplain Layer layer} is currently visible.
+     *
+     * @return Whether the given layer is visible.
+     */
+    private boolean isLayerVisible(Layer layer) {
+        return visibleLayers.contains(layer);
+    }
+
+    /**
+     * Changes the visibility of the given {@linkplain Layer layer}.
+     *
+     * @param layer   The layer to change the visibility of.
+     * @param visible Whether the layer should be visible.
+     */
+    private void setLayerVisible(Layer layer, boolean visible) {
+        if (visible) {
+            visibleLayers.add(layer);
+        } else {
+            visibleLayers.remove(layer);
+        }
+        repaint();
     }
 
     public void addBackListener(Runnable listener) {

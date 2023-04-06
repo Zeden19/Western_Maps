@@ -93,7 +93,8 @@ public final class DatabaseStateTest {
                         100,
                         Set.of(userAccount),
                         floor,
-                        Layer.EATERIES)));
+                        Layer.EATERIES,
+                        null)));
         var databaseJson =
                 """
                 {

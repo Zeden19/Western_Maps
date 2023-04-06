@@ -1,21 +1,34 @@
 package cs2212.westernmaps.core;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 /**
  * A point of interest (POI) on a map.
  *
- * @param name        The display name of this POI.
- * @param description A long-form description of this POI.
- * @param x           The X-coordinate of this POI on the map of its floor.
- * @param y           The Y-coordinate of this POI on the map of its floor.
- * @param favoriteOf  The accounts that have marked this POI as a favorite.
- * @param floor       The floor this POI is on.
- * @param layer       The layer this POI is assigned to.
+ * @param name          The display name of this POI.
+ * @param description   A long-form description of this POI.
+ * @param x             The X-coordinate of this POI on the map of its floor.
+ * @param y             The Y-coordinate of this POI on the map of its floor.
+ * @param favoriteOf    The accounts that have marked this POI as a favorite.
+ * @param floor         The floor this POI is on.
+ * @param layer         The layer this POI is assigned to.
+ * @param onlyVisibleTo The only account that this POI will be visible to, or
+ *                      {@code null} if this POI is visible to everyone.
  */
-public record POI(String name, String description, int x, int y, Set<Account> favoriteOf, Floor floor, Layer layer) {
+public record POI(
+        String name,
+        String description,
+        int x,
+        int y,
+        Set<Account> favoriteOf,
+        Floor floor,
+        Layer layer,
+        @JsonInclude(Include.NON_NULL) @Nullable Account onlyVisibleTo) {
     public POI {
         favoriteOf = Set.copyOf(favoriteOf);
     }
@@ -31,6 +44,26 @@ public record POI(String name, String description, int x, int y, Set<Account> fa
     }
 
     /**
+     * Creates a copy of this POI with its name updated.
+     *
+     * @param name The name of the returned POI.
+     * @return     A copy of this POI with the new name.
+     */
+    public POI withName(String name) {
+        return new POI(name, description(), x(), y(), favoriteOf(), floor(), layer(), onlyVisibleTo());
+    }
+
+    /**
+     * Creates a copy of this POI with its description updated.
+     *
+     * @param description The description of the returned POI.
+     * @return            A copy of this POI with the new description.
+     */
+    public POI withDescription(String description) {
+        return new POI(name(), description, x(), y(), favoriteOf(), floor(), layer(), onlyVisibleTo());
+    }
+
+    /**
      * Creates a copy of this POI with its location updated.
      *
      * @param x The x-coordinate of the new location.
@@ -38,7 +71,7 @@ public record POI(String name, String description, int x, int y, Set<Account> fa
      * @return  A copy of this POI with the new location.
      */
     public POI withLocation(int x, int y) {
-        return new POI(name(), description(), x, y, favoriteOf(), floor(), layer());
+        return new POI(name(), description(), x, y, favoriteOf(), floor(), layer(), onlyVisibleTo());
     }
 
     /**
@@ -71,6 +104,6 @@ public record POI(String name, String description, int x, int y, Set<Account> fa
             // marked this POI as a favorite, minus the given account.
             newSet = favoriteOf().stream().filter(a -> !a.equals(account)).collect(Collectors.toUnmodifiableSet());
         }
-        return new POI(name(), description(), x(), y(), newSet, floor(), layer());
+        return new POI(name(), description(), x(), y(), newSet, floor(), layer(), onlyVisibleTo());
     }
 }

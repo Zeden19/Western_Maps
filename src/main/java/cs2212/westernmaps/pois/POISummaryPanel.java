@@ -76,9 +76,7 @@ public class POISummaryPanel extends JPanel {
                 try {
                     newTitle = doc.getText(0, doc.getLength());
 
-                    POI newPoi = new POI(
-                            newTitle, poi.description(), poi.x(), poi.y(), poi.favoriteOf(), poi.floor(), poi.layer());
-
+                    POI newPoi = poi.withName(newTitle);
                     poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
                     poi = newPoi;
@@ -108,10 +106,19 @@ public class POISummaryPanel extends JPanel {
                 }
 
                 Layer newLayer = (Layer) layerComboBox.getSelectedItem();
+                // Make sure custom POIs are only visible to the account that
+                // created them.
+                var onlyVisibleTo = newLayer == Layer.CUSTOM ? loggedInAccount : null;
 
                 POI newPoi = new POI(
-                        poi.name(), poi.description(), poi.x(), poi.y(), poi.favoriteOf(), poi.floor(), newLayer);
-
+                        poi.name(),
+                        poi.description(),
+                        poi.x(),
+                        poi.y(),
+                        poi.favoriteOf(),
+                        poi.floor(),
+                        newLayer,
+                        onlyVisibleTo);
                 poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
                 poi = newPoi;
@@ -171,8 +178,7 @@ public class POISummaryPanel extends JPanel {
                 try {
                     String newDesc = doc.getText(0, doc.getLength());
 
-                    POI newPoi =
-                            new POI(poi.name(), newDesc, poi.x(), poi.y(), poi.favoriteOf(), poi.floor(), poi.layer());
+                    POI newPoi = poi.withDescription(newDesc);
                     poiChangeListeners.forEach(listener -> listener.accept(poi, newPoi));
 
                     poi = newPoi;

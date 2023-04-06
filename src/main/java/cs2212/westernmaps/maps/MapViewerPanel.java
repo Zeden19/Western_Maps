@@ -11,7 +11,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -40,11 +39,11 @@ public final class MapViewerPanel extends JPanel {
     private final List<Consumer<POI>> poiClickListeners = new ArrayList<>();
     private final List<BiConsumer<POI, Point>> poiMoveListeners = new ArrayList<>();
     private Predicate<POI> poiMoveCondition = poi -> true;
+    private Predicate<POI> poiVisibleCondition = poi -> true;
 
     private Component cursorComponent;
     private URI currentMapUri;
     private List<POI> displayedPois;
-    private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
     private @Nullable POI hoveredPoi = null;
 
@@ -262,30 +261,6 @@ public final class MapViewerPanel extends JPanel {
         repaint();
     }
 
-    /**
-     * Determines if the given {@linkplain Layer layer} is currently visible.
-     *
-     * @return Whether the given layer is visible.
-     */
-    public boolean isLayerVisible(Layer layer) {
-        return visibleLayers.contains(layer);
-    }
-
-    /**
-     * Changes the visibility of the given {@linkplain Layer layer}.
-     *
-     * @param layer   The layer to change the visibility of.
-     * @param visible Whether the layer should be visible.
-     */
-    public void setLayerVisible(Layer layer, boolean visible) {
-        if (visible) {
-            visibleLayers.add(layer);
-        } else {
-            visibleLayers.remove(layer);
-        }
-        repaint();
-    }
-
     public void addPoiClickListener(Consumer<POI> listener) {
         poiClickListeners.add(listener);
     }
@@ -315,6 +290,19 @@ public final class MapViewerPanel extends JPanel {
         poiMoveCondition = Objects.requireNonNullElse(condition, poi -> true);
     }
 
+    /**
+     * Sets the predicate that determines what POIs are visible on the map.
+     *
+     * <p>This is used by {@link MapPanel} to hide specific layers and custom
+     * POIs belonging to other users.</p>
+     *
+     * @param condition A function taking a {@link POI} and returning whether
+     *                  that POI should be visible on the map.
+     */
+    public void setPoiVisibleCondition(@Nullable Predicate<POI> condition) {
+        poiVisibleCondition = Objects.requireNonNullElse(condition, poi -> true);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -339,7 +327,7 @@ public final class MapViewerPanel extends JPanel {
                 continue;
             }
             // If the POI's layer is not visible, skip it.
-            if (!isLayerVisible(poi.layer())) {
+            if (!poiVisibleCondition.test(poi)) {
                 continue;
             }
 
@@ -420,7 +408,7 @@ public final class MapViewerPanel extends JPanel {
         int hoveredPoiDistance = Integer.MAX_VALUE;
         for (var poi : displayedPois) {
             // If the is not visible, then it can't be hovered.
-            if (!isLayerVisible(poi.layer())) {
+            if (!poiVisibleCondition.test(poi)) {
                 continue;
             }
 
