@@ -411,6 +411,7 @@ public final class MapPanel extends JPanel {
             pois = pois.stream()
                     .filter(poi ->
                             building.floors().contains(poi.floor()) && (poiMatches(query[finalI], poi, building)))
+                    .sorted()
                     .toList();
         }
         return pois;
@@ -431,6 +432,7 @@ public final class MapPanel extends JPanel {
     private void updateFavouritePOIs(Database database) {
         POI[] poisToAdd = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount) && isPoiVisible(poi))
+                .sorted()
                 .toArray(POI[]::new);
         favoritesList.setListData(poisToAdd);
 
@@ -508,6 +510,8 @@ public final class MapPanel extends JPanel {
     private void refreshPois() {
         var pois = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.floor().equals(currentFloor) && isPoiVisible(poi))
+                .filter(poi -> poi.floor().equals(currentFloor))
+                .sorted()
                 .toList();
         mapViewer.setDisplayedPois(pois);
         poiList.setListData(pois.toArray(POI[]::new));

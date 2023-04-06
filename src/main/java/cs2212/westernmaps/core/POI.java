@@ -32,7 +32,6 @@ public record POI(
     public POI {
         favoriteOf = Set.copyOf(favoriteOf);
     }
-
     /**
      * Alias of {@link #name()} used by Java Swing components.
      *
