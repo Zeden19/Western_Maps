@@ -100,7 +100,7 @@ public final class LayerVisibilityPanel extends JPanel {
      * @param layer   The layer to change the state of.
      * @param checked Whether the layer should be checked.
      */
-    private void setLayerChecked(Layer layer, boolean checked) {
+    public void setLayerChecked(Layer layer, boolean checked) {
         var checkbox = Objects.requireNonNull(layerCheckboxes.get(layer), "All layers must have a checkbox");
         checkbox.setSelected(checked);
     }
@@ -114,10 +114,6 @@ public final class LayerVisibilityPanel extends JPanel {
      */
     public void addLayerToggleListener(BiConsumer<Layer, Boolean> listener) {
         this.layerToggleListeners.add(listener);
-    }
-
-    public void setCheckBoxOnLayer(Layer layer) {
-        layerToggleListeners.forEach(listener -> listener.accept(layer, true));
     }
 
     // https://stackoverflow.com/a/23881790

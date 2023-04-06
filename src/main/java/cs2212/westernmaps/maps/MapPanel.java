@@ -372,7 +372,6 @@ public final class MapPanel extends JPanel {
 
     // creating the layer visibility panel
     private JPanel createFloatingControls() {
-        var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
         layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
 
         floatingControls = new JPanel();
@@ -504,7 +503,7 @@ public final class MapPanel extends JPanel {
         mapViewer.scrollPoiToCenter(poi);
 
         // forcing layer to be visible
-        layerVisibilityPanel.setCheckBoxOnLayer(poi.layer());
+        layerVisibilityPanel.setLayerChecked(poi.layer(), true);
 
         // opening the summary panel
         poiSummaryPanel.setCurrentPoi(poi);
