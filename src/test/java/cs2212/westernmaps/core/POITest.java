@@ -13,7 +13,7 @@ public final class POITest {
 
         var floor = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
 
-        var poi = new POI("Test POI", "", 0, 0, Set.of(), floor, Layer.MISCELLANEOUS);
+        var poi = new POI("Test POI", "", 0, 0, Set.of(), floor, Layer.MISCELLANEOUS, null);
         Assertions.assertFalse(poi.isFavoriteOfAccount(account1));
         Assertions.assertFalse(poi.isFavoriteOfAccount(account2));
 

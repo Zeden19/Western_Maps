@@ -45,7 +45,6 @@ public record POI(
     /**
      * Creates a copy of this POI with its name updated.
      *
-     * <<<<<<< HEAD
      * @param name The name of the returned POI.
      * @return     A copy of this POI with the new name.
      */

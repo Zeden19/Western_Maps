@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -20,36 +21,59 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
+
+
+    // the database, used for all sorts of data setting
     private final Database database;
-
+    // the building, used to change buildings when selecting a favorite on a different building
     private Building building;
-    private final Account loggedInAccount;
-
+    // the current floor, used to change floors
     private Floor currentFloor;
 
+    // the map viewer, used to display the map
     private final MapViewerPanel mapViewer;
+    // the poi summary panel, used to display the poi summary
     private final POISummaryPanel poiSummaryPanel;
+
+    // the back listeners, used to go back to the BuildingSelectPanel
     private final List<Runnable> backListeners = new ArrayList<>();
-    private final List<Consumer<Building>> changeTitleListeners = new ArrayList<>();
+    // the change title listeners, used to change the title of the MainWindow when selecting a favourite on a
+    // different building
+    private final List<Consumer<Building>> buildingChangeListeners = new ArrayList<>();
+
+    // the poi list, used to display the pois on the current floor
     private final JList<POI> poiList = new JList<>();
+    // the favorites list, used to display the favorites
     private final JList<POI> favoritesList = new JList<>();
-
+    // the search results, used to display the search results when searching
     private JList<POI> searchResults = new JList<>();
+
+    // the floor switcher, the backend behind the floor switching
     private FloorSwitcher floorSwitcher;
-
+    // the glass pane, used to display the search results
     private final Container glassPane;
+    // the floating controls, used to display the GUI for switching floors
     private JPanel floatingControls = new JPanel();
+    // used to display the layer toggles
+    private final LayerVisibilityPanel layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
 
-    private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
-
+    // the database saved label, used to display the database saved message
     private JLabel databaseSaved = new JLabel();
+    // the save failed label, used to display the save failed message
     private JLabel saveFailed = new JLabel();
 
-    private int numPendingCalls =
-            0; // the number of pending calls, used to make sure the database saved message is displayed for the most
-    // recent save
-    private final LayerVisibilityPanel layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
-    // used to display the layer toggles
+    // A timer that is used to cause database failed/saved text to disappear after the most recent change.
+    private final Timer timer = new Timer(2000, e -> {
+        databaseSaved.setVisible(false);
+        saveFailed.setVisible(false);
+
+    });
+
+    private final Account loggedInAccount;
+
+    private final List<Consumer<Building>> changeTitleListeners = new ArrayList<>();
+
+    private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
 
     // the main map panel
@@ -89,9 +113,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showLabel(databaseSaved);
+                showLabelForTwoSeconds(databaseSaved);
             } catch (IOException ex) {
-                showLabel(saveFailed);
+                showLabelForTwoSeconds(saveFailed);
             }
             refreshPois();
         });
@@ -103,9 +127,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showLabel(databaseSaved);
+                showLabelForTwoSeconds(databaseSaved);
             } catch (IOException ex) {
-                showLabel(saveFailed);
+                showLabelForTwoSeconds(saveFailed);
             }
             poiSummaryPanel.setVisible(false);
             refreshPois();
@@ -127,9 +151,9 @@ public final class MapPanel extends JPanel {
             // Save changes to disk.
             try {
                 database.save();
-                showLabel(databaseSaved);
+                showLabelForTwoSeconds(databaseSaved);
             } catch (IOException ex) {
-                showLabel(saveFailed);
+                showLabelForTwoSeconds(saveFailed);
             }
 
             // If the summary panel is open, make sure it's up to date.
@@ -229,9 +253,9 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showLabel(databaseSaved);
+                showLabelForTwoSeconds(databaseSaved);
             } catch (IOException ex) {
-                showLabel(saveFailed);
+                showLabelForTwoSeconds(saveFailed);
             }
             refreshPois();
         });
@@ -370,7 +394,7 @@ public final class MapPanel extends JPanel {
         return sidebar;
     }
 
-    // creating the layer visibility panel and the floor switcher
+    // creating the layer visibility panel and the POI summary panel
     private JPanel createFloatingControls() {
         layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
 
@@ -412,7 +436,7 @@ public final class MapPanel extends JPanel {
             pois = pois.stream()
                     .filter(poi ->
                             building.floors().contains(poi.floor()) && (poiMatches(query[finalI], poi, building)))
-                    .sorted()
+                    .sorted(Comparator.comparing(POI::name))
                     .toList();
         }
         return pois;
@@ -433,7 +457,7 @@ public final class MapPanel extends JPanel {
     private void updateFavouritePOIs(Database database) {
         POI[] poisToAdd = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount) && isPoiVisible(poi))
-                .sorted()
+                .sorted(Comparator.comparing(POI::name))
                 .toArray(POI[]::new);
         favoritesList.setListData(poisToAdd);
 
@@ -487,7 +511,7 @@ public final class MapPanel extends JPanel {
             constraints.gridx = 0;
             constraints.anchor = GridBagConstraints.LAST_LINE_START;
 
-            changeTitleListeners.forEach(listener -> listener.accept(building));
+            buildingChangeListeners.forEach(listener -> listener.accept(building));
 
             // adding floor switcher
             floatingControls.add(floorSwitcher, constraints);
@@ -515,7 +539,7 @@ public final class MapPanel extends JPanel {
         var pois = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.floor().equals(currentFloor) && isPoiVisible(poi))
                 .filter(poi -> poi.floor().equals(currentFloor))
-                .sorted()
+                .sorted(Comparator.comparing(POI::name))
                 .toList();
         mapViewer.setDisplayedPois(pois);
         poiList.setListData(pois.toArray(POI[]::new));
@@ -555,19 +579,14 @@ public final class MapPanel extends JPanel {
     }
 
     public void addChangeTitleListener(Consumer<Building> listener) {
-        changeTitleListeners.add(listener);
+        buildingChangeListeners.add(listener);
     }
 
     // Showing the database saved label
-    private void showLabel(JLabel label) {
-        numPendingCalls++;
+    private void showLabelForTwoSeconds(JLabel label) {
+        timer.restart();
         label.setVisible(true);
-        Timer timer = new Timer(2000, e -> {
-            numPendingCalls--;
-            if (numPendingCalls == 0) {
-                label.setVisible(false);
-            }
-        });
+        timer.setDelay(2000);
         timer.setRepeats(false);
         timer.start();
     }

@@ -22,6 +22,7 @@ public final class MainWindow extends JFrame {
     private final BuildingSelectPanel buildingSelectPanel;
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
+
     private @Nullable Account loggedInAccount = null;
 
     public MainWindow(Database database) {
