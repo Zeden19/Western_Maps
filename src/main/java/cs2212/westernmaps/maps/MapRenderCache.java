@@ -14,7 +14,17 @@ import javax.annotation.Nullable;
 import javax.swing.JComponent;
 
 /**
- * This class is for the Maps rendering and cache
+ * Handles optimized rendering of map SVGs.
+ *
+ * <p>This class avoids rendering the SVG data directly more than a few times,
+ * since it's relatively expensive. The map is rendered to a bitmap image on a
+ * background thread pool, which is then used to render the map when available.
+ * While the image is being created, the SVG is rendered directly.</p>
+ *
+ * <p>This optimization is disabled when the user is zoomed in really far to
+ * reduce memory usage, since the map image gets really large at high zoom
+ * levels.</p>
+ *
  * @author Connor Cummings
  */
 public final class MapRenderCache {
@@ -36,13 +46,17 @@ public final class MapRenderCache {
     private double scale;
     private double deviceScale = 1.0;
 
-    // The cached image, and the future for the cached image.
+    // A future containing the cached image. Can be in one of these states:
+    //   - null: Rendering has not been started.
+    //   - Not null, not completed: Rendering an image is in progress.
+    //   - Not null, completed: An image is available with the get method.
     private @Nullable Future<BufferedImage> cachedImageFuture;
 
     /**
-     * Creates the map render cache
-     * @param diagram is the diagram of the map that is being rendered
-     * @param scale is the scale of the map being used
+     * Creates a new {@code MapRenderCache}.
+     *
+     * @param diagram The map SVG to render first (can be changed later).
+     * @param scale   The initial zoom level of the map (can be changed later).
      */
     public MapRenderCache(SVGDiagram diagram, double scale) {
         this.diagram = diagram;
@@ -50,16 +64,18 @@ public final class MapRenderCache {
     }
 
     /**
-     * gets the diagram of the svg file
-     * @return the diagram that is being used
+     * Gets the SVG diagram currently being rendered.
+     *
+     * @return The diagram that is currently being used.
      */
     public SVGDiagram getDiagram() {
         return diagram;
     }
 
     /**
-     * sets the diagram of the svg file
-     * @param diagram is the new diagram that will be used in place of the previous one
+     * Changes the map SVG that is currently being rendered.
+     *
+     * @param diagram The new map SVG to render in place of the previous one.
      */
     public void setDiagram(SVGDiagram diagram) {
         this.diagram = diagram;
@@ -67,8 +83,9 @@ public final class MapRenderCache {
     }
 
     /**
-     * sets the scale
-     * @param scale is the new scale that would be set for previous one
+     * Sets the current zoom level of the map.
+     *
+     * @param scale The new scale to use when next rendering the map.
      */
     public void setScale(double scale) {
         if (this.scale != scale) {
@@ -78,11 +95,18 @@ public final class MapRenderCache {
     }
 
     /**
-     * renders the image
-     * @param gfx the gfx that is used for map
-     * @param x the positioning of the map in x-axis
-     * @param y the position of map in y-axis
-     * @param component a component that is used for the map
+     * Renders the current map to the provided {@link Graphics2D}.
+     *
+     * <p>If a cached image is available, it will be used. Otherwise, a thread
+     * will be started for rendering an image and the SVG will be rendered
+     * directly instead.</p>
+     *
+     * @param gfx       The {@link Graphics2D} to render the map to.
+     * @param x         The position of the map on the x-axis.
+     * @param y         The position of the map on the y-axis.
+     * @param component The component the map will be rendered to, or
+     *                  {@code null} if there is none. This is used by the
+     *                  SVG Salamander library.
      */
     public void render(Graphics2D gfx, int x, int y, @Nullable JComponent component) {
         deviceScale = gfx.getDeviceConfiguration().getDefaultTransform().getScaleX();
