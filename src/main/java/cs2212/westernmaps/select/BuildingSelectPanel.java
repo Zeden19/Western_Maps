@@ -51,10 +51,6 @@ public class BuildingSelectPanel extends JPanel {
         selectButton.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         selectButton.addActionListener(e -> validateAndSubmit());
 
-        JPanel weather = new JPanel();
-        // Temporary
-        weather.add(new JLabel("weather"));
-
         // Create back button
         var logOutButton = new JButton("Log Out");
         logOutButton.addActionListener(e -> logOutListeners.forEach(Runnable::run));
@@ -82,11 +78,6 @@ public class BuildingSelectPanel extends JPanel {
         c.gridy = 2;
         c.insets = new Insets(20, 0, 20, 0);
         selectPane.add(selectButton, c);
-
-        // Add right-most components
-        c.gridx = 2;
-        c.insets = new Insets(0, 0, 0, 10);
-        selectPane.add(weather, c);
 
         // Add building list
         c.gridx = 1;
