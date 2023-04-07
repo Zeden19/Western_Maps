@@ -236,12 +236,9 @@ public final class MapPanel extends JPanel {
         constraints.weighty = 1.0;
         floatingControls.add(layerVisibilityPanel, constraints);
 
-        constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.LAST_LINE_START;
         floatingControls.add(floorSwitcher, constraints);
 
-        constraints.gridx = 1;
-        constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_END;
         floatingControls.add(poiSummaryPanel, constraints);
 
