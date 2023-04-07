@@ -126,8 +126,8 @@ public final class MapRenderCache {
 
     // Renders the SVG diagram to an image.
     private static BufferedImage renderSvgToImage(SVGDiagram diagram, double scale, double deviceScale) {
-        var width = (int) Math.ceil(diagram.getWidth() * scale);
-        var height = (int) Math.ceil(diagram.getHeight() * scale);
+        var width = (int) Math.ceil(diagram.getWidth() * scale * deviceScale);
+        var height = (int) Math.ceil(diagram.getHeight() * scale * deviceScale);
 
         var image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         var gfx = (Graphics2D) image.createGraphics();
