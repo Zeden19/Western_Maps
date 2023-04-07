@@ -11,17 +11,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Objects;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
-
 
     // the database, used for all sorts of data setting
     private final Database database;
@@ -66,7 +63,6 @@ public final class MapPanel extends JPanel {
     private final Timer timer = new Timer(2000, e -> {
         databaseSaved.setVisible(false);
         saveFailed.setVisible(false);
-
     });
 
     private final Account loggedInAccount;
@@ -74,7 +70,6 @@ public final class MapPanel extends JPanel {
     private final List<Consumer<Building>> changeTitleListeners = new ArrayList<>();
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
-
 
     // the main map panel
     public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
@@ -113,9 +108,10 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showLabelForTwoSeconds(databaseSaved);
+                showLabelTemporarily(databaseSaved);
             } catch (IOException ex) {
-                showLabelForTwoSeconds(saveFailed);
+                showLabelTemporarily(saveFailed);
+                ex.printStackTrace();
             }
             refreshPois();
         });
@@ -127,9 +123,10 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showLabelForTwoSeconds(databaseSaved);
+                showLabelTemporarily(databaseSaved);
             } catch (IOException ex) {
-                showLabelForTwoSeconds(saveFailed);
+                showLabelTemporarily(saveFailed);
+                ex.printStackTrace();
             }
             poiSummaryPanel.setVisible(false);
             refreshPois();
@@ -151,9 +148,10 @@ public final class MapPanel extends JPanel {
             // Save changes to disk.
             try {
                 database.save();
-                showLabelForTwoSeconds(databaseSaved);
+                showLabelTemporarily(databaseSaved);
             } catch (IOException ex) {
-                showLabelForTwoSeconds(saveFailed);
+                showLabelTemporarily(saveFailed);
+                ex.printStackTrace();
             }
 
             // If the summary panel is open, make sure it's up to date.
@@ -176,7 +174,7 @@ public final class MapPanel extends JPanel {
         // Make sure the mouse cursor can still change.
         mapViewer.setCursorComponent(layeredPane);
 
-        // everything to the left of the map panel
+        // everything to the left of the split panel, which also contains the map panel
         var leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
         leftPanel.add(toolbar, BorderLayout.PAGE_START);
@@ -210,24 +208,6 @@ public final class MapPanel extends JPanel {
         searchBar.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search");
         searchBar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSearchIcon());
 
-
-        searchResults = new JList<>();
-        searchResults.setBounds(88, 30, 374, 200);
-        searchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        searchResults.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
-        searchResults.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
-
-        searchBar.addActionListener(e -> {
-            var query = searchBar.getText();
-            glassPane.add(searchResults);
-            glassPane.setVisible(true);
-            var results = getSearchResults(searchBar.getText().split(" "), database, building);
-
-            if (results.isEmpty()) {
-            } else {
-                searchResults.setListData(results.toArray(POI[]::new));
-            }
-        });
         // removing list when focus is lost
         searchResults.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -253,9 +233,10 @@ public final class MapPanel extends JPanel {
             database.getHistory().pushState(state);
             try {
                 database.save();
-                showLabelForTwoSeconds(databaseSaved);
+                showLabelTemporarily(databaseSaved);
             } catch (IOException ex) {
-                showLabelForTwoSeconds(saveFailed);
+                showLabelTemporarily(saveFailed);
+                ex.printStackTrace();
             }
             refreshPois();
         });
@@ -436,7 +417,7 @@ public final class MapPanel extends JPanel {
             pois = pois.stream()
                     .filter(poi ->
                             building.floors().contains(poi.floor()) && (poiMatches(query[finalI], poi, building)))
-                    .sorted(Comparator.comparing(POI::name))
+                    .sorted((a, b) -> a.name().compareToIgnoreCase(b.name()))
                     .toList();
         }
         return pois;
@@ -452,12 +433,11 @@ public final class MapPanel extends JPanel {
                 || building.name().toLowerCase().contains(wordLowerCase);
     }
 
-
     // updating the favourites POI list
     private void updateFavouritePOIs(Database database) {
         POI[] poisToAdd = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount) && isPoiVisible(poi))
-                .sorted(Comparator.comparing(POI::name))
+                .sorted((a, b) -> a.name().compareToIgnoreCase(b.name()))
                 .toArray(POI[]::new);
         favoritesList.setListData(poisToAdd);
 
@@ -534,12 +514,11 @@ public final class MapPanel extends JPanel {
         poiSummaryPanel.setVisible(true);
     }
 
-
     private void refreshPois() {
         var pois = database.getCurrentState().pois().stream()
                 .filter(poi -> poi.floor().equals(currentFloor) && isPoiVisible(poi))
                 .filter(poi -> poi.floor().equals(currentFloor))
-                .sorted(Comparator.comparing(POI::name))
+                .sorted((a, b) -> a.name().compareToIgnoreCase(b.name()))
                 .toList();
         mapViewer.setDisplayedPois(pois);
         poiList.setListData(pois.toArray(POI[]::new));
@@ -578,12 +557,12 @@ public final class MapPanel extends JPanel {
         backListeners.add(listener);
     }
 
-    public void addChangeTitleListener(Consumer<Building> listener) {
+    public void addBuildingChangeListeners(Consumer<Building> listener) {
         buildingChangeListeners.add(listener);
     }
 
     // Showing the database saved label
-    private void showLabelForTwoSeconds(JLabel label) {
+    private void showLabelTemporarily(JLabel label) {
         timer.restart();
         label.setVisible(true);
         timer.setDelay(2000);

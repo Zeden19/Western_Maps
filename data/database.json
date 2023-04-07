@@ -169,8 +169,8 @@
       "floor": 1,
       "layer": "EATERIES",
       "name": "Kitchen",
-      "x": 572,
-      "y": 411
+      "x": 574,
+      "y": 409
     },
     {
       "description": "Non-Accessible Men's Washroom.",
@@ -187,8 +187,8 @@
       "floor": 1,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 714,
-      "y": 531
+      "x": 759,
+      "y": 502
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",

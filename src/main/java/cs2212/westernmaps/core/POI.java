@@ -32,6 +32,7 @@ public record POI(
     public POI {
         favoriteOf = Set.copyOf(favoriteOf);
     }
+
     /**
      * Alias of {@link #name()} used by Java Swing components.
      *
@@ -74,7 +75,6 @@ public record POI(
     }
 
     /**
-     * <<<<<<< HEAD
      * Checks if this POI is a favorite of the given account.
      *
      * @param account The account to check.
