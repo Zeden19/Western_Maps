@@ -10,7 +10,9 @@ import javax.annotation.Nullable;
 import javax.swing.tree.TreeNode;
 
 /**
- * this class is for the Help page that is implemented in the application. It implements the TreeNode class in java
+ * This class is for the Help page that is implemented in the application. It implements the TreeNode class in java
+ *
+ * @author Christopher Chosang
  */
 public class HelpPage implements TreeNode {
     // declaring the classes private and public variables

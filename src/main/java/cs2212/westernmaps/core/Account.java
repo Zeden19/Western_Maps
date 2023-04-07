@@ -16,6 +16,8 @@ import java.util.Arrays;
  * @param passwordHash The hash of this account's password. For security
  *                     reasons, the actual password is never saved.
  * @param developer    Whether this account is a developer account.
+ *
+ * @author Connor Cummings
  */
 @JsonIdentityInfo(generator = IntSequenceGenerator.class, scope = Account.class)
 public record Account(String username, String passwordHash, boolean developer) {

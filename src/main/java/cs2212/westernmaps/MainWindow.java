@@ -17,20 +17,26 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
- * This class creates the main window for the application
+ * This class creates the main window for the application.
+ * Through this class, we switch between the different panels, such as building select, create account login, and map.
+ * @author Arjun Sharma
+ * @author Connor Cummings
  */
 public final class MainWindow extends JFrame {
+
+    // All the panels, used to switch between them.
     private final LoginPanel loginPanel;
     private final CreateAccountPanel createAccountPanel;
     private final BuildingSelectPanel buildingSelectPanel;
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
 
+    // The current logged in account, to activate/restrict developer features
     private @Nullable Account loggedInAccount = null;
 
     /**
      * Creates the Main window
-     * @param database is the database being used for the application
+     * @param database the database being used for the application
      */
     public MainWindow(Database database) {
         super("Sign in");
@@ -43,8 +49,6 @@ public final class MainWindow extends JFrame {
         loginPanel = new LoginPanel(database);
         createAccountPanel = new CreateAccountPanel(database);
         buildingSelectPanel = new BuildingSelectPanel(database.getCurrentState().buildings());
-
-        // navigation between panels
 
         // log in to create account
         loginPanel.addCreateAccountClickListener(() -> changeTo(createAccountPanel));
@@ -120,6 +124,7 @@ public final class MainWindow extends JFrame {
         pack();
     }
 
+    // Allows switching between panels, including name formatting for the title of the page
     private void changeTo(JPanel panel) {
         var titleBuilder = new StringBuilder();
         titleBuilder.append(Main.APPLICATION_NAME);

@@ -8,7 +8,8 @@ import java.nio.file.Path;
 /**
  * This class is for the database of the program. It creates the database that is used for the program
  * with a directory, json file, and its history.
- * @author
+ *
+ * @author Connor Cummings
  */
 public final class Database {
     private final Path directory;
@@ -65,6 +66,7 @@ public final class Database {
         var mapPath = directory.resolve(floor.mapPath());
         return mapPath.toUri();
     }
+
 
     /**
      * This method saves the database

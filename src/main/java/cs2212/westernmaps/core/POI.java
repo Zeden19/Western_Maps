@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 /**
  * A point of interest (POI) on a map.
  *
+<<<<<<< HEAD
  * @param name          The display name of this POI.
  * @param description   A long-form description of this POI.
  * @param x             The X-coordinate of this POI on the map of its floor.

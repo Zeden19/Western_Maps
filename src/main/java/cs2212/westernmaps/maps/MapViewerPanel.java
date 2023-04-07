@@ -21,35 +21,45 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 /**
- * creates the map viewer panel for the application
+ * Creates the map viewer panel for the application, including zooming and panning functionality
+ * @author Connor Cummings
  */
 public final class MapViewerPanel extends JPanel {
+    // The size of the target area around a POI that will trigger a click event.
     private static final int POI_CLICK_TARGET_SIZE = 16;
     private static final int POI_HOVER_CIRCLE_RADIUS = 18;
     private static final Color POI_HOVER_CIRCLE_COLOR = new Color(0x00, 0x00, 0x00, 0x1F);
 
+    // The color of the tooltip background and text.
     private static final Color POI_TOOLTIP_BACKGROUND_COLOR = new Color(0x00, 0x00, 0x00, 0xBF);
     private static final Color POI_TOOLTIP_FOREGROUND_COLOR = Color.WHITE;
 
+    // The smallest and largest zoom levels allowed.
     private static final double ZOOM_OUT_LIMIT = 0.1;
     private static final double ZOOM_IN_LIMIT = 10.0;
 
+    // Data for the svg loading
     private final SVGUniverse universe = SVGCache.getSVGUniverse();
     private final AffineTransform transform = new AffineTransform();
 
+    // the cache the renders the map
     private final MapRenderCache renderCache;
 
+    // listeners for when you click, abd move a poi and when you move on the map
     private final List<Consumer<POI>> poiClickListeners = new ArrayList<>();
     private final List<BiConsumer<POI, Point>> poiMoveListeners = new ArrayList<>();
     private Predicate<POI> poiMoveCondition = poi -> true;
     private Predicate<POI> poiVisibleCondition = poi -> true;
 
+    // data for what is currently being displayed
     private Component cursorComponent;
     private URI currentMapUri;
     private List<POI> displayedPois;
 
+    // the current hovered POI
     private @Nullable POI hoveredPoi = null;
 
+    // the dragging data for a dragged POI
     private @Nullable POI draggedPoi = null;
     private final Point draggedPoiLocation = new Point();
 
@@ -296,6 +306,11 @@ public final class MapViewerPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * Registers an event listener that is called when a POI is clicked.
+     *
+     * @param listener A function taking a {@link POI} and returning nothing.
+     */
     public void addPoiClickListener(Consumer<POI> listener) {
         poiClickListeners.add(listener);
     }
@@ -380,10 +395,12 @@ public final class MapViewerPanel extends JPanel {
         }
     }
 
+    // rendering a specific POI icon
     private void renderPoiIcon(Graphics2D gfx, POI poi, boolean hoverCircle) {
         renderPoiIcon(gfx, poi.layer(), poi.x(), poi.y(), hoverCircle);
     }
 
+    // rendering all the POI icons, including the hovered and dragged ones
     private void renderPoiIcon(Graphics2D gfx, Layer layer, int x, int y, boolean hoverCircle) {
         // POI icons are rendered at the same size regardless of the map's
         // scale, so we need to transform their locations manually.
@@ -403,10 +420,12 @@ public final class MapViewerPanel extends JPanel {
         icon.paintIcon(this, gfx, location.x, location.y);
     }
 
+    // rendering the tooltip for a specific POI
     private void renderPoiTooltip(Graphics2D gfx, POI poi) {
         renderPoiTooltip(gfx, poi.name(), poi.x(), poi.y());
     }
 
+    // rendering the tooltip for all the POIs, including the hovered and dragged ones
     private void renderPoiTooltip(Graphics2D gfx, String text, int poiX, int poiY) {
         // POI icons are rendered at the same size regardless of the map's
         // scale, so we need to transform their locations manually.
@@ -424,6 +443,7 @@ public final class MapViewerPanel extends JPanel {
         gfx.drawString(text, x + 8, y + 2 + 13);
     }
 
+    // refreshing a hovered POI
     private void refreshHoveredPoi(int mouseX, int mouseY) {
         var hoveredPoi = getHoveredPoiByChebyshevDistance(mouseX, mouseY);
         if (hoveredPoi != this.hoveredPoi) {
@@ -438,6 +458,7 @@ public final class MapViewerPanel extends JPanel {
         }
     }
 
+    // getting the hovered POI by Chebyshev distance
     private @Nullable POI getHoveredPoiByChebyshevDistance(int mouseX, int mouseY) {
         POI hoveredPoi = null;
         int hoveredPoiDistance = Integer.MAX_VALUE;
@@ -461,6 +482,7 @@ public final class MapViewerPanel extends JPanel {
         return hoveredPoi;
     }
 
+    // converting chebyshev distance to POI distance
     private int chebyshevDistanceToPoi(POI poi, int mouseX, int mouseY) {
         // POI icons are rendered at the same size regardless of the map's
         // scale, so we need to transform their locations manually.
@@ -475,6 +497,7 @@ public final class MapViewerPanel extends JPanel {
         return Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
     }
 
+    // the different states of the drag, for POIs
     private enum DragState {
         NONE,
         PANNING_MAP,

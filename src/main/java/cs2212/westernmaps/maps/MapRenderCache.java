@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 
 /**
  * This class is for the Maps rendering and cache
+ * @author Connor Cummings
  */
 public final class MapRenderCache {
     private static final double MAX_CACHED_SCALE = 5.0;
@@ -29,11 +30,13 @@ public final class MapRenderCache {
         return thread;
     });
 
+    // The diagram of the map being rendered, along with the scale of zoom
     private SVGDiagram diagram;
 
     private double scale;
     private double deviceScale = 1.0;
 
+    // The cached image, and the future for the cached image.
     private @Nullable Future<BufferedImage> cachedImageFuture;
 
     /**
@@ -79,7 +82,7 @@ public final class MapRenderCache {
      * @param gfx the gfx that is used for map
      * @param x the positioning of the map in x-axis
      * @param y the position of map in y-axis
-     * @param component
+     * @param component a component that is used for the map
      */
     public void render(Graphics2D gfx, int x, int y, @Nullable JComponent component) {
         deviceScale = gfx.getDeviceConfiguration().getDefaultTransform().getScaleX();
@@ -94,6 +97,7 @@ public final class MapRenderCache {
         }
     }
 
+    // Returns the cached image if it is ready, or null if it is not ready.
     private @Nullable BufferedImage getCachedImageIfReady() {
         if (cachedImageFuture == null) {
             if (scale <= MAX_CACHED_SCALE && scale >= MIN_CACHED_SCALE) {
@@ -111,6 +115,7 @@ public final class MapRenderCache {
         }
     }
 
+    // Invalidates the cached image.
     private void invalidateCache() {
         if (cachedImageFuture != null) {
             cachedImageFuture.cancel(true);
@@ -119,9 +124,10 @@ public final class MapRenderCache {
         System.gc();
     }
 
+    // Renders the SVG diagram to an image.
     private static BufferedImage renderSvgToImage(SVGDiagram diagram, double scale, double deviceScale) {
-        var width = (int) Math.ceil(diagram.getWidth() * scale * deviceScale);
-        var height = (int) Math.ceil(diagram.getHeight() * scale * deviceScale);
+        var width = (int) Math.ceil(diagram.getWidth() * scale);
+        var height = (int) Math.ceil(diagram.getHeight() * scale);
 
         var image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         var gfx = (Graphics2D) image.createGraphics();

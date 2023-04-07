@@ -15,16 +15,25 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 /**
- * This class creates the account panel for the application
+ * This class creates the account panel for the application. It does all the necessary checks to make sure the account
+ * is valid, such as password and username checks
+ *
+ * @author Arjun Sharma
  */
 public final class CreateAccountPanel extends JPanel {
+
+    // the fields for the password
     private final JPasswordField passwordField;
     private final JPasswordField confirmPassword;
+
+    // errors that are set to invisible by default
     private final JLabel passwordMatchError;
     private final JLabel passwordInvalidError;
+    private final JLabel userNameTakenError;
+
+    // listeners for creating a account or going back without creating an account
     private final List<Consumer<Account>> accountCreateListeners = new ArrayList<>();
     private final List<Runnable> backButtonListeners = new ArrayList<>();
-    private final JLabel userNameTakenError;
 
     /**
      * Creates the create account panel

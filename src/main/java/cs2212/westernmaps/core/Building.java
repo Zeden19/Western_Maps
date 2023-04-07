@@ -7,9 +7,17 @@ import java.util.List;
  *
  * @param name   The display name of this building.
  * @param floors The floors contained in this building.
+ *
+ * @author Connor Cummings
  */
 public record Building(String name, List<Floor> floors) {
-    // constructor for the Building Class
+
+    /**
+     * Creates a new building.
+     *
+     * @param name the name of the building
+     * @param floors the floors the building contains, which of are type {@link Floor}
+     */
     public Building {
         floors = List.copyOf(floors);
     }

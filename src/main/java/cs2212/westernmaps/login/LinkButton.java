@@ -9,7 +9,10 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 
 /**
- * A Java Swing button with custom styles to make it look like a link.
+ * A Java Swing button with custom styles to make it look like a link. Used in {@link LoginPanel} and
+ * {@link CreateAccountPanel}.
+ *
+ * @author Connor Cummings
  */
 public final class LinkButton extends JButton {
     /**

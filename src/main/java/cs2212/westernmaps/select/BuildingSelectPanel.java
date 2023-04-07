@@ -15,19 +15,31 @@ import javax.swing.*;
 
 /**
  * Panel for the Building Selection screen.
+ * <p>The panel that allows the user to select a building. This class will send the selected building to the map panel,
+ * which will then display the map for that building.</p>
+ *<br><br>
+ *
+ * The panel is made with the {@link BuildingSelectPanel} constructor method.
+ * @author Christpher Chosang
  */
 public class BuildingSelectPanel extends JPanel {
+
+    // Path to the image of the map of the picture to the right
     private static final String PATH_TO_IMAGE = "/cs2212/westernmaps/building-select/mc.png";
+
+    // The list of buildings that are being displayed in the panel
     private final JList<Building> buildingList;
+    // The error message that is displayed when the user tries to select a building without selecting one
     private final JLabel noBuildingSelectedError;
 
+    // the listeners that are called when the user selects a building
     private final List<Runnable> logOutListeners = new ArrayList<>();
     private final List<Consumer<Building>> buildingSelectListeners = new ArrayList<>();
 
     /**
-     * Construct a new BuildingSelectPanel and initialize all of its fields.
+     * Creates the panel that allows the user to select a building.
      *
-     * @param buildings List of all buildings.
+     * @param buildings is the list of buildings that are being displayed in the panel
      */
     public BuildingSelectPanel(List<Building> buildings) {
         // This determines what MainWindow will use as its title.
@@ -39,14 +51,25 @@ public class BuildingSelectPanel extends JPanel {
         JLabel heading = new JLabel("Select a Building:");
         heading.putClientProperty(FlatClientProperties.STYLE_CLASS, "h0");
 
+        // the building list
         buildingList = new JList<>(buildings.toArray(Building[]::new));
         buildingList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         buildingList.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         buildingList.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
 
+        // the select building button
         var selectButton = new JButton("Select Building");
         selectButton.putClientProperty(FlatClientProperties.STYLE_CLASS, "large");
         selectButton.addActionListener(e -> validateAndSubmit());
+
+        // Temporary code
+        JPanel weather = new JPanel();
+        weather.add(new JLabel("weather"));
+
+        // Create help box
+        JPanel helpBox = new JPanel();
+        helpBox.setLayout(new BoxLayout(helpBox, BoxLayout.PAGE_AXIS));
+        helpBox.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Create back button
         var logOutButton = new JButton("Log Out");
@@ -115,7 +138,7 @@ public class BuildingSelectPanel extends JPanel {
     }
 
     /**
-     * Add a listener for the "Log Out" button.
+     * The log-out listener, which is called when the user clicks the log-out button.
      *
      * @param listener is the listener that will be added to the logOutListeners
      */
@@ -124,7 +147,7 @@ public class BuildingSelectPanel extends JPanel {
     }
 
     /**
-     * Add a listener for the "Select Building" button.
+     * The building select listener, which is called when the user clicks the select building button.
      *
      * @param listener is the listener that will be added to the buildingSelectListeners
      */
@@ -132,6 +155,7 @@ public class BuildingSelectPanel extends JPanel {
         buildingSelectListeners.add(listener);
     }
 
+    // Checking if a building has been submitted.
     private void validateAndSubmit() {
         // Determine which building was selected.
         var selectedBuilding = buildingList.getSelectedValue();

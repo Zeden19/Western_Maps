@@ -10,23 +10,37 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.*;
 
+/**
+ * This class creates the login panel for the application. It does all the necessary checks to make sure the account
+ * exists and the password is valid.
+ *
+ * @author Arjun Sharma
+ * @author Connor Cummings
+ */
 public final class LoginPanel extends JPanel {
+
+    // the fields for the username and password
     private final JTextField usernameField;
     private final JPasswordField passwordField;
-    private final JLabel invalidUserError;
 
-    private final List<Consumer<Account>> loginListeners = new ArrayList<>();
-    private final List<Runnable> createAccountClickListeners = new ArrayList<>();
+    // the errors that are set to invisible by default
+    private final JLabel invalidUserError;
     private final JLabel invalidPasswordError;
 
+    // listeners for logging in and creating an account
+    private final List<Consumer<Account>> loginListeners = new ArrayList<>();
+    private final List<Runnable> createAccountClickListeners = new ArrayList<>();
+
+    /**
+     * Creates the login panel
+     * @param database the database that is used to check the current account
+     */
     public LoginPanel(Database database) {
         // This determines what MainWindow will use as its title.
         setName("Sign In");
 
         // When a GridBagLayout has one child, it will center it.
         setLayout(new GridBagLayout());
-
-        // TODO: Put account icon here as in the wireframe.
 
         // Title
         var title = new JLabel("Sign In");
@@ -88,10 +102,19 @@ public final class LoginPanel extends JPanel {
         add(panel);
     }
 
+    /**
+     * The listener for when the user logs in
+     * @param listener the listener for when the user logs in
+     */
     public void addLoginListener(Consumer<Account> listener) {
         loginListeners.add(listener);
     }
 
+    /**
+     * The listener for when the user creates an account
+     *
+     *  @param listener the listener for when the user creates an accounnt
+     */
     public void addCreateAccountClickListener(Runnable listener) {
         createAccountClickListeners.add(listener);
     }

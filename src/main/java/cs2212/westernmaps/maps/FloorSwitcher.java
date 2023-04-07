@@ -10,7 +10,14 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.*;
 
+/**
+ * A panel that allows the user to switch between different floors of the current building
+ *
+ * @author Connor Cummings
+ */
 public final class FloorSwitcher extends JPanel {
+
+    // The listeners that will be notified when the floor is switched.
     private final List<Consumer<Floor>> floorSwitchListeners = new ArrayList<>();
 
     private final List<FloorButton> floorButtons = new ArrayList<>();

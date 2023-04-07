@@ -9,13 +9,18 @@ import javax.annotation.Nullable;
 
 /**
  * This class creates Help page Indexes
+ *
+ * @author Christopher Chosang
  */
 public final class HelpPageIndex {
     private static final String PAGES_JSON_RESOURCE = HelpPage.HELP_ROOT + "/pages.json";
-
     private final HelpPage rootPage;
     private final Map<String, HelpPage> reverseIndex = new HashMap<>();
 
+    /**
+     * Creates the help page index
+     * @param rootPage is the root page of the help page
+     */
     public HelpPageIndex(HelpPage rootPage) {
         this.rootPage = rootPage;
         buildReverseIndex(rootPage);

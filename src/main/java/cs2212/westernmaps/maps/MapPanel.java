@@ -19,7 +19,12 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
- * This class creates the panel for the maps
+ * This class is the main functionality for the entire application. It provides map view, summary poi view
+ * switching floors, poi list, favourite lists, and the ability to add and delete POIs. The main class this is all done
+ * in is the constructor.
+ * @author Connor Cummings
+ * @author Arjun Sharma
+ * @author Christoper Chosang
  */
 public final class MapPanel extends JPanel {
 

@@ -21,12 +21,22 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+/**
+ * A panel that displays the metadata of a POI, and allows developers to edit it.
+ * The {@link POISummaryPanel} constructor is used to create a new panel that can be toggled on and off. It is used
+ * in the {@link cs2212.westernmaps.maps.MapPanel} class.
+ * @author Christpher Chosang
+ */
 public class POISummaryPanel extends JPanel {
     private static final int MAX_COLUMNS = 20;
 
+    // The POI metadata that is being displayed.
     private @Nullable POI poi;
+
+    // The account that is currently logged in.
     private final Account loggedInAccount;
 
+    // The fields that display the POI metadata and delete functionality
     private final JTextField titleField;
     private final JLabel layerIcon;
     private final JComboBox<Layer> layerComboBox;
@@ -34,11 +44,11 @@ public class POISummaryPanel extends JPanel {
     private final JCheckBox favoriteCheckbox;
     private final JLabel locationLabel;
     private final JTextArea descriptionField;
-
     private final JButton deleteButton;
 
     private boolean currentlyRefreshing = false;
 
+    // Listeners that are called when the POI metadata is changed ot deleted.
     private final List<BiConsumer<POI, POI>> poiChangeListeners = new ArrayList<>();
     private final List<Consumer<POI>> poiDeleteListeners = new ArrayList<>();
 
@@ -137,7 +147,6 @@ public class POISummaryPanel extends JPanel {
 
         // Favorite
         favoriteCheckbox = new JCheckBox("Favourite");
-        // TODO: Add icon here
         favoriteCheckbox.addItemListener(e -> {
             if (poi == null || currentlyRefreshing) {
                 return;
@@ -228,6 +237,7 @@ public class POISummaryPanel extends JPanel {
         setLayout(new GridBagLayout());
         var constraints = new GridBagConstraints();
 
+        // adding components to the panel, by specifying position and size
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.CENTER;
@@ -268,6 +278,7 @@ public class POISummaryPanel extends JPanel {
 
     /**
      * Registers an event listener that is called when a field of the POI summary is edited.
+     *
      * @param listener Event listener, taking two arguments: the old POI and the modified POI.
      */
     public void addPoiChangeListener(BiConsumer<POI, POI> listener) {
@@ -276,12 +287,14 @@ public class POISummaryPanel extends JPanel {
 
     /**
      * Registers an event listener that is called when a POI is deleted.
+     *
      * @param listener Event listener, taking the POI to be deleted as an argument.
      */
     public void addPoiDeleteListener(Consumer<POI> listener) {
         poiDeleteListeners.add(listener);
     }
 
+    // Refreshes the fields of the POI summary to match any changes to the POI.
     private void refreshFields() {
         if (poi == null) {
             return;
@@ -308,6 +321,7 @@ public class POISummaryPanel extends JPanel {
         currentlyRefreshing = false;
     }
 
+    // Adds a component to a box, with a 5px gap between components.
     private static void addToBox(JPanel box, JComponent component) {
         box.add(component);
         component.setAlignmentX(LEFT_ALIGNMENT);

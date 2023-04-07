@@ -18,7 +18,9 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 /**
- * this class creates the actual Help window of the application
+ * This class creates the actual Help window of the application
+ *
+ * @author Christopher Chosang
  */
 public class HelpWindow extends JFrame {
     private static @Nullable HelpWindow openedWindow = null;
@@ -155,6 +157,8 @@ public class HelpWindow extends JFrame {
 
     /**
      * This class is used for when certain actions are done by the user
+     *
+     * @author Connor Cummings
      */
     public static class ShowAction extends AbstractAction {
         private static @Nullable HelpPageIndex index = null;
