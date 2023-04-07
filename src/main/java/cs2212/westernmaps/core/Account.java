@@ -1,5 +1,7 @@
 package cs2212.westernmaps.core;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.IntSequenceGenerator;
 import cs2212.westernmaps.login.PasswordAuthenticator;
 import java.util.Arrays;
 
@@ -15,6 +17,7 @@ import java.util.Arrays;
  *                     reasons, the actual password is never saved.
  * @param developer    Whether this account is a developer account.
  */
+@JsonIdentityInfo(generator = IntSequenceGenerator.class, scope = Account.class)
 public record Account(String username, String passwordHash, boolean developer) {
     /**
      * Changes the password this account uses to log in.

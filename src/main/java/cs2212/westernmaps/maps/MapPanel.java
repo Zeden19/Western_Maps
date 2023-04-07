@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.*;
 
 public final class MapPanel extends JPanel {
     private final Database database;
     private final Building building;
+    private final Account loggedInAccount;
     private Floor currentFloor;
 
     private final MapViewerPanel mapViewer;
@@ -23,9 +25,12 @@ public final class MapPanel extends JPanel {
     private final JList<POI> poiList = new JList<>();
     private final JList<POI> favoritesList = new JList<>();
 
+    private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
+
     public MapPanel(Database database, Building building, Account loggedInAccount) {
         this.database = database;
         this.building = building;
+        this.loggedInAccount = loggedInAccount;
 
         // This determines what MainWindow will use as its title.
         setName(building.name());
@@ -36,7 +41,7 @@ public final class MapPanel extends JPanel {
         currentFloor = building.floors().get(0);
         var initialMapUri = database.resolveFloorMapUri(currentFloor);
 
-        poiSummaryPanel = new POISummaryPanel(loggedInAccount.developer());
+        poiSummaryPanel = new POISummaryPanel(loggedInAccount);
         poiSummaryPanel.setVisible(false);
 
         poiSummaryPanel.addPoiChangeListener((oldPoi, newPoi) -> {
@@ -93,6 +98,7 @@ public final class MapPanel extends JPanel {
             refreshPois();
         });
         mapViewer.setPoiMoveCondition(poi -> loggedInAccount.developer() || poi.layer() == Layer.CUSTOM);
+        mapViewer.setPoiVisibleCondition(poi -> isLayerVisible(poi.layer()) && isPoiVisible(poi));
         refreshPois();
 
         var floatingControls = createFloatingControls(building);
@@ -139,7 +145,8 @@ public final class MapPanel extends JPanel {
             var location = new Point(mapViewerBounds.width / 2, mapViewerBounds.height / 2);
             mapViewer.componentToMapPosition(location, location);
 
-            var poi = new POI("New POI", "", location.x, location.y, false, currentFloor, Layer.CUSTOM);
+            var poi = new POI(
+                    "New POI", "", location.x, location.y, Set.of(), currentFloor, Layer.CUSTOM, loggedInAccount);
             poiSummaryPanel.setCurrentPoi(poi);
             poiSummaryPanel.setVisible(true);
 
@@ -170,8 +177,9 @@ public final class MapPanel extends JPanel {
 
     // updating the favourites POI list
     private void updateFavouritePOIs(Database database) {
-        POI[] poisToAdd =
-                database.getCurrentState().pois().stream().filter(POI::favorite).toArray(POI[]::new);
+        POI[] poisToAdd = database.getCurrentState().pois().stream()
+                .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount) && isPoiVisible(poi))
+                .toArray(POI[]::new);
         favoritesList.setListData(poisToAdd);
     }
 
@@ -209,7 +217,7 @@ public final class MapPanel extends JPanel {
 
     private JPanel createFloatingControls(Building building) {
         var layerVisibilityPanel = new LayerVisibilityPanel(EnumSet.allOf(Layer.class));
-        layerVisibilityPanel.addLayerToggleListener(mapViewer::setLayerVisible);
+        layerVisibilityPanel.addLayerToggleListener(this::setLayerVisible);
 
         var floorSwitcher = new FloorSwitcher(building.floors());
         floorSwitcher.addFloorSwitchListener(this::changeToFloor);
@@ -249,10 +257,38 @@ public final class MapPanel extends JPanel {
 
     private void refreshPois() {
         var pois = database.getCurrentState().pois().stream()
-                .filter(poi -> poi.floor().equals(currentFloor))
+                .filter(poi -> poi.floor().equals(currentFloor) && isPoiVisible(poi))
                 .toList();
         mapViewer.setDisplayedPois(pois);
         poiList.setListData(pois.toArray(POI[]::new));
+    }
+
+    private boolean isPoiVisible(POI poi) {
+        return poi.onlyVisibleTo() == null || poi.onlyVisibleTo().equals(loggedInAccount);
+    }
+
+    /**
+     * Determines if the given {@linkplain Layer layer} is currently visible.
+     *
+     * @return Whether the given layer is visible.
+     */
+    private boolean isLayerVisible(Layer layer) {
+        return visibleLayers.contains(layer);
+    }
+
+    /**
+     * Changes the visibility of the given {@linkplain Layer layer}.
+     *
+     * @param layer   The layer to change the visibility of.
+     * @param visible Whether the layer should be visible.
+     */
+    private void setLayerVisible(Layer layer, boolean visible) {
+        if (visible) {
+            visibleLayers.add(layer);
+        } else {
+            visibleLayers.remove(layer);
+        }
+        repaint();
     }
 
     public void addBackListener(Runnable listener) {
