@@ -19,20 +19,6 @@ import java.util.Arrays;
  */
 @JsonIdentityInfo(generator = IntSequenceGenerator.class, scope = Account.class)
 public record Account(String username, String passwordHash, boolean developer) {
-    /**
-     * Changes the password this account uses to log in.
-     *
-     * <p>It is recommended to clear the {@code password} array using
-     * {@link Arrays#fill} once it is no longer needed to prevent it from
-     * staying in memory longer than necessary.</p>
-     *
-     * @param password The new password.
-     * @return         A copy of this account with the {@link #passwordHash()}
-     *                 updated.
-     */
-    public Account withPassword(char[] password) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     /**
      * Checks if the given password matches this account's password.

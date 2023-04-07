@@ -47,10 +47,6 @@ public final class MapRenderCache {
         invalidateCache();
     }
 
-    public double getScale() {
-        return scale;
-    }
-
     public void setScale(double scale) {
         if (this.scale != scale) {
             invalidateCache();

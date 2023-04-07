@@ -85,16 +85,6 @@ public final class LayerVisibilityPanel extends JPanel {
     }
 
     /**
-     * Determines if the given {@linkplain Layer layer} is currently checked.
-     *
-     * @return Whether the given layer is checked.
-     */
-    private boolean isLayerChecked(Layer layer) {
-        var checkbox = Objects.requireNonNull(layerCheckboxes.get(layer), "All layers must have a checkbox");
-        return checkbox.isSelected();
-    }
-
-    /**
      * Changes the state of the checkbox for the given {@linkplain Layer layer}.
      *
      * @param layer   The layer to change the state of.
