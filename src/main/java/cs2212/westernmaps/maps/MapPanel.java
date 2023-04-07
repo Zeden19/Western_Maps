@@ -58,12 +58,11 @@ public final class MapPanel extends JPanel {
     private JLabel databaseSaved = new JLabel();
     // the save failed label, used to display the save failed message
     private JLabel saveFailed = new JLabel();
+    // the opacity of the save status labels, 0x00-0xFF
+    private int saveStatusOpacity = 0xFF;
 
     // A timer that is used to cause database failed/saved text to disappear after the most recent change.
-    private final Timer timer = new Timer(2000, e -> {
-        databaseSaved.setVisible(false);
-        saveFailed.setVisible(false);
-    });
+    private final Timer timer;
 
     private final Account loggedInAccount;
 
@@ -90,6 +89,18 @@ public final class MapPanel extends JPanel {
 
         // for everything at the top of the map panel, like search, back, and create poi.
         var toolbar = createToolbar(building, database);
+
+        timer = new Timer(15, e -> {});
+        timer.addActionListener(e -> {
+            saveStatusOpacity -= 6;
+            if (saveStatusOpacity > 0) {
+                setLabelOpacity(databaseSaved, saveStatusOpacity);
+            } else {
+                databaseSaved.setVisible(false);
+                timer.stop();
+            }
+        });
+        timer.setInitialDelay(2000);
 
         currentFloor = building.floors().get(0);
         floorSwitcher = new FloorSwitcher(building.floors());
@@ -563,11 +574,19 @@ public final class MapPanel extends JPanel {
 
     // Showing the database saved label
     private void showLabelTemporarily(JLabel label) {
-        timer.restart();
+        databaseSaved.setVisible(false);
+        saveFailed.setVisible(false);
         label.setVisible(true);
-        timer.setDelay(2000);
-        timer.setRepeats(false);
-        timer.start();
+
+        setLabelOpacity(label, 0xFF);
+        saveStatusOpacity = 0xFF;
+        timer.restart();
+    }
+
+    private static void setLabelOpacity(JLabel label, int alpha) {
+        var color = label.getForeground();
+        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+        label.setForeground(color);
     }
 
     // Used to render small grey text beside search and favourites list
