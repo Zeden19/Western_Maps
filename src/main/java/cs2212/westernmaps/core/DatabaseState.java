@@ -48,16 +48,6 @@ public record DatabaseState(List<Account> accounts, List<Building> buildings, Li
     }
 
     /**
-     * Updates the list of buildings in this database state.
-     *
-     * @param operation A function that updates the list of buildings.
-     * @return          A new state containing the updated list of buildings.
-     */
-    public DatabaseState modifyBuildings(Function<List<Building>, List<Building>> operation) {
-        return new DatabaseState(accounts(), operation.apply(buildings()), pois());
-    }
-
-    /**
      * Updates the list of POIs in this database state.
      *
      * @param operation A function that updates the list of POIs.

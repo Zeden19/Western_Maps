@@ -43,13 +43,6 @@ public final class Database {
         return mapPath.toUri();
     }
 
-    public void reload() throws IOException {
-        try (var stream = Files.newInputStream(jsonFile)) {
-            var state = DatabaseState.loadFromStream(stream);
-            getHistory().replaceHistoryWithState(state);
-        }
-    }
-
     public void save() throws IOException {
         try (var stream = Files.newOutputStream(jsonFile)) {
             getCurrentState().saveToStream(stream);

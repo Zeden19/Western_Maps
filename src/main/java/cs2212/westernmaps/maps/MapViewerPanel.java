@@ -194,22 +194,6 @@ public final class MapViewerPanel extends JPanel {
     }
 
     /**
-     * Converts a position from map-space to component-space.
-     *
-     * <p><i>Map-space</i> is the coordinate space used for POIs on the map and
-     * <i>component-space</i> is the coordinate space used by this Swing
-     * component (for example, the position in mouse events).</p>
-     *
-     * @param mapPos       The position to convert.
-     * @param componentPos The point to set to the converted position.
-     * @return             A copy of {@code componentPos} for convenience.
-     */
-    public Point mapToComponentPosition(Point mapPos, Point componentPos) {
-        transform.transform(mapPos, componentPos);
-        return componentPos;
-    }
-
-    /**
      * Converts a position from component-space to map-space.
      *
      * <p><i>Map-space</i> is the coordinate space used for POIs on the map and
@@ -264,18 +248,10 @@ public final class MapViewerPanel extends JPanel {
         this.cursorComponent = cursorComponent == null ? this : cursorComponent;
     }
 
-    public URI getCurrentMapUri() {
-        return currentMapUri;
-    }
-
     public void setCurrentMapUri(URI uri) {
         renderCache.setDiagram(universe.getDiagram(uri));
         this.currentMapUri = uri;
         repaint();
-    }
-
-    public List<POI> getDisplayedPois() {
-        return displayedPois;
     }
 
     public void setDisplayedPois(List<POI> pois) {
