@@ -98,7 +98,7 @@ public final class MapPanel extends JPanel {
             refreshPois();
         });
         mapViewer.setPoiMoveCondition(poi -> loggedInAccount.developer() || poi.layer() == Layer.CUSTOM);
-        mapViewer.setPoiVisibleCondition(this::isPoiVisible);
+        mapViewer.setPoiVisibleCondition(poi -> isLayerVisible(poi.layer()) && isPoiVisible(poi));
         refreshPois();
 
         var floatingControls = createFloatingControls(building);
@@ -178,7 +178,7 @@ public final class MapPanel extends JPanel {
     // updating the favourites POI list
     private void updateFavouritePOIs(Database database) {
         POI[] poisToAdd = database.getCurrentState().pois().stream()
-                .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount))
+                .filter(poi -> poi.isFavoriteOfAccount(loggedInAccount) && isPoiVisible(poi))
                 .toArray(POI[]::new);
         favoritesList.setListData(poisToAdd);
     }
@@ -257,20 +257,13 @@ public final class MapPanel extends JPanel {
 
     private void refreshPois() {
         var pois = database.getCurrentState().pois().stream()
-                .filter(poi -> poi.floor().equals(currentFloor))
+                .filter(poi -> poi.floor().equals(currentFloor) && isPoiVisible(poi))
                 .toList();
         mapViewer.setDisplayedPois(pois);
         poiList.setListData(pois.toArray(POI[]::new));
     }
 
     private boolean isPoiVisible(POI poi) {
-        // If the POI's layer is invisible, the POI should never be shown.
-        if (!isLayerVisible(poi.layer())) {
-            return false;
-        }
-
-        // Otherwise, the POI should only be shown if it is visible to the
-        // logged in account or to everyone.
         return poi.onlyVisibleTo() == null || poi.onlyVisibleTo().equals(loggedInAccount);
     }
 
