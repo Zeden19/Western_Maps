@@ -11,8 +11,10 @@ import java.util.function.Consumer;
 import javax.swing.*;
 
 /**
- * This class creates the login panel for the application. It does all the necessary checks to make sure the account
- * exists and the password is valid.
+ * The login panel for the application.
+ *
+ * <p>This panel does all the necessary checks to make sure the account exists
+ * and the password is valid before allowing the user to log in.</p>
  *
  * @author Arjun Sharma
  * @author Connor Cummings

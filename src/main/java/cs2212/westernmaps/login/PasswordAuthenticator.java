@@ -14,7 +14,7 @@ import javax.crypto.spec.PBEKeySpec;
 /**
  * Hash passwords for storage, and test passwords against password tokens.
  *
- * Instances of this class can be used concurrently by multiple threads.
+ * <p>Instances of this class can be used concurrently by multiple threads.</p>
  *
  * @author Erickson
  * @see <a href="http://stackoverflow.com/a/2861125/3474">StackOverflow</a>

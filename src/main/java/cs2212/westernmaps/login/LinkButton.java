@@ -9,15 +9,15 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 
 /**
- * A Java Swing button with custom styles to make it look like a link. Used in {@link LoginPanel} and
- * {@link CreateAccountPanel}.
+ * A Java Swing button with custom styles to make it look like a link.
  *
  * @author Connor Cummings
  */
 public final class LinkButton extends JButton {
     /**
-     * This constructor creates the link Button for the application
-     * @param text the text that is being added to the link button
+     * Creates a new link button.
+     *
+     * @param text The text to display on the button.
      */
     public LinkButton(String text) {
         super(text);
@@ -37,6 +37,7 @@ public final class LinkButton extends JButton {
         // Show the "pointing" mouse cursor when hovering over the button.
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
+
     // setting the underline for the text in the panel to add a nicer look to panel
     private void setUnderlined() {
         var font = getFont();

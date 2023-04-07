@@ -18,7 +18,7 @@ import javax.swing.*;
 
 /**
  * This class creates the main window for the application.
- * Through this class, we switch between the different panels, such as building select, create account login, and map.
+ * <p> Through this class, we switch between the different panels, such as building select, create account login, and map. </p>
  * @author Arjun Sharma
  * @author Connor Cummings
  */

@@ -15,11 +15,13 @@ import javax.swing.*;
 
 /**
  * Panel for the Building Selection screen.
- * <p>The panel that allows the user to select a building. This class will send the selected building to the map panel,
- * which will then display the map for that building.</p>
- *<br><br>
  *
- * The panel is made with the {@link BuildingSelectPanel} constructor method.
+ * <p>The panel that allows the user to select a building. This class will send
+ * the selected building to the map panel, which will then display the map for
+ * that building.</p>
+ *
+ * <p>The panel is made with the {@link BuildingSelectPanel} constructor.</p>
+ *
  * @author Christpher Chosang
  */
 public class BuildingSelectPanel extends JPanel {
@@ -39,7 +41,7 @@ public class BuildingSelectPanel extends JPanel {
     /**
      * Creates the panel that allows the user to select a building.
      *
-     * @param buildings is the list of buildings that are being displayed in the panel
+     * @param buildings the list of buildings that are being displayed in the panel
      */
     public BuildingSelectPanel(List<Building> buildings) {
         // This determines what MainWindow will use as its title.

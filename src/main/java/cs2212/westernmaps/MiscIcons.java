@@ -5,7 +5,7 @@ import javax.swing.Icon;
 
 /**
  * A miscellaneous icon used by the application, specifically the close icon.
- * It is used in the POI summary panel, and the layer panel in the map view to close those respective windows.
+ * <p> It is used in the POI summary panel, and the layer panel in the map view to close those respective windows. </p>
  * @author Connor Cummings
  */
 public final class MiscIcons {

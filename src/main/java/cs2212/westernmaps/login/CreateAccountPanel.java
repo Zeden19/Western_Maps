@@ -15,8 +15,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 /**
- * This class creates the account panel for the application. It does all the necessary checks to make sure the account
- * is valid, such as password and username checks
+ * The create account panel for the application.
+ *
+ * <p>It does all the necessary checks to make sure the account is valid before
+ * creating it, such as password and username checks.</p>
  *
  * @author Arjun Sharma
  */
@@ -37,7 +39,7 @@ public final class CreateAccountPanel extends JPanel {
 
     /**
      * Creates the create account panel
-     * @param database is the database used for the application
+     * @param database the database used for the application
      */
     public CreateAccountPanel(Database database) {
         // This determines what MainWindow will use as its title.
@@ -166,14 +168,14 @@ public final class CreateAccountPanel extends JPanel {
 
     /**
      * This method adds listeners to the accountCreateListeners
-     * @param listener is the listener being added
+     * @param listener the listener being added
      */
     public void addAccountCreateListener(Consumer<Account> listener) {
         accountCreateListeners.add(listener);
     }
     /**
      * This method adds listeners to the backButtonListeners
-     * @param listener is the listener being added
+     * @param listener the listener being added
      */
     public void addBackListener(Runnable listener) {
         backButtonListeners.add(listener);

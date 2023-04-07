@@ -19,9 +19,11 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
- * This class is the main functionality for the entire application. It provides map view, summary poi view
- * switching floors, poi list, favourite lists, and the ability to add and delete POIs. The main class this is all done
- * in is the constructor.
+ * The main map screen of the application.
+ *
+ * <p>It provides a map viewer, POI summary view, floor switcher, POI list,
+ * favourite POI list, and the ability to add and delete POIs.</p>
+ *
  * @author Connor Cummings
  * @author Arjun Sharma
  * @author Christoper Chosang
@@ -80,7 +82,7 @@ public final class MapPanel extends JPanel {
 
 
     /**
-     * Creates the map panel
+     * Creates a new map panel.
      *
      * @param database is the database that is for the application
      * @param building is the building that is selected
@@ -579,8 +581,9 @@ public final class MapPanel extends JPanel {
     }
 
     /**
-     * adds listeners to the backListeners
-     * @param listener is the listener that will be added to backListeners
+     * Registers a listener that will be called when the back button is clicked.
+     *
+     * @param listener The listener to add.
      */
     public void addBackListener(Runnable listener) {
         backListeners.add(listener);

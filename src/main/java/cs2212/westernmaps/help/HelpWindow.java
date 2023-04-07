@@ -18,9 +18,9 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 /**
- * This class creates the actual Help window of the application
+ * The help window of the application used to display help pages.
  *
- * @author Christopher Chosang
+ * @author Connor Cummings
  */
 public class HelpWindow extends JFrame {
     private static @Nullable HelpWindow openedWindow = null;
@@ -30,8 +30,9 @@ public class HelpWindow extends JFrame {
     // Creating the help page for the actual application
 
     /**
-     * This constructor creates the help window of the application
-     * @param index represents the window of the current help page
+     * Creates the help window of the application.
+     *
+     * @param index An index of the help pages to display.
      */
     public HelpWindow(HelpPageIndex index) {
         super(Main.APPLICATION_NAME + " Help");
@@ -156,7 +157,7 @@ public class HelpWindow extends JFrame {
     }
 
     /**
-     * This class is used for when certain actions are done by the user
+     * An action that opens the help window, creating one if it doesn't exist.
      *
      * @author Connor Cummings
      */
@@ -164,7 +165,7 @@ public class HelpWindow extends JFrame {
         private static @Nullable HelpPageIndex index = null;
 
         /**
-         * The constructor for the ShowAction class
+         * Creates a new help action.
          */
         public ShowAction() {
             super("Help");
@@ -173,8 +174,12 @@ public class HelpWindow extends JFrame {
         }
 
         /**
-         * This method makes a new window or focuses it when the action is performed
-         * @param actionEvent the event to be processed by the program
+         * Shows the help window to the user.
+         *
+         * <p>This method will either make a new help window or focuses an
+         * existing one.</p>
+         *
+         * @param actionEvent The event that triggered the window to open.
          */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {

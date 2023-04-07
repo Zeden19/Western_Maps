@@ -11,7 +11,7 @@ package cs2212.westernmaps.help;
  */
 public final class InvalidHelpException extends RuntimeException {
     /**
-     * Create a new {@link InvalidHelpException} that was caused by another
+     * Creates a new {@link InvalidHelpException} that was caused by another
      * exception.
      *
      * @param inner The exception that caused the error.
@@ -21,7 +21,7 @@ public final class InvalidHelpException extends RuntimeException {
     }
 
     /**
-     * Create a new {@link InvalidHelpException} with a custom message.
+     * Creates a new {@link InvalidHelpException} with a custom message.
      *
      * @param message The message to display.
      */

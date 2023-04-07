@@ -294,12 +294,23 @@ public final class MapViewerPanel extends JPanel {
         this.cursorComponent = cursorComponent == null ? this : cursorComponent;
     }
 
+    /**
+     * Sets the current displayed map.
+     *
+     * @param uri The URI of the map to display.
+     */
     public void setCurrentMapUri(URI uri) {
         renderCache.setDiagram(universe.getDiagram(uri));
         this.currentMapUri = uri;
         repaint();
     }
 
+
+    /**
+     * Sets the POIs that are currently displayed on the map.
+     *
+     * @param pois The POIs to display.
+     */
     public void setDisplayedPois(List<POI> pois) {
         displayedPois = pois;
         // TODO: Refresh the hovered POI here.

@@ -23,8 +23,8 @@ import javax.swing.text.Document;
 
 /**
  * A panel that displays the metadata of a POI, and allows developers to edit it.
- * The {@link POISummaryPanel} constructor is used to create a new panel that can be toggled on and off. It is used
- * in the {@link cs2212.westernmaps.maps.MapPanel} class.
+ * <p>The {@link POISummaryPanel} constructor is used to create a new panel that can be toggled on and off. It is used
+ * in the {@link cs2212.westernmaps.maps.MapPanel} class.</p>
  * @author Christpher Chosang
  */
 public class POISummaryPanel extends JPanel {

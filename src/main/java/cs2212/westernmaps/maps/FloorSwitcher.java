@@ -11,7 +11,8 @@ import java.util.function.Consumer;
 import javax.swing.*;
 
 /**
- * A panel that allows the user to switch between different floors of the current building
+ * A panel that allows the user to switch between different floors of the
+ * current building.
  *
  * @author Connor Cummings
  */
@@ -70,8 +71,12 @@ public final class FloorSwitcher extends JPanel {
     /**
 =======
      * adds listeners to the floorSwitchListeners
+<<<<<<< HEAD
 >>>>>>> 8f07257 (Add javadoc fixes to FloorSwitcher.java)
      * @param listener is the listener being added to the floor switcher
+=======
+     * @param listener the listener being added to the floor switcher
+>>>>>>> b43fee5 (Add javadoc and fix formatting for current javadoc)
      */
     public void addFloorSwitchListener(Consumer<Floor> listener) {
         floorSwitchListeners.add(listener);
@@ -84,7 +89,7 @@ public final class FloorSwitcher extends JPanel {
 
         /**
          * Creates the floor button
-         * @param floor is the floor of the button being made
+         * @param floor the floor of the button being made
          */
         public FloorButton(Floor floor) {
             super(floor.shortName());

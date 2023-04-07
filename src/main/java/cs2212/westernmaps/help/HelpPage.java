@@ -10,9 +10,12 @@ import javax.annotation.Nullable;
 import javax.swing.tree.TreeNode;
 
 /**
- * This class is for the Help page that is implemented in the application. It implements the TreeNode class in java
+ * This class is for the Help page that is implemented in the application.
  *
- * @author Christopher Chosang
+ * <p>It implements the {@link TreeNode} interface so it can be used with a
+ * {@link javax.swing.JTree} component.</p>
+ *
+ * @author Connor Cummings
  */
 public class HelpPage implements TreeNode {
     // declaring the classes private and public variables
@@ -24,9 +27,10 @@ public class HelpPage implements TreeNode {
     private @Nullable HelpPage parent = null;
 
     /**
-     * Creates the help page name and number of subpages
-     * @param name the name of the help page
-     * @param subpages the list of subpages that are in the help page
+     * Creates a new help page.
+     *
+     * @param name     The name of the new help page.
+     * @param subpages The list of subpages of the new help page.
      */
     @JsonCreator
     public HelpPage(@JsonProperty("name") String name, @JsonProperty("subpages") @Nullable List<HelpPage> subpages) {
@@ -43,33 +47,39 @@ public class HelpPage implements TreeNode {
     }
 
     /**
-     * Getter for the name of the help page
-     * @return the name of the help page
+     * Gets the name of this help page.
+     *
+     * @return The name of this help page.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Getter for the list of subpages
-     * @return the list of subpages
+     * Gets the list of subpages of this page.
+     *
+     * @return A list of help pages.
      */
     public List<HelpPage> getSubpages() {
         return subpages;
     }
 
     /**
-     * Getter for the parent page
-     * @return the parent page to the subpage
+     * Gets the parent page of this help page.
+     *
+     * @return A help page that is the parent of this help page.
      */
     public @Nullable HelpPage getParentPage() {
         return parent;
     }
 
     /**
-     * Getter for the content URL of the help page
-     * @return the content URL in the help page. It's used to find out where in the help page the user is and keep track
-     * of where in the help pages they are.
+     * Determines the content URL of this help page.
+     *
+     * <p>This is used to load the content of the help page later, and will
+     * point to a Java resource.</p>
+     *
+     * @return The URL of the content of this help page.
      */
     public URL getContentURL() {
         var prefix = contentPathWithoutExtension();
