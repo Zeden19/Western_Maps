@@ -82,8 +82,23 @@ public final class MainWindow extends JFrame {
             if (loggedInAccount == null) {
                 throw new IllegalStateException("No account is logged in.");
             }
-            var mapPanel = new MapPanel(database, building, loggedInAccount);
+
+            // glass pane used for the search bar being overlay on the map screen
+            setGlassPane(new JComponent() {});
+
+            Container glassPane = (Container) getGlassPane();
+            var mapPanel = new MapPanel(database, building, loggedInAccount, glassPane);
             mapPanel.addBackListener(() -> changeTo(buildingSelectPanel));
+            mapPanel.addBackListener(() -> {
+                glassPane.setVisible(false);
+                changeTo(buildingSelectPanel);
+            });
+
+            String developerModeSuffix = loggedInAccount.developer() ? " (Developer Mode)" : "";
+
+            mapPanel.addBuildingChangeListeners(
+                    newBuilding -> setTitle(Main.APPLICATION_NAME + ": " + newBuilding.name() + developerModeSuffix));
+
             changeTo(mapPanel);
         });
 

@@ -230,6 +230,29 @@ public final class MapViewerPanel extends JPanel {
     }
 
     /**
+     * Scrolls this map such that the given POI is in the center of the view.
+     *
+     * <p>If the map is zoomed out further than the default, then the map will
+     * be zoomed in to the default zoom level.</p>
+     *
+     * @param poi The POI to center the view on.
+     */
+    public void scrollPoiToCenter(POI poi) {
+        var bounds = getBounds();
+
+        // Get the map-space position at the current center of the map.
+        var location = new Point(bounds.width / 2, bounds.height / 2);
+        componentToMapPosition(location, location);
+
+        // Since the transform only permits relative movement, we have to
+        // calculate the difference from the current position.
+        var deltaX = location.x - poi.x();
+        var deltaY = location.y - poi.y();
+        transform.translate(deltaX, deltaY);
+        repaint();
+    }
+
+    /**
      * Sets the component that receives cursor changes from this panel.
      *
      * <p>This is needed because, when using a {@link JLayeredPane}, only the

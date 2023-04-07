@@ -7,10 +7,8 @@ import cs2212.westernmaps.core.Layer;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
-import java.util.EnumSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -20,6 +18,8 @@ import javax.swing.*;
  * {@linkplain Layer POI layers} on the map.
  */
 public final class LayerVisibilityPanel extends JPanel {
+    private final EnumMap<Layer, JCheckBox> layerCheckboxes = new EnumMap<>(Layer.class);
+
     private final List<BiConsumer<Layer, Boolean>> layerToggleListeners = new ArrayList<>();
 
     /**
@@ -55,6 +55,7 @@ public final class LayerVisibilityPanel extends JPanel {
             constraints.gridx = 0;
             constraints.weightx = 0.0;
             innerPanel.add(checkbox, constraints);
+            layerCheckboxes.put(layer, checkbox);
 
             var label = new JLabel(layer.getDisplayName(), layer.getIcon(), SwingConstants.LEADING);
             constraints.gridx = 1;
@@ -81,6 +82,27 @@ public final class LayerVisibilityPanel extends JPanel {
 
         add(expandButton, "Collapsed");
         add(innerPanel, "Expanded");
+    }
+
+    /**
+     * Determines if the given {@linkplain Layer layer} is currently checked.
+     *
+     * @return Whether the given layer is checked.
+     */
+    private boolean isLayerChecked(Layer layer) {
+        var checkbox = Objects.requireNonNull(layerCheckboxes.get(layer), "All layers must have a checkbox");
+        return checkbox.isSelected();
+    }
+
+    /**
+     * Changes the state of the checkbox for the given {@linkplain Layer layer}.
+     *
+     * @param layer   The layer to change the state of.
+     * @param checked Whether the layer should be checked.
+     */
+    public void setLayerChecked(Layer layer, boolean checked) {
+        var checkbox = Objects.requireNonNull(layerCheckboxes.get(layer), "All layers must have a checkbox");
+        checkbox.setSelected(checked);
     }
 
     /**

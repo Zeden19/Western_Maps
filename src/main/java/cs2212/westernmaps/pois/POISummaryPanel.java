@@ -37,6 +37,8 @@ public class POISummaryPanel extends JPanel {
 
     private final JButton deleteButton;
 
+    private boolean currentlyRefreshing = false;
+
     private final List<BiConsumer<POI, POI>> poiChangeListeners = new ArrayList<>();
     private final List<Consumer<POI>> poiDeleteListeners = new ArrayList<>();
 
@@ -68,7 +70,7 @@ public class POISummaryPanel extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if (poi == null) {
+                if (poi == null || currentlyRefreshing) {
                     return;
                 }
 
@@ -102,7 +104,7 @@ public class POISummaryPanel extends JPanel {
         layerComboBox.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (poi == null) {
+                if (poi == null || currentlyRefreshing) {
                     return;
                 }
 
@@ -137,7 +139,7 @@ public class POISummaryPanel extends JPanel {
         favoriteCheckbox = new JCheckBox("Favourite");
         // TODO: Add icon here
         favoriteCheckbox.addItemListener(e -> {
-            if (poi == null) {
+            if (poi == null || currentlyRefreshing) {
                 return;
             }
 
@@ -171,7 +173,7 @@ public class POISummaryPanel extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if (poi == null) {
+                if (poi == null || currentlyRefreshing) {
                     return;
                 }
 
@@ -198,7 +200,7 @@ public class POISummaryPanel extends JPanel {
         deleteButton.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (poi == null) {
+                if (poi == null || currentlyRefreshing) {
                     return;
                 }
 
@@ -285,6 +287,8 @@ public class POISummaryPanel extends JPanel {
             return;
         }
 
+        currentlyRefreshing = true;
+
         titleField.setText(poi.name());
         layerIcon.setIcon(poi.layer().getIcon());
         layerComboBox.setSelectedItem(poi.layer());
@@ -300,6 +304,8 @@ public class POISummaryPanel extends JPanel {
         layerLabel.setVisible(!developer);
         descriptionField.setEditable(editEverything);
         deleteButton.setVisible(editEverything);
+
+        currentlyRefreshing = false;
     }
 
     private static void addToBox(JPanel box, JComponent component) {
