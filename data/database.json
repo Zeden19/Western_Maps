@@ -114,16 +114,16 @@
       "favoriteOf": [],
       "floor": 1,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator A",
-      "x": 948,
-      "y": 466
+      "name": "MC Elevator A-G",
+      "x": 947,
+      "y": 465
     },
     {
       "description": "Elevator that can take you up to the Fourth Floor",
       "favoriteOf": [],
       "floor": 1,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator C",
+      "name": "MC Elevator C-G",
       "x": 1334,
       "y": 650
     },
@@ -132,18 +132,18 @@
       "favoriteOf": [],
       "floor": 1,
       "layer": "UTILITIES",
-      "name": "Electrical Room",
-      "x": 868,
-      "y": 533
+      "name": "Electrical 1",
+      "x": 870,
+      "y": 527
     },
     {
       "description": "Graduate student pub and eatery.",
       "favoriteOf": [],
       "floor": 1,
-      "layer": "EATERIES",
+      "layer": "WASHROOMS",
       "name": "Grad Club",
-      "x": 825,
-      "y": 319
+      "x": 824,
+      "y": 312
     },
     {
       "description": "Patio for the graduate student pub and eatery.",
@@ -204,7 +204,7 @@
       "favoriteOf": [],
       "floor": 2,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator A",
+      "name": "MC Elevator A-1",
       "x": 951,
       "y": 466
     },
@@ -213,7 +213,7 @@
       "favoriteOf": [],
       "floor": 2,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator C",
+      "name": "MC Elevator C-1",
       "x": 1336,
       "y": 650
     },
@@ -276,7 +276,7 @@
       "favoriteOf": [],
       "floor": 3,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator C",
+      "name": "MC Elevator C-2",
       "x": 1336,
       "y": 650
     },
@@ -286,8 +286,8 @@
       "floor": 3,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Women's Washroom",
-      "x": 713,
-      "y": 521
+      "x": 711,
+      "y": 512
     },
     {
       "description": "Barrier Free Men's Washroom.",
@@ -304,15 +304,15 @@
       "floor": 4,
       "layer": "UTILITIES",
       "name": "Server Room",
-      "x": 864,
-      "y": 391
+      "x": 862,
+      "y": 388
     },
     {
-      "description": "Elevator that can take you down to Ground Floor.",
+      "description": "Elevator that can take you down to the 4th or lower floors",
       "favoriteOf": [],
       "floor": 4,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator A",
+      "name": "MC Elevator A-3",
       "x": 951,
       "y": 464
     },
@@ -321,7 +321,7 @@
       "favoriteOf": [],
       "floor": 4,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator C",
+      "name": "MC Elevator C-3",
       "x": 1336,
       "y": 650
     },
@@ -344,11 +344,11 @@
       "y": 459
     },
     {
-      "description": "Elevator that can take you down to Ground floor.",
+      "description": "Elevator that can take you down to the lower floors",
       "favoriteOf": [],
       "floor": 5,
       "layer": "ACCESSIBILITY",
-      "name": "MC Elevator C",
+      "name": "MC Elevator C-4",
       "x": 1336,
       "y": 650
     },
@@ -366,7 +366,7 @@
       "favoriteOf": [],
       "floor": 6,
       "layer": "LOUNGES",
-      "name": "Talbot College Theatre",
+      "name": "Paul Davenport Theatre",
       "x": 525,
       "y": 523
     },
@@ -375,7 +375,7 @@
       "favoriteOf": [],
       "floor": 6,
       "layer": "ACCESSIBILITY",
-      "name": "TC Elevator A",
+      "name": "TC Elevator A-1",
       "x": 398,
       "y": 472
     },
@@ -384,7 +384,7 @@
       "favoriteOf": [],
       "floor": 6,
       "layer": "EATERIES",
-      "name": "Talbot College Encore Cafe",
+      "name": "Encore Cafe",
       "x": 595,
       "y": 336
     },
@@ -429,7 +429,7 @@
       "favoriteOf": [],
       "floor": 7,
       "layer": "ACCESSIBILITY",
-      "name": "TC Elevator A",
+      "name": "TC Elevator A-2",
       "x": 497,
       "y": 521
     },
@@ -447,9 +447,9 @@
       "favoriteOf": [],
       "floor": 7,
       "layer": "WASHROOMS",
-      "name": "Non-Accessible Women's Washroom",
-      "x": 754,
-      "y": 561
+      "name": "Non-Accessible Women's Washroom-237",
+      "x": 745,
+      "y": 558
     },
     {
       "description": "Dedicated space for mechanical equipment and systems.",
@@ -457,24 +457,24 @@
       "floor": 7,
       "layer": "UTILITIES",
       "name": "Mechanical Room",
-      "x": 755,
-      "y": 642
+      "x": 754,
+      "y": 639
     },
     {
-      "description": "Music Library accessible to any Western Students.",
+      "description": "Music Library accessible to any Western students.",
       "favoriteOf": [],
       "floor": 7,
       "layer": "LOUNGES",
       "name": "Music Library",
-      "x": 722,
-      "y": 346
+      "x": 715,
+      "y": 334
     },
     {
       "description": "Elevator that can take you up to the Fourth floor or down to the First floor.",
       "favoriteOf": [],
       "floor": 8,
       "layer": "ACCESSIBILITY",
-      "name": "TC Elevator A",
+      "name": "TC Elevator A-3",
       "x": 397,
       "y": 472
     },
@@ -484,8 +484,8 @@
       "floor": 8,
       "layer": "WASHROOMS",
       "name": "Non-Accessible Men's Washroom",
-      "x": 401,
-      "y": 328
+      "x": 395,
+      "y": 359
     },
     {
       "description": "Non-Accessible Women's Washroom.",
@@ -502,8 +502,8 @@
       "floor": 8,
       "layer": "UTILITIES",
       "name": "Mechanical Room",
-      "x": 647,
-      "y": 603
+      "x": 644,
+      "y": 601
     },
     {
       "description": "Dedicated space for examinations.",
@@ -537,7 +537,7 @@
       "favoriteOf": [],
       "floor": 9,
       "layer": "ACCESSIBILITY",
-      "name": "TC Elevator A",
+      "name": "TC Elevator A-4",
       "x": 388,
       "y": 471
     },
@@ -591,7 +591,7 @@
       "favoriteOf": [],
       "floor": 10,
       "layer": "ACCESSIBILITY",
-      "name": "Elevator C",
+      "name": "RC Elevator C-B",
       "x": 1196,
       "y": 216
     },
@@ -623,11 +623,11 @@
       "y": 243
     },
     {
-      "description": "Dedicated space that allows easy access for UTILITIES and repairs.",
+      "description": "Dedicated space that allows easy access for heating and repairs.",
       "favoriteOf": [],
       "floor": 10,
       "layer": "UTILITIES",
-      "name": "Duct Areaway",
+      "name": "Duct Area-way",
       "x": 1000,
       "y": 196
     },
@@ -654,7 +654,7 @@
       "favoriteOf": [],
       "floor": 11,
       "layer": "ACCESSIBILITY",
-      "name": "Elevator A",
+      "name": "RC Elevator A-G",
       "x": 719,
       "y": 637
     },
@@ -663,7 +663,7 @@
       "favoriteOf": [],
       "floor": 11,
       "layer": "ACCESSIBILITY",
-      "name": "Elevator C",
+      "name": "RC Elevator C-G",
       "x": 1195,
       "y": 216
     },
@@ -853,8 +853,8 @@
       "floor": 12,
       "layer": "WASHROOMS",
       "name": "Barrier Free Men's Washroom Rink",
-      "x": 643,
-      "y": 473
+      "x": 644,
+      "y": 478
     },
     {
       "description": "Barrier Free Women's Washroom.",
@@ -862,7 +862,7 @@
       "floor": 12,
       "layer": "WASHROOMS",
       "name": "Barrier Free Women's Washroom Rink",
-      "x": 643,
+      "x": 646,
       "y": 399
     },
     {
@@ -888,7 +888,7 @@
       "favoriteOf": [],
       "floor": 12,
       "layer": "ACCESSIBILITY",
-      "name": "Elevator A",
+      "name": "RC Elevator A-1",
       "x": 719,
       "y": 637
     },
@@ -897,7 +897,7 @@
       "favoriteOf": [],
       "floor": 12,
       "layer": "ACCESSIBILITY",
-      "name": "Elevator C",
+      "name": "RC Elevator C-1",
       "x": 1195,
       "y": 216
     },
@@ -915,7 +915,7 @@
       "favoriteOf": [],
       "floor": 13,
       "layer": "ACCESSIBILITY",
-      "name": "Elevator A",
+      "name": "RC Elevator A-2",
       "x": 719,
       "y": 637
     },
@@ -924,7 +924,7 @@
       "favoriteOf": [],
       "floor": 13,
       "layer": "ACCESSIBILITY",
-      "name": "Elevator C",
+      "name": "RC Elevator C-2",
       "x": 1195,
       "y": 216
     },
@@ -936,6 +936,2436 @@
       "name": "Mechanical Room",
       "x": 780,
       "y": 640
+    },
+    {
+      "description": "A classroom for lectures.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 6",
+      "x": 638,
+      "y": 527
+    },
+    {
+      "description": "A lecture room that allows for streaming onto a projector, with a seating capacity of 48.\n",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 17",
+      "x": 464,
+      "y": 473
+    },
+    {
+      "description": "A unisex washroom, non-accessible",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "WASHROOMS",
+      "name": "Unisex Washroom",
+      "x": 722,
+      "y": 462
+    },
+    {
+      "description": "One half of classroom 15",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 15A",
+      "x": 164,
+      "y": 604
+    },
+    {
+      "description": "One half of classroom 15.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 15B",
+      "x": 244,
+      "y": 567
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 12",
+      "x": 275,
+      "y": 702
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 11",
+      "x": 318,
+      "y": 681
+    },
+    {
+      "description": "A small classroom",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 14",
+      "x": 181,
+      "y": 759
+    },
+    {
+      "description": "A small classroom",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 13",
+      "x": 313,
+      "y": 739
+    },
+    {
+      "description": "A mens non-accessible washroom",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "WASHROOMS",
+      "name": "Men's Washroom",
+      "x": 708,
+      "y": 513
+    },
+    {
+      "description": "2212 Lecture Hall, a seating capacity of 380.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 110",
+      "x": 872,
+      "y": 343
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 109",
+      "x": 669,
+      "y": 354
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 108",
+      "x": 555,
+      "y": 425
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 107",
+      "x": 463,
+      "y": 480
+    },
+    {
+      "description": "A lecture hall with a capacity of 144 with a projector. ",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 105B",
+      "x": 208,
+      "y": 616
+    },
+    {
+      "description": "Another classroom for classroom 105B.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 105",
+      "x": 301,
+      "y": 718
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 106",
+      "x": 369,
+      "y": 525
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 102",
+      "x": 662,
+      "y": 515
+    },
+    {
+      "description": "A large classroom for lectures and tutorials.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 204",
+      "x": 865,
+      "y": 417
+    },
+    {
+      "description": "A collaborative space that can be booked out for group projects. Capacity of 8 with a whiteboard.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Collaborative Space 220",
+      "x": 332,
+      "y": 679
+    },
+    {
+      "description": "A lab room, fitted with computers with a capacity of 27.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Lab 240",
+      "x": 461,
+      "y": 479
+    },
+    {
+      "description": "A lab room, fitted with computers with a capacity of 24.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Lab 230",
+      "x": 158,
+      "y": 608
+    },
+    {
+      "description": "A classroom for lectures and tutorials.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 222",
+      "x": 253,
+      "y": 730
+    },
+    {
+      "description": "A classroom with a capacity of 40, included with whiteboard and projector.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 320",
+      "x": 452,
+      "y": 642
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 340",
+      "x": 570,
+      "y": 416
+    },
+    {
+      "description": "A large classroom for tutorials. Leads to other smaller rooms.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 327",
+      "x": 200,
+      "y": 566
+    },
+    {
+      "description": "A shared collaborative space that for group projects, included with projectors that students can display their screens onto.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Collaborative Space",
+      "x": 302,
+      "y": 720
+    },
+    {
+      "description": "A non-accessible men's washroom.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "WASHROOMS",
+      "name": "Men's Washroom",
+      "x": 710,
+      "y": 515
+    },
+    {
+      "description": "A ramp that goes up to the server room.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "ACCESSIBILITY",
+      "name": "Ramp to Server Room",
+      "x": 777,
+      "y": 373
+    },
+    {
+      "description": "A seminar room with a capacity of 16. Included with whiteboard and projector.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 300",
+      "x": 864,
+      "y": 558
+    },
+    {
+      "description": "A large classroom.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 101",
+      "x": 1007,
+      "y": 553
+    },
+    {
+      "description": "A large classroom.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 100",
+      "x": 1115,
+      "y": 543
+    },
+    {
+      "description": "A main classroom, with a seating capacity of 238.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 141",
+      "x": 422,
+      "y": 340
+    },
+    {
+      "description": "Music Library collection for music sheets and pickup for music students.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "LOUNGES",
+      "name": "Library 131C",
+      "x": 772,
+      "y": 234
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 230",
+      "x": 426,
+      "y": 552
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 228",
+      "x": 427,
+      "y": 615
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 226",
+      "x": 429,
+      "y": 675
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 221",
+      "x": 431,
+      "y": 873
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 212",
+      "x": 793,
+      "y": 875
+    },
+    {
+      "description": "Where the faculty of music is located.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Faculty of Music",
+      "x": 842,
+      "y": 637
+    },
+    {
+      "description": "A classroom with a seating capacity of 84, can be used to take exams or teach lessons.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 205",
+      "x": 1007,
+      "y": 636
+    },
+    {
+      "description": "A classroom with a seating capacity of 84, can be used to take exams or teach lessons.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 204",
+      "x": 1115,
+      "y": 636
+    },
+    {
+      "description": "A classroom with a seating capacity of 84, can be used to take exams or teach lessons.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 203",
+      "x": 1262,
+      "y": 637
+    },
+    {
+      "description": "A classroom with a seating capacity of 56, can be used to take exams or teach lessons.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 201",
+      "x": 1164,
+      "y": 488
+    },
+    {
+      "description": "A classroom with a seating capacity of 56, can be used to take exams or teach lessons.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 202",
+      "x": 1282,
+      "y": 487
+    },
+    {
+      "description": "A office for the Faculty of Music.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Faculty of Music-210F",
+      "x": 865,
+      "y": 745
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 224",
+      "x": 429,
+      "y": 734
+    },
+    {
+      "description": "A non accessible men's washroom.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "WASHROOMS",
+      "name": "Men's Washroom",
+      "x": 403,
+      "y": 616
+    },
+    {
+      "description": "A classroom with a seating capacity of 82, can be used to take exams or teach lessons, double tabled.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 309",
+      "x": 925,
+      "y": 575
+    },
+    {
+      "description": "A classroom with a seating capacity of 56, can be used to take exams or teach lessons, has a chalkboard.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 303",
+      "x": 1073,
+      "y": 431
+    },
+    {
+      "description": "A classroom with a seating capacity of 56, can be used to take exams or teach lessons, seatings are double tabled.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 304",
+      "x": 1187,
+      "y": 439
+    },
+    {
+      "description": "A classroom with a seating capacity of 78, can be used to take exams or teach lessons, double tabled.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 342",
+      "x": 578,
+      "y": 239
+    },
+    {
+      "description": "A classroom with a seating capacity of 78, can be used to take exams or teach lessons, double tabled.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 343",
+      "x": 672,
+      "y": 233
+    },
+    {
+      "description": "A classroom with a seating capacity of 78, can be used to take exams or teach lessons, double tabled.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 341",
+      "x": 425,
+      "y": 238
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 330",
+      "x": 331,
+      "y": 661
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 320",
+      "x": 544,
+      "y": 826
+    },
+    {
+      "description": "A large classroom",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 403",
+      "x": 731,
+      "y": 577
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 426",
+      "x": 316,
+      "y": 594
+    },
+    {
+      "description": "A classroom for tutorials",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 405",
+      "x": 730,
+      "y": 700
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 420",
+      "x": 319,
+      "y": 767
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 125",
+      "x": 325,
+      "y": 624
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 107",
+      "x": 768,
+      "y": 722
+    },
+    {
+      "description": "Gymnasium",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "FITNESS",
+      "name": "Gym A",
+      "x": 1229,
+      "y": 314
+    },
+    {
+      "description": "Gymnasium",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "FITNESS",
+      "name": "Gym B",
+      "x": 1356,
+      "y": 313
+    },
+    {
+      "description": "Gymnasium",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "FITNESS",
+      "name": "Gym C",
+      "x": 1479,
+      "y": 310
+    },
+    {
+      "description": "Gymnasium",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "FITNESS",
+      "name": "Upper Gym A",
+      "x": 1228,
+      "y": 325
+    },
+    {
+      "description": "Gymnasium",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "FITNESS",
+      "name": "Upper Gym B",
+      "x": 1351,
+      "y": 328
+    },
+    {
+      "description": "A main entrance for Middlesex College, has stairs.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 1",
+      "x": 869,
+      "y": 630
+    },
+    {
+      "description": "A elevator on the 1st floor you can take to the ground floor.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Elevator B-1",
+      "x": 957,
+      "y": 543
+    },
+    {
+      "description": "A non-main entrance, that leads directly to the stair well.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 11",
+      "x": 1036,
+      "y": 557
+    },
+    {
+      "description": "A entrance on the side of Middlesex, leads directly to a stair well.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 9",
+      "x": 1541,
+      "y": 765
+    },
+    {
+      "description": "An entrance off to the side of Middlesex, leads directly into a stairwell.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 3",
+      "x": 109,
+      "y": 749
+    },
+    {
+      "description": "Vertical space that houses ductwork used for heating, ventilation, and air conditioning.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "UTILITIES",
+      "name": "Duct Shaft-2",
+      "x": 675,
+      "y": 461
+    },
+    {
+      "description": "A main entrance take you directly to a hallway",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Entrance 8",
+      "x": 1204,
+      "y": 356
+    },
+    {
+      "description": "Entrance 6, takes you directly to classroom 141",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Entrance 6",
+      "x": 490,
+      "y": 160
+    },
+    {
+      "description": "Entrance 4, takes you directly to a stairwell.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Entrance 4",
+      "x": 263,
+      "y": 435
+    },
+    {
+      "description": "A main entrance for Talbot college, has stairs that go up.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Entrance 1",
+      "x": 887,
+      "y": 692
+    },
+    {
+      "description": "A main entrance without stairs, takes you to a hallway.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Entrance 7",
+      "x": 886,
+      "y": 361
+    },
+    {
+      "description": "A accessibility washroom.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "WASHROOMS",
+      "name": "Accessible Washroom",
+      "x": 498,
+      "y": 617
+    },
+    {
+      "description": "A entrance that takes you directly to a stairwell.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Entrance 9",
+      "x": 1266,
+      "y": 615
+    },
+    {
+      "description": "A accessible washrooms open to all genders.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "WASHROOMS",
+      "name": "Accessible Washroom",
+      "x": 415,
+      "y": 586
+    },
+    {
+      "description": "A ramp that goes down to 233.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "ACCESSIBILITY",
+      "name": "Ramp Down-233",
+      "x": 420,
+      "y": 300
+    },
+    {
+      "description": "A ramp that does down",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "ACCESSIBILITY",
+      "name": "Ramp down",
+      "x": 457,
+      "y": 327
+    },
+    {
+      "description": "A ramp that goes down in 210.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "ACCESSIBILITY",
+      "name": "Ramp down-210",
+      "x": 485,
+      "y": 384
+    },
+    {
+      "description": "A collaborative space that can be booked out for group projects. Capacity of 4 with a whiteboard.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Collaborative Space-239",
+      "x": 338,
+      "y": 576
+    },
+    {
+      "description": "A classroom with a capacity of 30, included with whiteboard and projector.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 316",
+      "x": 545,
+      "y": 589
+    },
+    {
+      "description": "A lab room, fitted with computers with a capacity of 24.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Lab 235",
+      "x": 234,
+      "y": 572
+    },
+    {
+      "description": "A lab room, fitted with computers with a capacity of 20. Has some of the most powerful computers on campus.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Lab 342",
+      "x": 644,
+      "y": 382
+    },
+    {
+      "description": "A lab room, fitted with computers with a capacity of 30.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Lab 244",
+      "x": 564,
+      "y": 385
+    },
+    {
+      "description": "An extra electrical room.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "UTILITIES",
+      "name": "Electrical 1A",
+      "x": 864,
+      "y": 614
+    },
+    {
+      "description": "The main entrance, leads directly into the help desk.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 1-1",
+      "x": 681,
+      "y": 119
+    },
+    {
+      "description": "An entrance that goes to the main lobby",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 15-1",
+      "x": 613,
+      "y": 163
+    },
+    {
+      "description": "A entrance with stairs that lead to stairwells.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 16-1",
+      "x": 587,
+      "y": 145
+    },
+    {
+      "description": "A entrance off to the side of the building.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 12",
+      "x": 234,
+      "y": 516
+    },
+    {
+      "description": "A entrance off to the side of the building.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 13",
+      "x": 220,
+      "y": 367
+    },
+    {
+      "description": "A entrance off to the side of the building.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Exit 15-1",
+      "x": 271,
+      "y": 191
+    },
+    {
+      "description": "A entrance off to the side of the building.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 9",
+      "x": 686,
+      "y": 663
+    },
+    {
+      "description": "A entrance off to the side of the building. Leads to a stairwell.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 8",
+      "x": 705,
+      "y": 677
+    },
+    {
+      "description": "A entrance off to the side of the building.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 11",
+      "x": 249,
+      "y": 679
+    },
+    {
+      "description": "Stairs going to and from the ground floor and first floor.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 1-G",
+      "x": 143,
+      "y": 727
+    },
+    {
+      "description": "Stairs going to and from the ground floor and first floor.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 2-G",
+      "x": 391,
+      "y": 683
+    },
+    {
+      "description": "Stairs going to and from the ground floor and first floor.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 3-G",
+      "x": 1022,
+      "y": 497
+    },
+    {
+      "description": "Stairs going to and from the ground floor and first floor.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 5-G",
+      "x": 1516,
+      "y": 745
+    },
+    {
+      "description": "Stairs going down to the ground floor and up to the second floor.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 1-1",
+      "x": 152,
+      "y": 725
+    },
+    {
+      "description": "Stairs going down to the ground floor and up to the second floor.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 2-1",
+      "x": 393,
+      "y": 691
+    },
+    {
+      "description": "Stairs going down to the ground floor and up to the second floor.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 3-1",
+      "x": 1011,
+      "y": 524
+    },
+    {
+      "description": "Stairs going down to the ground floor and up to the second floor.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 5-1",
+      "x": 1506,
+      "y": 747
+    },
+    {
+      "description": "Stairs going down to the first floor and up to the third floor.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 1-2",
+      "x": 146,
+      "y": 723
+    },
+    {
+      "description": "Stairs going down to the first floor and up to the third floor.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 2-2",
+      "x": 386,
+      "y": 688
+    },
+    {
+      "description": "Stairs going down to the first floor and up to the third floor.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 3-2",
+      "x": 1025,
+      "y": 519
+    },
+    {
+      "description": "Stairs going down to the first floor and up to the third floor.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 5-2",
+      "x": 1508,
+      "y": 747
+    },
+    {
+      "description": "Stairs going down to the third and up to the fourth floor.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 5-3",
+      "x": 1505,
+      "y": 741
+    },
+    {
+      "description": "Stairs going down to the third and up to the fourth floor.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 3-3",
+      "x": 1024,
+      "y": 514
+    },
+    {
+      "description": "Stairs going down to the second floor.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 2-3",
+      "x": 381,
+      "y": 676
+    },
+    {
+      "description": "Stairs going down to the second floor.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 1-3",
+      "x": 147,
+      "y": 725
+    },
+    {
+      "description": "Stairs going down to fourth floor.",
+      "favoriteOf": [],
+      "floor": 5,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 5-4",
+      "x": 1497,
+      "y": 739
+    },
+    {
+      "description": "Stairs going down to fourth floor.",
+      "favoriteOf": [],
+      "floor": 5,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Stairway 3-4",
+      "x": 1022,
+      "y": 515
+    },
+    {
+      "description": "Stairs going up to the second floor.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 3-1",
+      "x": 417,
+      "y": 828
+    },
+    {
+      "description": "Stairs going up to the second floor.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 4-1",
+      "x": 320,
+      "y": 444
+    },
+    {
+      "description": "Stairs going up to the second floor.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 1-1",
+      "x": 1266,
+      "y": 540
+    },
+    {
+      "description": "Ramp up to 109.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "Ramp up-108",
+      "x": 806,
+      "y": 664
+    },
+    {
+      "description": "Stairs going up to the third floor and down to the first floor.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 3-2",
+      "x": 522,
+      "y": 879
+    },
+    {
+      "description": "Stairs going up to the third floor and down to the first floor.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 4-2",
+      "x": 423,
+      "y": 487
+    },
+    {
+      "description": "Stairs going up to the third floor and down to the first floor.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 1-2",
+      "x": 1351,
+      "y": 605
+    },
+    {
+      "description": "Stairs down to the second floor.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 1-3",
+      "x": 1253,
+      "y": 562
+    },
+    {
+      "description": "Stairs going up to the third floor and down to the first floor.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 3-3",
+      "x": 417,
+      "y": 831
+    },
+    {
+      "description": "Stairs going up to the third floor and down to the first floor.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 4-3",
+      "x": 311,
+      "y": 432
+    },
+    {
+      "description": "Stairs going up to the third floor and down to the first floor.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 2-3",
+      "x": 733,
+      "y": 475
+    },
+    {
+      "description": "Stairs going down third floor.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 2-4",
+      "x": 739,
+      "y": 481
+    },
+    {
+      "description": "Stairs going down third floor.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 3-4",
+      "x": 414,
+      "y": 829
+    },
+    {
+      "description": "Stairs going down third floor.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 4-4",
+      "x": 290,
+      "y": 438
+    },
+    {
+      "description": "Stairs going up to the third floor and down to the first floor.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 2-2",
+      "x": 858,
+      "y": 523
+    },
+    {
+      "description": "Stairs going up to the second floor.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Stairway 2-1",
+      "x": 754,
+      "y": 467
+    },
+    {
+      "description": "Stairs going up to the ground floor.",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 14-B",
+      "x": 1221,
+      "y": 436
+    },
+    {
+      "description": "Stairs going up to the ground floor.",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 12-B",
+      "x": 1190,
+      "y": 177
+    },
+    {
+      "description": "Stairs going up to the ground floor.",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 13-B",
+      "x": 1393,
+      "y": 207
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 4-G",
+      "x": 709,
+      "y": 662
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 5-G",
+      "x": 587,
+      "y": 677
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 6-G",
+      "x": 336,
+      "y": 712
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 7-G",
+      "x": 340,
+      "y": 154
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 8-G",
+      "x": 583,
+      "y": 177
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 10-G",
+      "x": 753,
+      "y": 199
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 3-G",
+      "x": 661,
+      "y": 328
+    },
+    {
+      "description": "A ramp down for accessibility.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "Ramp down",
+      "x": 665,
+      "y": 205
+    },
+    {
+      "description": "Stairs going up to the first floor and down to the basement.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 12-G",
+      "x": 1170,
+      "y": 178
+    },
+    {
+      "description": "Stairs going up to the first floor, and down to the basement.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 13-G",
+      "x": 1387,
+      "y": 212
+    },
+    {
+      "description": "Stairs going up to the first floor and down to the basement.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 14-G",
+      "x": 1208,
+      "y": 439
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 15-G",
+      "x": 826,
+      "y": 640
+    },
+    {
+      "description": "Ramp down from hockey rink.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "Ramp down - Hockey Rink",
+      "x": 542,
+      "y": 154
+    },
+    {
+      "description": "Stairs going up to the first floor to the second floor, and down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 15-1",
+      "x": 832,
+      "y": 639
+    },
+    {
+      "description": "Stairs going up to the second floor to the second floor, and down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 4-1",
+      "x": 721,
+      "y": 656
+    },
+    {
+      "description": "Stairs going down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 5-1",
+      "x": 586,
+      "y": 681
+    },
+    {
+      "description": "Stairs going down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 6-1",
+      "x": 310,
+      "y": 700
+    },
+    {
+      "description": "Stairs going down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 7-1",
+      "x": 313,
+      "y": 167
+    },
+    {
+      "description": "Stairs going up to the second to the second floor, and down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 8-1",
+      "x": 585,
+      "y": 179
+    },
+    {
+      "description": "Stairs going up to the first floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 1-1",
+      "x": 672,
+      "y": 556
+    },
+    {
+      "description": "Stairs going to the down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 10-1",
+      "x": 777,
+      "y": 190
+    },
+    {
+      "description": "Elevator that can take you to the lower or upper floors",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Elevator B-1",
+      "x": 836,
+      "y": 230
+    },
+    {
+      "description": "Stairs going up to the second floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 11-1",
+      "x": 1030,
+      "y": 188
+    },
+    {
+      "description": "Stairs going down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 12-1",
+      "x": 1160,
+      "y": 178
+    },
+    {
+      "description": "Stairs going up to the second to the second floor, and down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 13-1",
+      "x": 1392,
+      "y": 211
+    },
+    {
+      "description": "Stairs going up to the second to the second floor, and down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 14-1",
+      "x": 1211,
+      "y": 439
+    },
+    {
+      "description": "Stairs going down to the first floor.",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 2-2",
+      "x": 672,
+      "y": 537
+    },
+    {
+      "description": "Stairs going down to the first floor.",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 3-2",
+      "x": 672,
+      "y": 337
+    },
+    {
+      "description": "Stairs going down to the first floor.",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 14-2",
+      "x": 1206,
+      "y": 442
+    },
+    {
+      "description": "Stairs going down to the first floor.",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 13-2",
+      "x": 1387,
+      "y": 215
+    },
+    {
+      "description": "Stairs going down to the first floor.",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 11-2",
+      "x": 1047,
+      "y": 192
+    },
+    {
+      "description": "Elevator for the lower floor",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Elevator B-2",
+      "x": 835,
+      "y": 231
+    },
+    {
+      "description": "Stairs going down to the first floor.",
+      "favoriteOf": [],
+      "floor": 13,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 4-2",
+      "x": 725,
+      "y": 658
+    },
+    {
+      "description": "Elevator going to lower and upper floors.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "Elevator B-G",
+      "x": 836,
+      "y": 231
+    },
+    {
+      "description": "Non-Accessible Women's Washroom.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "WASHROOMS",
+      "name": "Non-Accessible Women's Washroom-238",
+      "x": 744,
+      "y": 523
+    },
+    {
+      "description": "A classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 16A",
+      "x": 329,
+      "y": 552
+    },
+    {
+      "description": "A classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 16B",
+      "x": 384,
+      "y": 524
+    },
+    {
+      "description": "A classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 8",
+      "x": 559,
+      "y": 569
+    },
+    {
+      "description": "A classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 10",
+      "x": 473,
+      "y": 619
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 109A",
+      "x": 622,
+      "y": 386
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 215",
+      "x": 481,
+      "y": 615
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 213",
+      "x": 571,
+      "y": 574
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 210",
+      "x": 638,
+      "y": 551
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 334",
+      "x": 369,
+      "y": 533
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 336",
+      "x": 456,
+      "y": 484
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 338",
+      "x": 508,
+      "y": 438
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 312",
+      "x": 616,
+      "y": 538
+    },
+    {
+      "description": "A small classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 312A",
+      "x": 664,
+      "y": 510
+    },
+    {
+      "description": "The main office room for the Computer Science department.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "MISCELLANEOUS",
+      "name": "Computer Science Main Office",
+      "x": 977,
+      "y": 398
+    },
+    {
+      "description": "The lobby for the computer science department.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "MISCELLANEOUS",
+      "name": "Computer Science Department Lobby",
+      "x": 970,
+      "y": 331
+    },
+    {
+      "description": "A room that is apart of the computer science department.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "MISCELLANEOUS",
+      "name": "Computer Science Department 335B",
+      "x": 1050,
+      "y": 296
+    },
+    {
+      "description": "A room that is apart of the computer science department.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "MISCELLANEOUS",
+      "name": "Computer Science Department 335C",
+      "x": 1009,
+      "y": 279
+    },
+    {
+      "description": "A room that is apart of the computer science department.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "MISCELLANEOUS",
+      "name": "Computer Science Department 335D",
+      "x": 958,
+      "y": 273
+    },
+    {
+      "description": "A room that is apart of the computer science department.",
+      "favoriteOf": [],
+      "floor": 4,
+      "layer": "MISCELLANEOUS",
+      "name": "Computer Science Department 335E",
+      "x": 907,
+      "y": 270
+    },
+    {
+      "description": "The main room for the department of Mathematics",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "MISCELLANEOUS",
+      "name": "Department of Mathematics",
+      "x": 873,
+      "y": 323
+    },
+    {
+      "description": "Office room for the department of Mathematics",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "MISCELLANEOUS",
+      "name": "Department of Mathematics 255C",
+      "x": 949,
+      "y": 264
+    },
+    {
+      "description": "Office room for the department of Mathematics",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "MISCELLANEOUS",
+      "name": "Department of Mathematics 255B",
+      "x": 884,
+      "y": 255
+    },
+    {
+      "description": "Office room for the department of Mathematics",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "MISCELLANEOUS",
+      "name": "Department of Mathematics 255A",
+      "x": 847,
+      "y": 258
+    },
+    {
+      "description": "Office room for the department of Mathematics",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "MISCELLANEOUS",
+      "name": "Department of Mathematics 255D",
+      "x": 1004,
+      "y": 276
+    },
+    {
+      "description": "Office room for the department of Mathematics",
+      "favoriteOf": [],
+      "floor": 3,
+      "layer": "MISCELLANEOUS",
+      "name": "Department of Mathematics 255E",
+      "x": 980,
+      "y": 340
+    },
+    {
+      "description": "An entrance to Middlesex.",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 10",
+      "x": 1309,
+      "y": 697
+    },
+    {
+      "description": "An entrance for Middlesex next to entrance the main entrance",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 12",
+      "x": 958,
+      "y": 596
+    },
+    {
+      "description": "An entrance that leads directly to a stairwell",
+      "favoriteOf": [],
+      "floor": 2,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 2",
+      "x": 409,
+      "y": 720
+    },
+    {
+      "description": "A lower entrance for Middlesex.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 4",
+      "x": 482,
+      "y": 372
+    },
+    {
+      "description": "A lower entrance for Middlesex.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 5",
+      "x": 589,
+      "y": 341
+    },
+    {
+      "description": "A lower entrance for Middlesex.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 6",
+      "x": 713,
+      "y": 244
+    },
+    {
+      "description": "A lower entrance for Middlesex.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 7",
+      "x": 865,
+      "y": 223
+    },
+    {
+      "description": "A lower entrance for Middlesex.",
+      "favoriteOf": [],
+      "floor": 1,
+      "layer": "ACCESSIBILITY",
+      "name": "MC Entrance 8",
+      "x": 1021,
+      "y": 252
+    },
+    {
+      "description": "A fire exit.",
+      "favoriteOf": [],
+      "floor": 6,
+      "layer": "ACCESSIBILITY",
+      "name": "TC Fire Exit 5",
+      "x": 267,
+      "y": 342
+    },
+    {
+      "description": "A large classroom for tutorials.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 200",
+      "x": 1051,
+      "y": 476
+    },
+    {
+      "description": "A 48-seat recital hall for music students to practice performing.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Studio 242",
+      "x": 498,
+      "y": 594
+    },
+    {
+      "description": "A room for the Faculty of Music.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Faculty of Music-210A",
+      "x": 832,
+      "y": 563
+    },
+    {
+      "description": "A office for the Faculty of Music.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Faculty of Music-210E",
+      "x": 866,
+      "y": 686
+    },
+    {
+      "description": "A office for the Faculty of Music.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Faculty of Music 210G",
+      "x": 865,
+      "y": 799
+    },
+    {
+      "description": "A office for the Faculty of Music",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Faculty of Music-210C",
+      "x": 908,
+      "y": 607
+    },
+    {
+      "description": "A office for the Faculty of Music.",
+      "favoriteOf": [],
+      "floor": 7,
+      "layer": "MISCELLANEOUS",
+      "name": "Faculty of Music-210D",
+      "x": 911,
+      "y": 664
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 422",
+      "x": 321,
+      "y": 717
+    },
+    {
+      "description": "A large classroom.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 404",
+      "x": 731,
+      "y": 643
+    },
+    {
+      "description": "A large classroom for tutorials/lectures.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 406",
+      "x": 726,
+      "y": 752
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 423",
+      "x": 316,
+      "y": 689
+    },
+    {
+      "description": "Professor/TA Room",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 424",
+      "x": 323,
+      "y": 660
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 426",
+      "x": 316,
+      "y": 622
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 427",
+      "x": 316,
+      "y": 564
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 428",
+      "x": 313,
+      "y": 533
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 429",
+      "x": 319,
+      "y": 498
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 430",
+      "x": 315,
+      "y": 471
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 418",
+      "x": 380,
+      "y": 823
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 417",
+      "x": 443,
+      "y": 820
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 416",
+      "x": 474,
+      "y": 827
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 415",
+      "x": 508,
+      "y": 819
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 414",
+      "x": 535,
+      "y": 822
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 413",
+      "x": 569,
+      "y": 825
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 412",
+      "x": 597,
+      "y": 823
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 411",
+      "x": 636,
+      "y": 824
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 410",
+      "x": 666,
+      "y": 826
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 409",
+      "x": 695,
+      "y": 824
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 408",
+      "x": 732,
+      "y": 825
+    },
+    {
+      "description": "Professor/TA Room.",
+      "favoriteOf": [],
+      "floor": 9,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 407",
+      "x": 763,
+      "y": 819
+    },
+    {
+      "description": "Classroom that leads to different rooms with different instruments.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 307",
+      "x": 1078,
+      "y": 581
+    },
+    {
+      "description": "A Instrument Room with a instrument to practice.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "MISCELLANEOUS",
+      "name": "Instrument Room 307D",
+      "x": 1146,
+      "y": 544
+    },
+    {
+      "description": "A Instrument Room with a instrument to practice.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "MISCELLANEOUS",
+      "name": "Instrument Room 307C",
+      "x": 1145,
+      "y": 578
+    },
+    {
+      "description": "A Instrument Room with a instrument to practice.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "MISCELLANEOUS",
+      "name": "Instrument Room 307B",
+      "x": 1143,
+      "y": 617
+    },
+    {
+      "description": "A Instrument Room with a instrument to practice.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "MISCELLANEOUS",
+      "name": "Instrument Room 307E",
+      "x": 1003,
+      "y": 564
+    },
+    {
+      "description": "A Instrument Room with a instrument to practice.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "MISCELLANEOUS",
+      "name": "Instrument Room 307A",
+      "x": 1001,
+      "y": 617
+    },
+    {
+      "description": "A classroom for lectures/tutorials.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 305",
+      "x": 1197,
+      "y": 582
+    },
+    {
+      "description": "A classroom for lectures/tutorials.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 301",
+      "x": 837,
+      "y": 425
+    },
+    {
+      "description": "A classroom for lectures/tutorials.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 302",
+      "x": 930,
+      "y": 431
+    },
+    {
+      "description": "A classroom for lectures/tutorials.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 302B",
+      "x": 987,
+      "y": 431
+    },
+    {
+      "description": "A classroom for lectures/tutorials.",
+      "favoriteOf": [],
+      "floor": 8,
+      "layer": "CLASSROOMS",
+      "name": "Classroom 310",
+      "x": 819,
+      "y": 582
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235A",
+      "x": 1227,
+      "y": 178
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235B",
+      "x": 1259,
+      "y": 177
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235C",
+      "x": 1283,
+      "y": 177
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235D",
+      "x": 1301,
+      "y": 179
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235E",
+      "x": 1322,
+      "y": 178
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235F",
+      "x": 1347,
+      "y": 178
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235G",
+      "x": 1371,
+      "y": 174
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235J",
+      "x": 1343,
+      "y": 215
+    },
+    {
+      "description": "A office room.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 3235H",
+      "x": 1359,
+      "y": 209
+    },
+    {
+      "description": "The lobby for the recreational centre",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "MISCELLANEOUS",
+      "name": "RC Department Lobby",
+      "x": 1243,
+      "y": 205
+    },
+    {
+      "description": "Stairs going up to the first floor to the second floor, and down to the ground floor.",
+      "favoriteOf": [],
+      "floor": 12,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Stairway 13-1",
+      "x": 668,
+      "y": 322
+    },
+    {
+      "description": "An entrance off to the side",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 14",
+      "x": 89,
+      "y": 278
+    },
+    {
+      "description": "An entrance off to the side",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 17",
+      "x": 1240,
+      "y": 454
+    },
+    {
+      "description": "An entrance off to the side.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 2",
+      "x": 690,
+      "y": 192
+    },
+    {
+      "description": "An entrance in the basement.",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 3",
+      "x": 1256,
+      "y": 174
+    },
+    {
+      "description": "An entrance in the basement.",
+      "favoriteOf": [],
+      "floor": 10,
+      "layer": "ACCESSIBILITY",
+      "name": "RC Entrance 4",
+      "x": 1410,
+      "y": 192
+    },
+    {
+      "description": "A lobby that leads to multiple offices",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Lobby 2235",
+      "x": 1249,
+      "y": 204
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 2235A",
+      "x": 1228,
+      "y": 175
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Lobby 2235B",
+      "x": 1270,
+      "y": 176
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Lobby 2235C",
+      "x": 1301,
+      "y": 177
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Lobby 2235D",
+      "x": 1323,
+      "y": 177
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Lobby 2235E",
+      "x": 1343,
+      "y": 177
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 2235F",
+      "x": 1369,
+      "y": 177
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 2235H",
+      "x": 1346,
+      "y": 214
+    },
+    {
+      "description": "An office room.",
+      "favoriteOf": [],
+      "floor": 11,
+      "layer": "MISCELLANEOUS",
+      "name": "Office 2235G",
+      "x": 1358,
+      "y": 212
     }
   ]
 }
