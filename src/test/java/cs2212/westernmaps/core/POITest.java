@@ -65,7 +65,7 @@ public final class POITest {
         var poi1 = new POI("Test POI", "test description", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
         int x = 0;
         Assertions.assertEquals(poi1.x(), x);
-        Assertions.assertEquals(poi1.x(), 1);
+        Assertions.assertNotEquals(poi1.x(), 1);
     }
 
     @Test
@@ -74,7 +74,7 @@ public final class POITest {
         var poi1 = new POI("Test POI", "test description", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
         int y = 0;
         Assertions.assertEquals(poi1.y(), y);
-        Assertions.assertEquals(poi1.y(), 1);
+        Assertions.assertNotEquals(poi1.y(), 1);
     }
 
     @Test
