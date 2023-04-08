@@ -25,30 +25,34 @@ This application depends on the following libraries (*all included in the build*
 
 ### Running the Built Program
 To run the application from the build:
-1. Extract the provided `westernmaps-(version number)-(release type)-dist.zip`
+1. Extract the provided `westernmaps-(version number)-dist.zip`
 to the desired application directory.
-2. Within the extracted directory, run `westernmaps-(versin number)-(release type).jar`.
+2. Within the extracted directory, run `westernmaps-(version number).jar`.
 
 ### Compiling the Program from Source Code
 To compile the application from the source code:
 1. Place all source files in the desired project directory.
 2. Run `mvn clean compile` in the terminal to compile all source files.
-   * After compilation, a `westernmaps-(version number)-(release type)-dist.zip`
+   * After compilation, a `westernmaps-(version number)-dist.zip`
 is placed in the `dist` folder of the project directory.
 3. Extract the resulting zip file to the desired application directory.
 4. Within the extracted directory, run `westernmaps-(versin number)-(release type).jar`.
 
 ### How to Use the Program
-The application begins at the log in screen. Log in with an already
-existing account, or create a new account with the **Create an Account**
-link.
+On all screens of the application, a menu bar is located at top
+of the window. Click the Help tab, then click "Help" to access the help
+pages, which give explanations on all features of the program. Also under
+the Help tab is the "About Western Maps" button, which shows a dialog
+with project metadata and developer contact information.
 
-After logging in, the **Building Selection** screen appears. From here,
-more detailed help pages can be viewed with the **Help** button, or application
-metadata can be viewed from the **About** button.
 
 ### Accessing Developer Mode
 *Developer mode* allows the user to fully edit built-in POIs. To access
 developer mode, log into the developer account:
 * Username: developerUser
+* Password: password1!
+
+Also provided is a built-in regular user account. This is an empty account
+without developer mode access. To log in to this account:
+* Username: regularUser
 * Password: password1!
