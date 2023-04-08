@@ -53,7 +53,6 @@ public final class MapViewerPanel extends JPanel {
 
     // data for what is currently being displayed
     private Component cursorComponent;
-    private URI currentMapUri;
     private List<POI> displayedPois;
 
     // the current hovered POI
@@ -70,7 +69,6 @@ public final class MapViewerPanel extends JPanel {
      */
     public MapViewerPanel(URI initialMapUri, List<POI> displayedPois) {
         cursorComponent = this;
-        currentMapUri = initialMapUri;
 
         this.displayedPois = displayedPois;
         this.renderCache = new MapRenderCache(universe.getDiagram(initialMapUri), 1.0);
@@ -301,7 +299,6 @@ public final class MapViewerPanel extends JPanel {
      */
     public void setCurrentMapUri(URI uri) {
         renderCache.setDiagram(universe.getDiagram(uri));
-        this.currentMapUri = uri;
         repaint();
     }
 

@@ -53,7 +53,7 @@ public final class MapPanel extends JPanel {
     // the favorites list, used to display the favorites
     private final JList<POI> favoritesList = new JList<>();
     // the search results, used to display the search results when searching
-    private JList<POI> searchResults = new JList<>();
+    private final JList<POI> searchResults = new JList<>();
 
     // the floor switcher, the backend behind the floor switching
     private FloorSwitcher floorSwitcher;
@@ -75,8 +75,6 @@ public final class MapPanel extends JPanel {
     private final Timer timer;
 
     private final Account loggedInAccount;
-
-    private final List<Consumer<Building>> changeTitleListeners = new ArrayList<>();
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
