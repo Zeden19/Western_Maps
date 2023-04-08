@@ -17,6 +17,8 @@ import java.nio.file.Path;
  * @param longName  The full display name of this floor (for example
  *                  {@code "First Floor"} or {@code "Ground Floor"}).
  * @param mapPath   The path to the SVG map data for this floor.
+ *
+ * @author Connor Cummings
  */
 @JsonIdentityInfo(generator = IntSequenceGenerator.class, scope = Floor.class)
 public record Floor(

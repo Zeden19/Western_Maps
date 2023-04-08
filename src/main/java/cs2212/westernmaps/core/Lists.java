@@ -5,6 +5,8 @@ import java.util.stream.Stream;
 
 /**
  * Contains utility methods for working with unmodifiable lists.
+ *
+ * @author Connor Cummings
  */
 public final class Lists {
     // Prevents instances of this class from being created.

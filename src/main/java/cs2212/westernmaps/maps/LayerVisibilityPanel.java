@@ -16,6 +16,8 @@ import javax.swing.*;
 /**
  * A panel that allows the user to toggle the visibility of individual
  * {@linkplain Layer POI layers} on the map.
+ *
+ * @author Connor Cummings
  */
 public final class LayerVisibilityPanel extends JPanel {
     private final EnumMap<Layer, JCheckBox> layerCheckboxes = new EnumMap<>(Layer.class);

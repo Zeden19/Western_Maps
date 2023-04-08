@@ -4,9 +4,10 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import javax.swing.Icon;
 
 /**
- * A layer that a POI can be assigned to.
+ * A layer that a POI can be assigned to. These layers also have the icons that are used to display them on the maps
  *
  * @see POI
+ * @author Connor Cummings
  */
 public enum Layer {
     ACCESSIBILITY("Accessibility", "accessibility"),
@@ -36,6 +37,10 @@ public enum Layer {
         return displayName;
     }
 
+    /**
+     * Gets the icon that should be used to represent this layer.
+     * @return The icon of this layer.
+     */
     public Icon getIcon() {
         return icon;
     }

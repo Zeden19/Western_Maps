@@ -17,12 +17,23 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+/**
+ * The help window of the application used to display help pages.
+ *
+ * @author Connor Cummings
+ */
 public class HelpWindow extends JFrame {
     private static @Nullable HelpWindow openedWindow = null;
 
     private final JTree tree;
     private final JEditorPane viewer;
+    // Creating the help page for the actual application
 
+    /**
+     * Creates the help window of the application.
+     *
+     * @param index An index of the help pages to display.
+     */
     public HelpWindow(HelpPageIndex index) {
         super(Main.APPLICATION_NAME + " Help");
 
@@ -34,6 +45,10 @@ public class HelpWindow extends JFrame {
         rootPageTitle.setFocusable(true);
         rootPageTitle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         rootPageTitle.addMouseListener(new MouseAdapter() {
+            /**
+             * This method helps for when a mouse click occurs
+             * @param e the event to be processed
+             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 tree.clearSelection();
@@ -141,15 +156,31 @@ public class HelpWindow extends JFrame {
         }
     }
 
+    /**
+     * An action that opens the help window, creating one if it doesn't exist.
+     *
+     * @author Connor Cummings
+     */
     public static class ShowAction extends AbstractAction {
         private static @Nullable HelpPageIndex index = null;
 
+        /**
+         * Creates a new help action.
+         */
         public ShowAction() {
             super("Help");
             putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);
             putValue(Action.SHORT_DESCRIPTION, "Show the help browser.");
         }
 
+        /**
+         * Shows the help window to the user.
+         *
+         * <p>This method will either make a new help window or focuses an
+         * existing one.</p>
+         *
+         * @param actionEvent The event that triggered the window to open.
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             // Load the help index and cache the result.

@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Manages the application's data and allows undoing and redoing changes.
+ *
+ * @author Connor Cummings
  */
 public final class UndoHistory {
     private final List<DatabaseState> history = new ArrayList<>();

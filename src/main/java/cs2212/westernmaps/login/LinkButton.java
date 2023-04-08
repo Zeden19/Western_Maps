@@ -10,8 +10,15 @@ import javax.swing.UIManager;
 
 /**
  * A Java Swing button with custom styles to make it look like a link.
+ *
+ * @author Connor Cummings
  */
 public final class LinkButton extends JButton {
+    /**
+     * Creates a new link button.
+     *
+     * @param text The text to display on the button.
+     */
     public LinkButton(String text) {
         super(text);
 
@@ -31,6 +38,7 @@ public final class LinkButton extends JButton {
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
+    // setting the underline for the text in the panel to add a nicer look to panel
     private void setUnderlined() {
         var font = getFont();
         var attributes = new HashMap<TextAttribute, Object>(font.getAttributes());

@@ -7,12 +7,21 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
+/**
+ * An index of all help pages.
+ *
+ * @author Connor Cummings
+ */
 public final class HelpPageIndex {
     private static final String PAGES_JSON_RESOURCE = HelpPage.HELP_ROOT + "/pages.json";
-
     private final HelpPage rootPage;
     private final Map<String, HelpPage> reverseIndex = new HashMap<>();
 
+    /**
+     * Creates a new help page index.
+     *
+     * @param rootPage The root of all help pages.
+     */
     public HelpPageIndex(HelpPage rootPage) {
         this.rootPage = rootPage;
         buildReverseIndex(rootPage);
@@ -40,10 +49,24 @@ public final class HelpPageIndex {
         }
     }
 
+    /**
+     * Gets the root page of the help system.
+     *
+     * <p>This is the page that will be shown first when the user opens the help
+     * window.</p>
+     *
+     * @return The root page of the help pages.
+     */
     public HelpPage getRootPage() {
         return rootPage;
     }
 
+    /**
+     * Gets the help page specified by a content URL.
+     *
+     * @param contentURL The URL that is associated with the page.
+     * @return           The help page with the given content URL.
+     */
     public @Nullable HelpPage getPageByContentURL(URL contentURL) {
         return reverseIndex.get(contentURL.toString());
     }

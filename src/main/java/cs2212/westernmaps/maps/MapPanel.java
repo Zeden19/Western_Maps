@@ -18,6 +18,16 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
+/**
+ * The main map screen of the application.
+ *
+ * <p>It provides a map viewer, POI summary view, floor switcher, POI list,
+ * favourite POI list, and the ability to add and delete POIs.</p>
+ *
+ * @author Connor Cummings
+ * @author Arjun Sharma
+ * @author Christoper Chosang
+ */
 public final class MapPanel extends JPanel {
 
     // the database, used for all sorts of data setting
@@ -43,7 +53,7 @@ public final class MapPanel extends JPanel {
     // the favorites list, used to display the favorites
     private final JList<POI> favoritesList = new JList<>();
     // the search results, used to display the search results when searching
-    private JList<POI> searchResults = new JList<>();
+    private final JList<POI> searchResults = new JList<>();
 
     // the floor switcher, the backend behind the floor switching
     private FloorSwitcher floorSwitcher;
@@ -66,10 +76,16 @@ public final class MapPanel extends JPanel {
 
     private final Account loggedInAccount;
 
-    private final List<Consumer<Building>> changeTitleListeners = new ArrayList<>();
-
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
+    /**
+     * Creates a new map panel.
+     *
+     * @param database is the database that is for the application
+     * @param building is the building that is selected
+     * @param loggedInAccount is the account that logged in the application
+     * @param glassPane is the glass pane that is used to display the search results
+     */
     // the main map panel
     public MapPanel(Database database, Building building, Account loggedInAccount, Container glassPane) {
         this.database = database;
@@ -561,10 +577,21 @@ public final class MapPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * Registers a listener that will be called when the back button is clicked.
+     *
+     * @param listener The listener to add.
+     */
     public void addBackListener(Runnable listener) {
         backListeners.add(listener);
     }
 
+    /**
+     * Registers a listener that will be called when the building is changed, used when the user selects a POI from
+     * favourite menu and that POI is in a different building
+     *
+     * @param listener The listener that fires when the building is changed
+     */
     public void addBuildingChangeListeners(Consumer<Building> listener) {
         buildingChangeListeners.add(listener);
     }

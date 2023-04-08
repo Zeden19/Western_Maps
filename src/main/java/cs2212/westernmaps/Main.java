@@ -12,13 +12,23 @@ import java.nio.file.Path;
 import java.util.Objects;
 import javax.swing.SwingUtilities;
 
+/**
+ * The main class for the Western Maps application.
+ * It primarily sets up the UI and database, and then creates the main window, which starts at the login panel.
+ * @author Connor Cummings
+ */
 public final class Main {
+
+    /** The name of the application. */
     public static final String APPLICATION_NAME = "Western Maps";
 
     private Main() {}
 
+    /**
+     * The main runnable function for the application
+     * @param args command line arguments
+     */
     public static void main(String... args) {
-        // TODO: Load this from a user preferences file.
         boolean darkTheme = false;
 
         // Set up the FlatLaf theme. This must be done before creating the UI.
@@ -50,10 +60,10 @@ public final class Main {
             try {
                 database = Database.openDirectory(getDataDirectory());
             } catch (IOException ex) {
-                // TODO: Show an error dialog.
                 throw new RuntimeException(ex);
             }
 
+            // Create the main window.
             var window = new MainWindow(database);
             window.setVisible(true);
         });
@@ -74,8 +84,6 @@ public final class Main {
      * @return The path to the data directory.
      */
     public static Path getDataDirectory() {
-        // TODO: Use the directory containing the JAR file instead of the
-        //       current working directory.
         var directoryProperty = System.getProperty("cs2212.westernmaps.dataDirectory");
         return Path.of(Objects.requireNonNullElse(directoryProperty, "./data"));
     }
