@@ -1,4 +1,5 @@
 package cs2212.westernmaps.core;
+
 import java.nio.file.Path;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
@@ -41,56 +42,55 @@ public final class POITest {
     }
 
     @Test
-    void name() {
-        POI poi = new POI(
-                "name",
-                "description",
-                0,
-                0,
-                null,
-                new Floor("testName", "test", Path.of("resources")),
-                Layer.ACCESSIBILITY,
-                null);
-        Assertions.assertEquals("name", poi.name());
+    public void testName() {
+        var floor1 = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
+        var poi1 = new POI("Test POI", "", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
+        String result = "Test POI";
+        Assertions.assertEquals(poi1.name(), result);
+        Assertions.assertNotEquals(poi1.name(), "test");
     }
 
     @Test
-    void description() {
-        POI poi = new POI(
-                "name",
-                "description",
-                0,
-                0,
-                null,
-                new Floor("testName", "test", Path.of("resources")),
-                Layer.ACCESSIBILITY, null);
-        Assertions.assertEquals("description", poi.description());
+    public void testDescription() {
+        var floor1 = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
+        var poi1 = new POI("Test POI", "test description", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
+        String result = "test description";
+        Assertions.assertEquals(poi1.description(), result);
+        Assertions.assertNotEquals(poi1.description(), "test");
     }
 
     @Test
-    void x() {
-        POI poi = new POI(
-                "name",
-                "description",
-                0,
-                0,
-                null,
-                new Floor("testName", "test", Path.of("resources")),
-                Layer.ACCESSIBILITY, null);
-        Assertions.assertEquals(0, poi.x());
+    public void testX() {
+        var floor1 = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
+        var poi1 = new POI("Test POI", "test description", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
+        int x = 0;
+        Assertions.assertEquals(poi1.x(), x);
+        Assertions.assertEquals(poi1.x(), 1);
     }
 
     @Test
-    void y() {
-        POI poi = new POI(
-                "name",
-                "description",
-                0,
-                100,
-                null,
-                new Floor("testName", "test", Path.of("resources")),
-                Layer.ACCESSIBILITY,null);
-        Assertions.assertEquals(100, poi.y());
+    public void testY() {
+        var floor1 = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
+        var poi1 = new POI("Test POI", "test description", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
+        int y = 0;
+        Assertions.assertEquals(poi1.y(), y);
+        Assertions.assertEquals(poi1.y(), 1);
     }
 
+    @Test
+    public void testFloor() {
+        var floor1 = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
+        var poi1 = new POI("Test POI", "test description", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
+        Assertions.assertEquals(poi1.floor(), floor1);
+        Assertions.assertNotEquals(
+                poi1.floor(), new Floor("2", "Second Floor", Path.of("maps/Example Building/Second Floor.svg")));
+    }
+
+    @Test
+    public void testLayer() {
+        var floor1 = new Floor("1", "First Floor", Path.of("maps/Example Building/First Floor.svg"));
+        var poi1 = new POI("Test POI", "test description", 0, 0, Set.of(), floor1, Layer.MISCELLANEOUS, null);
+        Assertions.assertEquals(poi1.layer(), Layer.MISCELLANEOUS);
+        Assertions.assertNotEquals(poi1.layer(), Layer.CUSTOM);
+    }
 }

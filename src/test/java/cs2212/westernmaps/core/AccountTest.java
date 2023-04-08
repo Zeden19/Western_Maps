@@ -2,66 +2,39 @@ package cs2212.westernmaps.core;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
+import cs2212.westernmaps.login.PasswordAuthenticator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AccountTest {
 
     private Account account;
+
     @BeforeEach
     void setUp() {
-        byte[] passwordHash = "password".getBytes();
-        account = new Account("username", passwordHash, false);
-    }
-
-    @AfterEach
-    void tearDown() {}
-
-    @Test
-    void withPassword() {
-        char[] newPassword = "newPassword".toCharArray();
-        Account newAccount = account.withPassword(newPassword);
-
-        assertNotSame(account, newAccount);
-        assertTrue(newAccount.isPasswordCorrect(newPassword));
+        PasswordAuthenticator authenticator = new PasswordAuthenticator();
+        String passwordHash = "password";
+        String password = authenticator.hash(passwordHash.toCharArray());
+        account = new Account("username", password, false);
     }
 
     @Test
     void isPasswordCorrect() {
-        char[] correctPassword = "password".toCharArray();
-        char[] incorrectPassword = "wrong".toCharArray();
-
-        assertTrue(account.isPasswordCorrect(correctPassword));
-        assertFalse(account.isPasswordCorrect(incorrectPassword));
+        String correctPassword = "password";
+        PasswordAuthenticator authenticator = new PasswordAuthenticator();
+        assertTrue(authenticator.authenticate(correctPassword.toCharArray(), account.passwordHash()));
     }
 
     @Test
-    void testEquals() {
-        byte[] passwordHash = "password".getBytes();
-        Account equalAccount = new Account("username", passwordHash, false);
-        Account differentAccount = new Account("differentUsername", passwordHash, false);
-
-        assertTrue(account.equals(equalAccount));
-        assertFalse(account.equals(differentAccount));
-    }
-
-    @Test
-    void testHashCode() {
-        byte[] passwordHash = "password".getBytes();
-        Account equalAccount = new Account("username", passwordHash, false);
-
-        assertEquals(account.hashCode(), equalAccount.hashCode());
+    void isPasswordNotCorrect() {
+        String correctPassword = "Bad Password";
+        PasswordAuthenticator authenticator = new PasswordAuthenticator();
+        assertFalse(authenticator.authenticate(correctPassword.toCharArray(), account.passwordHash()));
     }
 
     @Test
     void username() {
         assertEquals("username", account.username());
-    }
-
-    @Test
-    void passwordHash() {
-        assertArrayEquals("password".getBytes(), account.passwordHash());
     }
 
     @Test

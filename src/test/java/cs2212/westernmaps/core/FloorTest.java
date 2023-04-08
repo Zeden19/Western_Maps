@@ -7,10 +7,6 @@ import org.junit.jupiter.api.Test;
 
 class FloorTest {
 
-    // todo add test once this method has been implemented, 2 tests one for valid one for invalid
-    @Test
-    void loadMap() {}
-
     @Test
     void shortName() {
         Floor floor = new Floor("T", "test", Path.of("test"));
