@@ -67,7 +67,6 @@ public final class Database {
         return mapPath.toUri();
     }
 
-
     /**
      * This method saves the database
      * @throws IOException when the database file is not found

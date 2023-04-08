@@ -80,7 +80,6 @@ public final class MapPanel extends JPanel {
 
     private final EnumSet<Layer> visibleLayers = EnumSet.allOf(Layer.class);
 
-
     /**
      * Creates a new map panel.
      *
@@ -589,6 +588,12 @@ public final class MapPanel extends JPanel {
         backListeners.add(listener);
     }
 
+    /**
+     * Registers a listener that will be called when the building is changed, used when the user selects a POI from
+     * favourite menu and that POI is in a different building
+     *
+     * @param listener The listener that fires when the building is changed
+     */
     public void addBuildingChangeListeners(Consumer<Building> listener) {
         buildingChangeListeners.add(listener);
     }

@@ -305,7 +305,6 @@ public final class MapViewerPanel extends JPanel {
         repaint();
     }
 
-
     /**
      * Sets the POIs that are currently displayed on the map.
      *
